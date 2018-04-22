@@ -20,5 +20,7 @@
   * [ThreadLocal关键字](di-yi-7ae0-java-duo-xian-cheng-ji-chu/threadlocalguan-jian-zi.md)
   * [volatile、ThreadLocal、synchronized3个关键字区别](di-yi-7ae0-java-duo-xian-cheng-ji-chu/volatilethreadlocalsynchronized3ge-guan-jian-zi-qu-bie.md)
 * [第二章 Java线程池与框架](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia.md)
-  * [Executor 框架与线程池](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/executor-kuang-jia-yu-xian-cheng-chi.md)
+  * [Executor 框架](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/executor-kuang-jia-yu-xian-cheng-chi.md)
+  * [自定义线程池——ThreadPoolExecutor](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/zi-ding-yi-xian-cheng-chi-2014-2014-threadpoolexecutor.md)
+  * [线程池工具类](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/xian-cheng-chi-gong-ju-lei.md)
 
