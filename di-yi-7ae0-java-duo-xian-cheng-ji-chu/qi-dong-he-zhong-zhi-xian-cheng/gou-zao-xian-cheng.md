@@ -1,10 +1,8 @@
 # **构造线程**
 
-在运行线程之前首先要构造一个线程对象，线程对象在构造的时候需要提供线程所需要
+在运行线程之前首先要构造一个线程对象，线程对象在构造的时候需要提供线程所需要的属性，如线程所属的线程组、线程优先级、是否是Daemon线程等信息。代码清单1所示的代码摘自java.lang.Thread中对线程进行初始化的部分。
 
-的属性，如线程所属的线程组、线程优先级、是否是Daemon线程等信息。代码清单4-6所示的
-
-代码摘自java.lang.Thread中对线程进行初始化的部分。
+清单1
 
 ```
 private void init(ThreadGroup g, Runnable target, String name, long stackSize, AccessControlContext acc) {
@@ -29,5 +27,8 @@ private void init(ThreadGroup g, Runnable target, String name, long stackSize, A
     }
 ```
 
-在上述过程中，一个新构造的线程对象是由其parent线程来进行空间分配的，而child线程继承了parent是否为Daemon、优先级和加载资源的contextClassLoader以及可继承的ThreadLocal，同时还会分配一个唯一的ID来标识这个child线程。至此，一个能够运行的线程对象就初始化好了，在堆内存中等待着运行。
+在上述过程中，一个新构造的线程对象是由其parent线程来进行空间分配的，而child线程  
+继承了parent是否为Daemon、优先级和加载资源的contextClassLoader以及可继承的  
+ThreadLocal，同时还会分配一个唯一的ID来标识这个child线程。至此，一个能够运行的线程对  
+象就初始化好了，在堆内存中等待着运行。
 
