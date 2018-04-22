@@ -31,7 +31,7 @@ public class ThreadDemo {
         new MyThread().start();
         new MyThread().start();
     }
-} 
+}
 ```
 
 执行结果如下：
@@ -74,7 +74,7 @@ public class RunnableDemo {
 
 从结果中可以看出，三个线程一共卖了 5 张票，即它们共同完成了买票的任务，实现了资源的共享，可以通过打印
 
-线程名称查看具具体的线程。   
+线程名称查看具具体的线程。
 
 针对以上代码补充三点：
 
