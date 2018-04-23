@@ -169,45 +169,32 @@ CAS。JDK文档对该方法的说明如下：如果当前状态值等于预期�
 
 下面是sun.misc.Unsafe类的compareAndSwapInt\(\)方法的源代码。
 
-public final native boolean compareAndSwapInt\(Object o, long offset,
-
-int expected,
-
-int x\);
+```
+public final native boolean compareAndSwapInt(Object o, long offset,int expected,int x);
+```
 
 可以看到，这是一个本地方法调用。这个本地方法在openjdk中依次调用的c++代码为：
 
 unsafe.cpp，atomic.cpp和atomic\_windows\_x86.inline.hpp。这个本地方法的最终实现在openjdk的
 
-如下位置：openjdk-7-fcs-src-b147-
-
-27\_jun\_2011\openjdk\hotspot\src\os\_cpu\windows\_x86\vm\atomic\_windows\_x86.inline.hpp（对应于
+如下位置：openjdk-7-fcs-src-b147-27\_jun\_2011\openjdk\hotspot\src\os\_cpu\windows\_x86\vm\atomic\_windows\_x86.inline.hpp（对应于
 
 Windows操作系统，X86处理器）。下面是对应于intel X86处理器的源代码的片段。
 
-inline jint Atomic::cmpxchg \(jint exchange\_value, volatile jint\* dest,
-
-jint compare\_value\) {
-
+```
+inline jint Atomic::cmpxchg (jint exchange_value, volatile jint* dest,
+jint compare_value) {
 // alternative for InterlockedCompareExchange
-
-int mp = os::is\_MP\(\);
-
-\_\_asm {
-
+int mp = os::is_MP();
+__asm {
 mov edx, dest
-
-mov ecx, exchange\_value
-
-mov eax, compare\_value
-
-LOCK\_IF\_MP\(mp\)
-
-cmpxchg dword ptr \[edx\], ecx
-
+mov ecx, exchange_value
+mov eax, compare_value
+LOCK_IF_MP(mp)
+cmpxchg dword ptr [edx], ecx
 }
-
 }
+```
 
 如上面源代码所示，程序会根据当前处理器的类型来决定是否为cmpxchg指令添加lock前
 
