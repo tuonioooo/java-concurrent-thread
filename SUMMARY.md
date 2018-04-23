@@ -58,5 +58,8 @@
     * [为什么final引用不能从构造函数内“溢出”](di-san-zhang-java-nei-cun-mo-xing/finalyu-nei-cun-yu-yi/wei-shi-yao-final-yin-yong-bu-neng-cong-gou-zao-han-shu-nei-201c-yi-chu-201d.md)
     * [final语义在处理器中的实现](di-san-zhang-java-nei-cun-mo-xing/finalyu-nei-cun-yu-yi/finalyu-yi-zai-chu-li-qi-zhong-de-shi-xian.md)
     * [JSR-133为什么要增强final的语义](di-san-zhang-java-nei-cun-mo-xing/finalyu-nei-cun-yu-yi/jsr-133wei-shi-yao-yao-zeng-qiang-final-de-yu-yi.md)
+  * [Java内存模型综述](di-san-zhang-java-nei-cun-mo-xing/javanei-cun-mo-xing-zong-shu.md)
+    * [处理器的内存模型](di-san-zhang-java-nei-cun-mo-xing/javanei-cun-mo-xing-zong-shu/chu-li-qi-de-nei-cun-mo-xing.md)
+    * 各种内存模型之间的关系
   * [happens-before](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu/happens-beforejian-jie.md)
 
