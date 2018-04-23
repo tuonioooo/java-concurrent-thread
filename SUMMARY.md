@@ -39,5 +39,10 @@
     * [顺序一致性内存模型](di-san-zhang-java-nei-cun-mo-xing/shun-xu-yi-zhi-xing/shun-xu-yi-zhi-xing-nei-cun-mo-xing.md)
     * [同步程序的顺序一致性效果](di-san-zhang-java-nei-cun-mo-xing/shun-xu-yi-zhi-xing/tong-bu-cheng-xu-de-shun-xu-yi-zhi-xing-xiao-guo.md)
     * [未同步程序的执行特性](di-san-zhang-java-nei-cun-mo-xing/shun-xu-yi-zhi-xing/wei-tong-bu-cheng-xu-de-zhi-xing-te-xing.md)
+  * [volatile内存语义](di-san-zhang-java-nei-cun-mo-xing/volatilenei-cun-yu-yi.md)
+    * [volatile的特性](di-san-zhang-java-nei-cun-mo-xing/volatilenei-cun-yu-yi/volatilede-te-xing.md)
+    * volatile写-读建立的happens-before关系
+    * volatile写-读的内存语义
+    * JSR-133为什么要增强volatile的内存语义
   * [happens-before](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu/happens-beforejian-jie.md)
 
