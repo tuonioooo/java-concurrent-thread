@@ -37,7 +37,7 @@
   * [顺序一致性](di-san-zhang-java-nei-cun-mo-xing/shun-xu-yi-zhi-xing.md)
     * [数据竞争与顺序一致性](di-san-zhang-java-nei-cun-mo-xing/shun-xu-yi-zhi-xing/shu-ju-jing-zheng-yu-shun-xu-yi-zhi-xing.md)
     * [顺序一致性内存模型](di-san-zhang-java-nei-cun-mo-xing/shun-xu-yi-zhi-xing/shun-xu-yi-zhi-xing-nei-cun-mo-xing.md)
-    * 同步程序的顺序一致性效果
+    * [同步程序的顺序一致性效果](di-san-zhang-java-nei-cun-mo-xing/shun-xu-yi-zhi-xing/tong-bu-cheng-xu-de-shun-xu-yi-zhi-xing-xiao-guo.md)
     * 未同步程序的执行特性
   * [happens-before](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu/happens-beforejian-jie.md)
 
