@@ -51,7 +51,7 @@
     * [锁内存语义的实现](di-san-zhang-java-nei-cun-mo-xing/suo-nei-cun-ding-yi/suo-nei-cun-yu-yi-de-shi-xian.md)
     * [concurrent包的实现](di-san-zhang-java-nei-cun-mo-xing/suo-nei-cun-ding-yi/concurrentbao-de-shi-xian.md)
   * [final域内存语义](di-san-zhang-java-nei-cun-mo-xing/finalyu-nei-cun-yu-yi.md)
-    * final域的重排序规则
+    * [final域的重排序规则](di-san-zhang-java-nei-cun-mo-xing/finalyu-nei-cun-yu-yi/finalyu-de-zhong-pai-xu-gui-ze.md)
     * [写final域的重排序规则](di-san-zhang-java-nei-cun-mo-xing/finalyu-nei-cun-yu-yi/xie-final-yu-de-zhong-pai-xu-gui-ze.md)
     * [读final域的重排序规则](di-san-zhang-java-nei-cun-mo-xing/finalyu-nei-cun-yu-yi/du-final-yu-de-zhong-pai-xu-gui-ze.md)
     * [final域为引用类型](di-san-zhang-java-nei-cun-mo-xing/finalyu-nei-cun-yu-yi/finalyu-wei-yin-yong-lei-xing.md)
