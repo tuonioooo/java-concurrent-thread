@@ -34,5 +34,6 @@
     * [as-if-serial语义](di-san-zhang-java-nei-cun-mo-xing/as-if-serialyu-yi.md)
     * [程序顺序规则](di-san-zhang-java-nei-cun-mo-xing/cheng-xu-shun-xu-gui-ze.md)
     * [重排序对多线程的影响](di-san-zhang-java-nei-cun-mo-xing/zhong-pai-xu-dui-duo-xian-cheng-de-ying-xiang.md)
+    * [顺序一致性](di-san-zhang-java-nei-cun-mo-xing/shun-xu-yi-zhi-xing.md)
   * [happens-before](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu/happens-beforejian-jie.md)
 
