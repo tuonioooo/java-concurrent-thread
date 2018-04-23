@@ -38,3 +38,17 @@ double area = pi \* r \* r; // C
 
 ![](/assets/import-serial-2.png)
 
+
+
+as-if-serial语义把单线程程序保护了起来，遵守as-if-serial语义的编译器、runtime和处理器
+
+共同为编写单线程程序的程序员创建了一个幻觉：单线程程序是按程序的顺序来执行的。as-
+
+if-serial语义使单线程程序员无需担心重排序会干扰他们，也无需担心内存可见性问题。
+
+
+
+
+
+
+
