@@ -4,21 +4,21 @@
 
 与程序员密切相关的happens-before规则如下。
 
-* 程序顺序规则：一个线程中的每个操作，happens-before于该线程中的任意后续操作。
+1. 程序顺序规则：一个线程中的每个操作，happens-before于该线程中的任意后续操作。
 
-* 监视器锁规则：对一个锁的解锁，happens-before于随后对这个锁的加锁。
+2. 监视器锁规则：对一个锁的解锁，happens-before于随后对这个锁的加锁。
 
-* volatile变量规则：对一个volatile域的写，happens-before于任意后续对这个volatile域的读。
+3. volatile变量规则：对一个volatile域的写，happens-before于任意后续对这个volatile域的读。
 
-* 线程启动规则：Thread 对象的 start\(\)方法 happen—before 此线程的每一个动作。
+4. 线程启动规则：Thread 对象的 start\(\)方法 happen—before 此线程的每一个动作。
 
-* 线程终止规则：线程的所有操作都 happen—before 对此线程的终止检测，可以通过 Thread.join\(\)方法结束 Thread.isAlive\(\)的返回值等手段检测到线程已经终止执行。
+5. 线程终止规则：线程的所有操作都 happen—before 对此线程的终止检测，可以通过 Thread.join\(\)方法结束 Thread.isAlive\(\)的返回值等手段检测到线程已经终止执行。
 
-* 线程中断规则：对线程 interrupt\(\)方法的调用 happen—before 发生于被中断线程的代码检测到中断时事件的发生。
+6. 线程中断规则：对线程 interrupt\(\)方法的调用 happen—before 发生于被中断线程的代码检测到中断时事件的发生。
 
-* 对象终结规则：一个对象的初始化完成（构造函数执行结束）happen—before 它的 finalize\(\)方法的开始。
+7. 对象终结规则：一个对象的初始化完成（构造函数执行结束）happen—before 它的 finalize\(\)方法的开始。
 
-* 传递性：如果A happens-before B，且B happens-before C，那么A happens-before C。
+8. 传递性：如果A happens-before B，且B happens-before C，那么A happens-before C。
 
 注意　两个操作之间具有happens-before关系，并不意味着前一个操作必须要在后一个操作之前执行！happens-before仅仅要求前一个操作（执行的结果）对后一个操作可见，且前一个操作按顺序排在第二个操作之前（the first is visible to and ordered before the second）。happens-before的定义很微妙，后文会具体说明happens-before为什么要这么定义。
 
@@ -27,8 +27,6 @@ happens-before与JMM的关系如图1所示。
 图1![](/assets/import-happens-before-1.png)
 
 如图1所示，一个happens-before规则对应于一个或多个编译器和处理器重排序规则。对于Java程序员来说，happens-before规则简单易懂，它避免Java程序员为了理解JMM提供的内存可见性保证而去学习复杂的重排序规则以及这些规则的具体实现方法。
-
-
 
 一个常用来分析的例子如下：
 
@@ -57,7 +55,7 @@ public void set(int value){
 
 ```
 x = 1；  
-y = 2; 
+y = 2;
 ```
 
 假设同一个线程执行上面两个操作：操作 A：x=1 和操作 B：y=2。根据 happen—before 规则的第 1 条，操作 A happen—before 操作 B，但是由于编译器的指令重排序（Java 语言规范规定了 JVM 线程内部维持顺序化语义，也就是说只要程序的最终结果等同于它在严格的顺序化环境下的结果，那么指令的执行顺序就可能与代码的顺序不一致。这个过程通过叫做指令的重排序。指令重排序存在的意义在于：JVM 能够根据处理器的特性（CPU 的多级缓存系统、多核处理器等）适当的重新排序机器指令，使机器指令更符合 CPU 的执行特点，最大限度的发挥机器的性能。在没有同步的情况下，编译器、处理器以及运行时等都可能对操作的执行顺序进行一些意想不到的调整）等原因，操作 A 在时间上有可能后于操作 B 被处理器执行，但这并不影响 happen—before 原则的正确性。
@@ -94,7 +92,7 @@ public class LazySingleton {
     public int getSomeField() {  
         return this.someField;                                // (7)  
     }  
-}  
+}
 ```
 
 这里得到单一的 instance 实例是没有问题的，问题的关键在于尽管得到了 Singleton 的正确引用，但是却有可能访问到其成员变量的不正确值。具体来说 Singleton.getInstance\(\).getSomeField\(\) 有可能返回 someField 的默认值 0。如果程序行为正确的话，这应当是不可能发生的事，因为在构造函数里设置的 someField 的值不可能为 0。为也说明这种情况理论上有可能发生，我们只需要说明语句\(1\)和语句\(7\)并不存在 happen-before 关系。
@@ -124,7 +122,7 @@ public class Singleton {
   public static Singleton getSingleton() {   
     return InstanceHolder.instance;   
   }  
-}  
+}
 ```
 
 另外，可以将 instance 声明为 volatile，即
@@ -138,12 +136,6 @@ public class Singleton {
 > 2、把 volatile 写和 volatile 读这两个操作综合起来看，在读线程 B 读一个 volatile 变量后，写线程 A 在写这个 volatile 变量之前，所有可见的共享变量的值都将立即变得对读线程 B 可见。
 >
 > 3、 在 java5 之前对 final 字段的同步语义和其它变量没有什么区别，在 java5 中，final 变量一旦在构造函数中设置完成（前提是在构造函数中没有泄露 this 引用\)，其它线程必定会看到在构造函数中设置的值。而 DCL 的问题正好在于看到对象的成员变量的默认值，因此我们可以将 LazySingleton的someField 变量设置成 final，这样在 java5 中就能够正确运行了。
-
-
-
-
-
-
 
 
 
