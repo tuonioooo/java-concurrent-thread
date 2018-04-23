@@ -1,4 +1,4 @@
-锁内存语义的实现
+# 锁内存语义的实现
 
 本文将借助ReentrantLock的源代码，来分析锁内存语义的具体实现机制。
 
@@ -96,7 +96,7 @@ protected final boolean tryAcquire(int acquires) {
 
 3）Sync:tryRelease\(int releases\)。
 
-在第3步真正开始释放锁，下面是该方法的源代码。
+在第3步真正开始释放锁，下面是该方法的源代码：
 
 ---
 
@@ -119,15 +119,9 @@ protected final boolean tryRelease(int releases) {
 
 从上面的源代码可以看出，在释放锁的最后写volatile变量state。
 
-公平锁在释放锁的最后写volatile变量state，在获取锁时首先读这个volatile变量。根据
+公平锁在释放锁的最后写volatile变量state，在获取锁时首先读这个volatile变量。根据volatile的happens-before规则，释放锁的线程在写volatile变量之前可见的共享变量，在获取锁的线程读取同一个volatile变量后将立即变得对获取锁的线程可见。
 
-volatile的happens-before规则，释放锁的线程在写volatile变量之前可见的共享变量，在获取锁
-
-的线程读取同一个volatile变量后将立即变得对获取锁的线程可见。
-
-现在我们来分析非公平锁的内存语义的实现。非公平锁的释放和公平锁完全一样，所以
-
-这里仅仅分析非公平锁的获取。使用非公平锁时，加锁方法lock\(\)调用轨迹如下。
+现在我们来分析非公平锁的内存语义的实现。非公平锁的释放和公平锁完全一样，所以这里仅仅分析非公平锁的获取。使用非公平锁时，加锁方法lock\(\)调用轨迹如下。
 
 1）ReentrantLock:lock\(\)。
 
@@ -145,27 +139,11 @@ protected final boolean compareAndSetState(int expect, int update) {
 
 ---
 
-该方法以原子操作的方式更新state变量，本文把Java的compareAndSet\(\)方法调用简称为
+该方法以原子操作的方式更新state变量，本文把Java的compareAndSet\(\)方法调用简称为CAS。
 
-CAS。JDK文档对该方法的说明如下：如果当前状态值等于预期值，则以原子方式将同步状态
+JDK文档对该方法的说明如下：如果当前状态值等于预期值，则以原子方式将同步状态设置为给定的更新值。此操作具有volatile读和写的内存语义。这里我们分别从编译器和处理器的角度来分析，CAS如何同时具有volatile读和volatile写的内存语义。前文我们提到过，编译器不会对volatile读与volatile读后面的任意内存操作重排序；编译器不会对volatile写与volatile写前面的任意内存操作重排序。组合这两个条件，意味着为了同时实现volatile读和volatile写的内存语义，编译器不能对CAS与CAS前面和后面的任意内存操
 
-设置为给定的更新值。此操作具有volatile读和写的内存语义。
-
-这里我们分别从编译器和处理器的角度来分析，CAS如何同时具有volatile读和volatile写
-
-的内存语义。
-
-前文我们提到过，编译器不会对volatile读与volatile读后面的任意内存操作重排序；编译
-
-器不会对volatile写与volatile写前面的任意内存操作重排序。组合这两个条件，意味着为了同
-
-时实现volatile读和volatile写的内存语义，编译器不能对CAS与CAS前面和后面的任意内存操
-
-作重排序。
-
-下面我们来分析在常见的intel X86处理器中，CAS是如何同时具有volatile读和volatile写
-
-的内存语义的。
+作重排序。下面我们来分析在常见的intel X86处理器中，CAS是如何同时具有volatile读和volatile写的内存语义的。
 
 下面是sun.misc.Unsafe类的compareAndSwapInt\(\)方法的源代码。
 
@@ -175,11 +153,7 @@ public final native boolean compareAndSwapInt(Object o, long offset,int expected
 
 可以看到，这是一个本地方法调用。这个本地方法在openjdk中依次调用的c++代码为：
 
-unsafe.cpp，atomic.cpp和atomic\_windows\_x86.inline.hpp。这个本地方法的最终实现在openjdk的
-
-如下位置：openjdk-7-fcs-src-b147-27\_jun\_2011\openjdk\hotspot\src\os\_cpu\windows\_x86\vm\atomic\_windows\_x86.inline.hpp（对应于
-
-Windows操作系统，X86处理器）。下面是对应于intel X86处理器的源代码的片段。
+unsafe.cpp，atomic.cpp和atomic\_windows\_x86.inline.hpp。这个本地方法的最终实现在openjdk的如下位置：openjdk-7-fcs-src-b147-27\_jun\_2011\openjdk\hotspot\src\os\_cpu\windows\_x86\vm\atomic\_windows\_x86.inline.hpp（对应于Windows操作系统，X86处理器）。下面是对应于intel X86处理器的源代码的片段。
 
 ```
 inline jint Atomic::cmpxchg (jint exchange_value, volatile jint* dest,
@@ -196,49 +170,24 @@ cmpxchg dword ptr [edx], ecx
 }
 ```
 
-如上面源代码所示，程序会根据当前处理器的类型来决定是否为cmpxchg指令添加lock前
-
-缀。如果程序是在多处理器上运行，就为cmpxchg指令加上lock前缀（Lock Cmpxchg）。反之，如
-
-果程序是在单处理器上运行，就省略lock前缀（单处理器自身会维护单处理器内的顺序一致
-
-性，不需要lock前缀提供的内存屏障效果）。
+如上面源代码所示，程序会根据当前处理器的类型来决定是否为cmpxchg指令添加lock前缀。如果程序是在多处理器上运行，就为cmpxchg指令加上lock前缀（Lock Cmpxchg）。反之，如果程序是在单处理器上运行，就省略lock前缀（单处理器自身会维护单处理器内的顺序一致性，不需要lock前缀提供的内存屏障效果）。
 
 intel的手册对lock前缀的说明如下。
 
-1）确保对内存的读-改-写操作原子执行。在Pentium及Pentium之前的处理器中，带有lock前
-
-缀的指令在执行期间会锁住总线，使得其他处理器暂时无法通过总线访问内存。很显然，这会
-
-带来昂贵的开销。从Pentium 4、Intel Xeon及P6处理器开始，Intel使用缓存锁定（Cache Locking）
-
-来保证指令执行的原子性。缓存锁定将大大降低lock前缀指令的执行开销。
+1）确保对内存的读-改-写操作原子执行。在Pentium及Pentium之前的处理器中，带有lock前缀的指令在执行期间会锁住总线，使得其他处理器暂时无法通过总线访问内存。很显然，这会带来昂贵的开销。从Pentium 4、Intel Xeon及P6处理器开始，Intel使用缓存锁定（Cache Locking）来保证指令执行的原子性。缓存锁定将大大降低lock前缀指令的执行开销。
 
 2）禁止该指令，与之前和之后的读和写指令重排序。
 
-3）把写缓冲区中的所有数据刷新到内存中。
+3）把写缓冲区中的所有数据刷新到内存中。上面的第2点和第3点所具有的内存屏障效果，足以同时实现volatile读和volatile写的内存
 
-上面的第2点和第3点所具有的内存屏障效果，足以同时实现volatile读和volatile写的内存
+语义。经过上面的分析，现在我们终于能明白为什么JDK文档说CAS同时具有volatile读和volatile写的内存语义了。
 
-语义。
+现在对公平锁和非公平锁的内存语义做个总结：
 
-经过上面的分析，现在我们终于能明白为什么JDK文档说CAS同时具有volatile读和
-
-volatile写的内存语义了。
-
-现在对公平锁和非公平锁的内存语义做个总结。
-
-·公平锁和非公平锁释放时，最后都要写一个volatile变量state。
-
-·公平锁获取时，首先会去读volatile变量。
-
-·非公平锁获取时，首先会用CAS更新volatile变量，这个操作同时具有volatile读和volatile
-
-写的内存语义。
-
-从本文对ReentrantLock的分析可以看出，锁释放-获取的内存语义的实现至少有下面两种
-
-方式。
+* 公平锁和非公平锁释放时，最后都要写一个volatile变量state。
+* 公平锁获取时，首先会去读volatile变量。
+* 非公平锁获取时，首先会用CAS更新volatile变量，这个操作同时具有volatile读和volatile写的内存语义。
+* 从本文对ReentrantLock的分析可以看出，锁释放-获取的内存语义的实现至少有下面两种方式。
 
 1）利用volatile变量的写-读所具有的内存语义。
 
