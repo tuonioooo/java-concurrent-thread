@@ -1,5 +1,69 @@
 # happens-before
 
+
+
+happens-before的概念最初由Leslie Lamport在其一篇影响深远的论文（《Time，Clocks and
+
+the Ordering of Events in a Distributed System》）中提出。Leslie Lamport使用happens-before来定义
+
+分布式系统中事件之间的偏序关系（partial ordering）。Leslie Lamport在这篇论文中给出了一个
+
+分布式算法，该算法可以将该偏序关系扩展为某种全序关系。
+
+JSR-133使用happens-before的概念来指定两个操作之间的执行顺序。由于这两个操作可
+
+以在一个线程之内，也可以是在不同线程之间。因此，JMM可以通过happens-before关系向程序
+
+员提供跨线程的内存可见性保证（如果A线程的写操作a与B线程的读操作b之间存在happens-
+
+before关系，尽管a操作和b操作在不同的线程中执行，但JMM向程序员保证a操作将对b操作可
+
+见）。
+
+《JSR-133:Java Memory Model and Thread Specification》对happens-before关系的定义如下。
+
+1）如果一个操作happens-before另一个操作，那么第一个操作的执行结果将对第二个操作
+
+可见，而且第一个操作的执行顺序排在第二个操作之前。
+
+2）两个操作之间存在happens-before关系，并不意味着Java平台的具体实现必须要按照
+
+happens-before关系指定的顺序来执行。如果重排序之后的执行结果，与按happens-before关系
+
+来执行的结果一致，那么这种重排序并不非法（也就是说，JMM允许这种重排序）。
+
+上面的1）是JMM对程序员的承诺。从程序员的角度来说，可以这样理解happens-before关
+
+系：如果A happens-before B，那么Java内存模型将向程序员保证——A操作的结果将对B可见，
+
+且A的执行顺序排在B之前。注意，这只是Java内存模型向程序员做出的保证！
+
+上面的2）是JMM对编译器和处理器重排序的约束原则。正如前面所言，JMM其实是在遵
+
+循一个基本原则：只要不改变程序的执行结果（指的是单线程程序和正确同步的多线程程序），
+
+编译器和处理器怎么优化都行。JMM这么做的原因是：程序员对于这两个操作是否真的被重
+
+排序并不关心，程序员关心的是程序执行时的语义不能被改变（即执行结果不能被改变）。因
+
+此，happens-before关系本质上和as-if-serial语义是一回事。
+
+·as-if-serial语义保证单线程内程序的执行结果不被改变，happens-before关系保证正确同
+
+步的多线程程序的执行结果不被改变。
+
+·as-if-serial语义给编写单线程程序的程序员创造了一个幻境：单线程程序是按程序的顺
+
+序来执行的。happens-before关系给编写正确同步的多线程程序的程序员创造了一个幻境：正
+
+确同步的多线程程序是按happens-before指定的顺序来执行的。
+
+as-if-serial语义和happens-before这么做的目的，都是为了在不改变程序执行结果的前提
+
+下，尽可能地提高程序执行的并行度。
+
+
+
 从JDK 5开始，Java使用新的JSR-133内存模型（除非特别说明，本文针对的都是JSR-133内存模型）。JSR-133使用happens-before的概念来阐述操作之间的内存可见性。在JMM中，如果一个操作执行的结果需要对另一个操作可见，那么这两个操作之间必须要存在happens-before关系。这里提到的两个操作既可以是在一个线程之内，也可以是在不同线程之间。
 
 与程序员密切相关的happens-before规则如下。
