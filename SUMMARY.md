@@ -23,4 +23,5 @@
   * [Executor 框架](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/executor-kuang-jia-yu-xian-cheng-chi.md)
   * [自定义线程池——ThreadPoolExecutor](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/zi-ding-yi-xian-cheng-chi-2014-2014-threadpoolexecutor.md)
   * [线程池工具类](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/xian-cheng-chi-gong-ju-lei.md)
+* [第三章 Java内存模型](di-san-zhang-java-nei-cun-mo-xing.md)
 
