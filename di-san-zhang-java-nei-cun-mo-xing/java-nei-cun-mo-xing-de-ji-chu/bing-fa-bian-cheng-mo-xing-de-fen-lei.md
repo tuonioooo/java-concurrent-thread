@@ -12,5 +12,11 @@
 
 顺序，不一定与内存实际发生的读/写操作顺序一致！为了具体说明，请看下面的表1。
 
-图1![](/assets/import-category.png)
+图1![](/assets/import-category.png)假设处理器A和处理器B按程序的顺序并行执行内存访问，最终可能得到x=y=0的结果。具
+
+体的原因如图2所示。
+
+图2
+
+![](/assets/import-category-2.png)
 
