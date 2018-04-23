@@ -29,5 +29,10 @@
     * [Java内存模型的抽象结构](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu/javanei-cun-mo-xing-de-chou-xiang-jie-gou.md)
     * [从源代码到指令序列的重排序](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu/cong-yuan-dai-ma-dao-zhi-ling-xu-lie-de-zhong-pai-xu.md)
     * [并发编程模型的分类](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu/bing-fa-bian-cheng-mo-xing-de-fen-lei.md)
+  * [重排序](di-san-zhang-java-nei-cun-mo-xing/zhong-pai-xu.md)
+    * [数据依赖性](di-san-zhang-java-nei-cun-mo-xing/shu-ju-yi-lai-xing.md)
+    * [as-if-serial语义](di-san-zhang-java-nei-cun-mo-xing/as-if-serialyu-yi.md)
+    * [程序顺序规则](di-san-zhang-java-nei-cun-mo-xing/cheng-xu-shun-xu-gui-ze.md)
+    * [重排序对多线程的影响](di-san-zhang-java-nei-cun-mo-xing/zhong-pai-xu-dui-duo-xian-cheng-de-ying-xiang.md)
   * [happens-before](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu/happens-beforejian-jie.md)
 
