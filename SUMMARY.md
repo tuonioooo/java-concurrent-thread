@@ -56,7 +56,7 @@
     * 读final域的重排序规则
     * final域为引用类型
     * 为什么final引用不能从构造函数内“溢出”
-    * final语义在处理器中的实现
+    * [final语义在处理器中的实现](di-san-zhang-java-nei-cun-mo-xing/finalyu-nei-cun-yu-yi/finalyu-yi-zai-chu-li-qi-zhong-de-shi-xian.md)
     * [JSR-133为什么要增强final的语义](di-san-zhang-java-nei-cun-mo-xing/finalyu-nei-cun-yu-yi/jsr-133wei-shi-yao-yao-zeng-qiang-final-de-yu-yi.md)
   * [happens-before](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu/happens-beforejian-jie.md)
 
