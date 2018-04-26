@@ -62,7 +62,7 @@
     * [双重检查锁定的由来](di-san-zhang-java-nei-cun-mo-xing/shuang-zhong-jian-cha-suo-ding-yu-yan-chi-chu-shi-hua/shuang-zhong-jian-cha-suo-ding-de-you-lai.md)
     * [问题的根源](di-san-zhang-java-nei-cun-mo-xing/shuang-zhong-jian-cha-suo-ding-yu-yan-chi-chu-shi-hua/wen-ti-de-gen-yuan.md)
     * [基于volatile的解决方案](di-san-zhang-java-nei-cun-mo-xing/shuang-zhong-jian-cha-suo-ding-yu-yan-chi-chu-shi-hua/ji-yu-volatile-de-jie-jue-fang-an.md)
-    * 基于类初始化的解决方案
+    * [基于类初始化的解决方案](di-san-zhang-java-nei-cun-mo-xing/shuang-zhong-jian-cha-suo-ding-yu-yan-chi-chu-shi-hua/ji-yu-lei-chu-shi-hua-de-jie-jue-fang-an.md)
   * [Java内存模型综述](di-san-zhang-java-nei-cun-mo-xing/javanei-cun-mo-xing-zong-shu.md)
     * [处理器的内存模型](di-san-zhang-java-nei-cun-mo-xing/javanei-cun-mo-xing-zong-shu/chu-li-qi-de-nei-cun-mo-xing.md)
     * [各种内存模型之间的关系](di-san-zhang-java-nei-cun-mo-xing/javanei-cun-mo-xing-zong-shu/ge-zhong-nei-cun-mo-xing-zhi-jian-de-guan-xi.md)
