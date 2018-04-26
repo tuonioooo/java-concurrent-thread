@@ -58,6 +58,7 @@
     * [为什么final引用不能从构造函数内“溢出”](di-san-zhang-java-nei-cun-mo-xing/finalyu-nei-cun-yu-yi/wei-shi-yao-final-yin-yong-bu-neng-cong-gou-zao-han-shu-nei-201c-yi-chu-201d.md)
     * [final语义在处理器中的实现](di-san-zhang-java-nei-cun-mo-xing/finalyu-nei-cun-yu-yi/finalyu-yi-zai-chu-li-qi-zhong-de-shi-xian.md)
     * [JSR-133为什么要增强final的语义](di-san-zhang-java-nei-cun-mo-xing/finalyu-nei-cun-yu-yi/jsr-133wei-shi-yao-yao-zeng-qiang-final-de-yu-yi.md)
+  * [happens-before](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu/happens-beforejian-jie.md)
   * [双重检查锁定与延迟初始化](di-san-zhang-java-nei-cun-mo-xing/shuang-zhong-jian-cha-suo-ding-yu-yan-chi-chu-shi-hua.md)
     * [双重检查锁定的由来](di-san-zhang-java-nei-cun-mo-xing/shuang-zhong-jian-cha-suo-ding-yu-yan-chi-chu-shi-hua/shuang-zhong-jian-cha-suo-ding-de-you-lai.md)
     * [问题的根源](di-san-zhang-java-nei-cun-mo-xing/shuang-zhong-jian-cha-suo-ding-yu-yan-chi-chu-shi-hua/wen-ti-de-gen-yuan.md)
@@ -68,5 +69,4 @@
     * [各种内存模型之间的关系](di-san-zhang-java-nei-cun-mo-xing/javanei-cun-mo-xing-zong-shu/ge-zhong-nei-cun-mo-xing-zhi-jian-de-guan-xi.md)
     * [JMM的内存可见性保证](di-san-zhang-java-nei-cun-mo-xing/javanei-cun-mo-xing-zong-shu/jmmde-nei-cun-ke-jian-xing-bao-zheng.md)
     * JSR-133对旧内存模型的修补
-  * [happens-before](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu/happens-beforejian-jie.md)
 
