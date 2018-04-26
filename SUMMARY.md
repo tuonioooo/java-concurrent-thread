@@ -60,7 +60,7 @@
     * [JSR-133为什么要增强final的语义](di-san-zhang-java-nei-cun-mo-xing/finalyu-nei-cun-yu-yi/jsr-133wei-shi-yao-yao-zeng-qiang-final-de-yu-yi.md)
   * [双重检查锁定与延迟初始化](di-san-zhang-java-nei-cun-mo-xing/shuang-zhong-jian-cha-suo-ding-yu-yan-chi-chu-shi-hua.md)
     * [双重检查锁定的由来](di-san-zhang-java-nei-cun-mo-xing/shuang-zhong-jian-cha-suo-ding-yu-yan-chi-chu-shi-hua/shuang-zhong-jian-cha-suo-ding-de-you-lai.md)
-    * 问题的根源
+    * [问题的根源](di-san-zhang-java-nei-cun-mo-xing/shuang-zhong-jian-cha-suo-ding-yu-yan-chi-chu-shi-hua/wen-ti-de-gen-yuan.md)
     * 基于volatile的解决方案
     * 基于类初始化的解决方案
   * [Java内存模型综述](di-san-zhang-java-nei-cun-mo-xing/javanei-cun-mo-xing-zong-shu.md)
