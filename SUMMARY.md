@@ -60,6 +60,6 @@
     * [JSR-133为什么要增强final的语义](di-san-zhang-java-nei-cun-mo-xing/finalyu-nei-cun-yu-yi/jsr-133wei-shi-yao-yao-zeng-qiang-final-de-yu-yi.md)
   * [Java内存模型综述](di-san-zhang-java-nei-cun-mo-xing/javanei-cun-mo-xing-zong-shu.md)
     * [处理器的内存模型](di-san-zhang-java-nei-cun-mo-xing/javanei-cun-mo-xing-zong-shu/chu-li-qi-de-nei-cun-mo-xing.md)
-    * 各种内存模型之间的关系
+    * [各种内存模型之间的关系](di-san-zhang-java-nei-cun-mo-xing/javanei-cun-mo-xing-zong-shu/ge-zhong-nei-cun-mo-xing-zhi-jian-de-guan-xi.md)
   * [happens-before](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu/happens-beforejian-jie.md)
 
