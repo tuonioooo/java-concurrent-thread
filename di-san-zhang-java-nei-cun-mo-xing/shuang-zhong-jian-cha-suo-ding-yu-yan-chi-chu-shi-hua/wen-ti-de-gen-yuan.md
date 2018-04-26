@@ -17,11 +17,47 @@
 
 
 
-为了更好地理解intra-thread semantics，请看如图3-37所示的示意图（假设一个线程A在构
+为了更好地理解intra-thread semantics，请看如图3-37所示的示意图（假设一个线程A在构造对象后，立即访问这个对象）。
 
-造对象后，立即访问这个对象）。
+如图3-37所示，只要保证2排在4的前面，即使2和3之间重排序了，也不会违反intra-threadsemantics。
 
-如图3-37所示，只要保证2排在4的前面，即使2和3之间重排序了，也不会违反intra-thread
+![](/assets/import-3-37.png)             
 
-semantics。
+
+
+                                                                        图3-37　线程执行时序图
+
+
+
+![](/assets/import-3-38.png)
+
+
+
+                                                                          图3-38　多线程执行时序图
+
+由于单线程内要遵守intra-thread semantics，从而能保证A线程的执行结果不会被改变。但
+
+是，当线程A和B按图3-38的时序执行时，B线程将看到一个还没有被初始化的对象。
+
+回到本文的主题，DoubleCheckedLocking示例代码的第7行（instance=new Singleton\(\);）如果
+
+发生重排序，另一个并发执行的线程B就有可能在第4行判断instance不为null。线程B接下来将
+
+访问instance所引用的对象，但此时这个对象可能还没有被A线程初始化！表3-6是这个场景的
+
+具体执行时序。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
