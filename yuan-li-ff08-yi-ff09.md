@@ -1,9 +1,5 @@
 # HashMap讲解一 {#hashmap详讲}
 
-
-
-下面就根据这些问题讲解一下HashMap
-
 ## hashing\(散列法或哈希法\)的概念 {#hashing散列法或哈希法的概念}
 
 可以自行百度
