@@ -1,8 +1,8 @@
 # HashMap原理（面试篇）
 
-
-
 HashMap的工作原理是近年来常见的Java面试题。几乎每个Java程序员都知道HashMap，都知道哪里要用HashMap，知道[Hashtable和HashMap之间的区别](http://www.importnew.com/7010.html)，那么为何这道面试题如此特殊呢？是因为这道题考察的深度很深。这题经常出现在高级或中高级面试中。投资银行更喜欢问这个问题，甚至会要求你实现HashMap来考察你的编程能力。ConcurrentHashMap和其它同步集合的引入让这道题变得更加复杂。让我们开始探索的旅程吧！
+
+![](/assets/import-4-1.png)
 
 ### 先来些简单的问题
 
