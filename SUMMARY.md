@@ -75,7 +75,7 @@
 * 第六章 Java并发容器和框架
   * [ConcurrentHashMap的实现原理与使用](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong.md)
     * [为什么要使用ConcurrentHashMap](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/wei-shi-yao-yao-shi-yong-concurrenthashmap.md)
-    * ConcurrentHashMap的结构
+    * [ConcurrentHashMap的结构](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/concurrenthashmapde-jie-gou.md)
     * ConcurrentHashMap的初始化
     * 定位Segment
     * ConcurrentHashMap的操作
