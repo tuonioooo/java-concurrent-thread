@@ -1,4 +1,4 @@
-ConcurrentHashMap的操作
+# ConcurrentHashMap的操作
 
 本节介绍ConcurrentHashMap的3种操作——get操作、put操作和size操作。
 
@@ -8,13 +8,15 @@ Segment的get操作实现非常简单和高效。先经过一次再散列，然�
 
 列运算定位到Segment，再通过散列算法定位到元素，代码如下。
 
-public V get\(Object key\) {
+```
+public V get(Object key) {
 
-int hash = hash\(key.hashCode\(\)\);
+        int hash = hash(key.hashCode());
 
-return segmentFor\(hash\).get\(key, hash\);
+        return segmentFor(hash).get(key, hash);
 
-}
+    }
+```
 
 get操作的高效之处在于整个get过程不需要加锁，除非读到的值是空才会加锁重读。我们
 
