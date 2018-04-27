@@ -1,3 +1,7 @@
+# HashMap原理（面试篇）
+
+
+
 HashMap的工作原理是近年来常见的Java面试题。几乎每个Java程序员都知道HashMap，都知道哪里要用HashMap，知道[Hashtable和HashMap之间的区别](http://www.importnew.com/7010.html)，那么为何这道面试题如此特殊呢？是因为这道题考察的深度很深。这题经常出现在高级或中高级面试中。投资银行更喜欢问这个问题，甚至会要求你实现HashMap来考察你的编程能力。ConcurrentHashMap和其它同步集合的引入让这道题变得更加复杂。让我们开始探索的旅程吧！
 
 ### 先来些简单的问题
@@ -29,7 +33,7 @@ HashMap的工作原理是近年来常见的Java面试题。几乎每个Java程�
 热心的读者贡献了更多的关于HashMap的问题：
 
 1. **为什么String, Interger这样的wrapper类适合作为键？**
-    String, Interger这样的wrapper类作为HashMap的键是再适合不过了，而且String最为常用。因为String是不可变的，也是final的，而且已经重写了equals\(\)和hashCode\(\)方法了。其他的wrapper类也有这个特点。不可变性是必要的，因为为了要计算hashCode\(\)，就要防止键值改变，如果键值在放入时和获取时返回不同的hashcode的话，那么就不能从HashMap中找到你想要的对象。不可变性还有其他的优点如线程安全。如果你可以仅仅通过将某个field声明成final就能保证hashCode是不变的，那么请这么做吧。因为获取对象的时候要用到equals\(\)和hashCode\(\)方法，那么键对象正确的重写这两个方法是非常重要的。如果两个不相等的对象返回不同的hashcode的话，那么碰撞的几率就会小些，这样就能提高HashMap的性能。
+    String, Interger这样的wrapper类作为HashMap的键是再适合不过了，而且String最为常用。因为String是不可变的，也是final的，而且已经重写了equals\(\)和hashCode\(\)方法了。其他的wrapper类也有这个特点。不可变性是必要的，因为为了要计算hashCode\(\)，就要防止键值改变，如果键值在放入时和获取时返回不同的hashcode的话，那么就不能从HashMap中找到你想要的对象。不可变性还有其他的优点如线程安全。如果你可以仅仅通过将某个field声明成final就能保证hashCode是不变的，那么请这么做吧。因为获取对象的时候要用到equals\(\)和hashCode\(\)方法，那么键对象正确的重写这两个方法是非常重要的。如果两个不相等的对象返回不同的hashcode的话，那么碰撞的几率就会小些，这样就能提高HashMap的性能。
 2. **我们可以使用自定义的对象作为键吗？**
    这是前一个问题的延伸。当然你可能使用任何对象作为键，只要它遵守了equals\(\)和hashCode\(\)方法的定义规则，并且当对象插入到Map中之后将不会再改变了。如果这个自定义对象时不可变的，那么它已经满足了作为键的条件，因为当它创建之后就已经不能改变了。
 3. **我们可以使用CocurrentHashMap来代替Hashtable吗？**
