@@ -78,5 +78,5 @@
     * [ConcurrentHashMap的结构](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/concurrenthashmapde-jie-gou.md)
     * [ConcurrentHashMap的初始化](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/concurrenthashmapde-chu-shi-hua.md)
     * [定位Segment](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/ding-wei-segment.md)
-    * ConcurrentHashMap的操作
+    * [ConcurrentHashMap的操作](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/concurrenthashmapde-cao-zuo.md)
 
