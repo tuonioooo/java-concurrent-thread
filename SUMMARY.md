@@ -77,6 +77,6 @@
     * [为什么要使用ConcurrentHashMap](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/wei-shi-yao-yao-shi-yong-concurrenthashmap.md)
     * [ConcurrentHashMap的结构](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/concurrenthashmapde-jie-gou.md)
     * [ConcurrentHashMap的初始化](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/concurrenthashmapde-chu-shi-hua.md)
-    * 定位Segment
+    * [定位Segment](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/ding-wei-segment.md)
     * ConcurrentHashMap的操作
 
