@@ -70,6 +70,7 @@
     * [JMM的内存可见性保证](di-san-zhang-java-nei-cun-mo-xing/javanei-cun-mo-xing-zong-shu/jmmde-nei-cun-ke-jian-xing-bao-zheng.md)
     * JSR-133对旧内存模型的修补
 * [HashMap实现原理](hashmapshi-xian-yuan-li.md)
-  * [原理\(一\)](yuan-li-ff08-yi-ff09.md)
-  * 原理\(二\)
+  * [讲解\(一\)](yuan-li-ff08-yi-ff09.md)
+  * [讲解\(二\)](yuan-740628-4e8c29.md)
+  * [HashMap原理\(面试篇\)](hashmapde-gong-zuo-yuan-740628-mian-shi-7bc729.md)
 
