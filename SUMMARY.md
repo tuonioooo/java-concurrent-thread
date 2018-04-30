@@ -73,11 +73,14 @@
 * [HashMap实现原理](hashmapshi-xian-yuan-li.md)
   * [讲解\(一\)](yuan-li-ff08-yi-ff09.md)
   * [HashMap原理\(面试篇\)](hashmapde-gong-zuo-yuan-740628-mian-shi-7bc729.md)
-* 第六章 Java并发容器和框架
+* [第六章 Java并发容器和框架](di-liu-zhang-java-bing-fa-rong-qi-he-kuang-jia.md)
   * [ConcurrentHashMap的实现原理与使用](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong.md)
     * [为什么要使用ConcurrentHashMap](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/wei-shi-yao-yao-shi-yong-concurrenthashmap.md)
     * [ConcurrentHashMap的结构](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/concurrenthashmapde-jie-gou.md)
     * [ConcurrentHashMap的初始化](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/concurrenthashmapde-chu-shi-hua.md)
     * [定位Segment](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/ding-wei-segment.md)
     * [ConcurrentHashMap的操作](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/concurrenthashmapde-cao-zuo.md)
+  * [ConcurrentLinkedQueue](concurrentlinkedqueue.md)
+  * Java中的阻塞队列
+  * Fork/Join框架
 
