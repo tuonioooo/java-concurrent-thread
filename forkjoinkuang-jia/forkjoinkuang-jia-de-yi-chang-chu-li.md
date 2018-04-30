@@ -9,7 +9,7 @@ ForkJoinTask在执行的时候可能会抛出异常，但是我们没办法在�
 ```
 if(task.isCompletedAbnormally())
 {
-System.out.println(task.getException());
+    System.out.println(task.getException());
 }
 ```
 
