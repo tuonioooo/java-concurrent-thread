@@ -81,6 +81,9 @@
     * [定位Segment](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/ding-wei-segment.md)
     * [ConcurrentHashMap的操作](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/concurrenthashmapde-cao-zuo.md)
   * [ConcurrentLinkedQueue](concurrentlinkedqueue.md)
+    * [ConcurrentLinkedQueue的结构](concurrentlinkedqueue/concurrentlinkedqueuede-jie-gou.md)
+    * 入队列
+    * 出队列
   * Java中的阻塞队列
   * Fork/Join框架
 
