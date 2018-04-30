@@ -12,5 +12,5 @@ ConcurrentLinkedQueue由head节点和tail节点组成，每个节点（Node）�
 
 张链表结构的队列。默认情况下head节点存储的元素为空，tail节点等于head节点。
 
-private transient volatile Node&lt;E&gt; tail = head;
+`private transient volatile Node<E> tail = head;`
 
