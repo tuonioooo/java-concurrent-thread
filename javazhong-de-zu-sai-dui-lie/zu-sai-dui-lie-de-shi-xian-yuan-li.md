@@ -1,4 +1,4 @@
-阻塞队列的实现原理
+# 阻塞队列的实现原理
 
 如果队列是空的，消费者会一直等待，当生产者添加元素时，消费者是如何知道当前队列
 
@@ -153,23 +153,18 @@ park方法在Windows下则是使用WaitForSingleObject实现的。想知道pthre
 
 阻塞的生产者线程看到这点，如下。
 
-"main" prio=5 tid=0x00007fc83c000000 nid=0x10164e000 waiting on condition \[0x000000010164d000\]
-
-java.lang.Thread.State: WAITING \(parking\)
-
-at sun.misc.Unsafe.park\(Native Method\)
-
-- parking to wait for &lt;0x0000000140559fe8&gt; \(a java.util.concurrent.locks.
-
-AbstractQueuedSynchronizer$ConditionObject\)
-
-at java.util.concurrent.locks.LockSupport.park\(LockSupport.java:186\)
-
+```
+"main" prio=5 tid=0x00007fc83c000000 nid=0x10164e000 waiting on condition [0x000000010164d000]
+java.lang.Thread.State: WAITING (parking)
+at sun.misc.Unsafe.park(Native Method)
+parking to wait for <0x0000000140559fe8> (a java.util.concurrent.locks.
+AbstractQueuedSynchronizer$ConditionObject)
+at java.util.concurrent.locks.LockSupport.park(LockSupport.java:186)
 at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.
+await(AbstractQueuedSynchronizer.java:2043)
+at java.util.concurrent.ArrayBlockingQueue.put(ArrayBlockingQueue.java:324)
+at blockingqueue.ArrayBlockingQueueTest.main(ArrayBlockingQueueTest.java
+```
 
-await\(AbstractQueuedSynchronizer.java:2043\)
 
-at java.util.concurrent.ArrayBlockingQueue.put\(ArrayBlockingQueue.java:324\)
-
-at blockingqueue.ArrayBlockingQueueTest.main\(ArrayBlockingQueueTest.jav
 
