@@ -80,7 +80,7 @@
   * [定位Segment](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/ding-wei-segment.md)
   * [ConcurrentHashMap的操作](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/concurrenthashmapde-cao-zuo.md)
 * [Java中的阻塞队列](javazhong-de-zu-sai-dui-lie.md)
-  * 什么是阻塞队列
+  * [什么是阻塞队列](javazhong-de-zu-sai-dui-lie/shi-yao-shi-zu-sai-dui-lie.md)
   * Java里的阻塞队列
   * 阻塞队列的实现原理
 * [Fork/Join框架](forkjoinkuang-jia.md)
