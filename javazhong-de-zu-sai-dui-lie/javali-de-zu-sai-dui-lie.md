@@ -1,4 +1,4 @@
-Java里的阻塞队列
+# Java里的阻塞队列
 
 JDK 7提供了7个阻塞队列，如下。
 
@@ -32,25 +32,20 @@ ArrayBlockingQueue是一个用数组实现的有界阻塞队列。此队列按�
 
 列。
 
-ArrayBlockingQueue fairQueue = new ArrayBlockingQueue\(1000,true\);
+`ArrayBlockingQueue fairQueue = new ArrayBlockingQueue(1000,true);`
 
 访问者的公平性是使用可重入锁实现的，代码如下。
 
-public ArrayBlockingQueue\(int capacity, boolean fair\) {
-
-if \(capacity &lt;= 0\)
-
-throw new IllegalArgumentException\(\);
-
-this.items = new Object\[capacity\];
-
-lock = new ReentrantLock\(fair\);
-
-notEmpty = lock.newCondition\(\);
-
-notFull = lock.newCondition\(\);
-
+```
+public ArrayBlockingQueue(int capacity, boolean fair) {
+if (capacity <= 0)
+throw new IllegalArgumentException();
+this.items = new Object[capacity];
+lock = new ReentrantLock(fair);
+notEmpty = lock.newCondition();
+notFull = lock.newCondition();
 }
+```
 
 2.LinkedBlockingQueue
 
@@ -96,31 +91,26 @@ DelayQueue队列的元素必须实现Delayed接口。我们可以参考Scheduled
 
 以使用，使用sequenceNumber来标识元素在队列中的先后顺序。代码如下。
 
-private static final AtomicLong sequencer = new AtomicLong\(0\);
-
-ScheduledFutureTask\(Runnable r, V result, long ns, long period\) {
-
-ScheduledFutureTask\(Runnable r, V result, long ns, long period\) {
-
-super\(r, result\);
-
-this.time = ns;
-
-this.period = period;
-
-this.sequenceNumber = sequencer.getAndIncrement\(\);
-
+```
+private static final AtomicLong sequencer = new AtomicLong(0);
+    ScheduledFutureTask(Runnable r, V result, long ns, long period) {
+    ScheduledFutureTask(Runnable r, V result, long ns, long period) {
+        super(r, result);
+        this.time = ns;
+        this.period = period;
+        this.sequenceNumber = sequencer.getAndIncrement();
 }
+```
 
 第二步：实现getDelay方法，该方法返回当前元素还需要延时多长时间，单位是纳秒，代码
 
 如下。
 
-public long getDelay\(TimeUnit unit\) {
-
-return unit.convert\(time - now\(\), TimeUnit.NANOSECONDS\);
-
+```
+public long getDelay(TimeUnit unit) {
+    return unit.convert(time - now(), TimeUnit.NANOSECONDS);
 }
+```
 
 通过构造函数可以看出延迟时间参数ns的单位是纳秒，自己设计的时候最好使用纳秒，因
 
@@ -132,43 +122,26 @@ return unit.convert\(time - now\(\), TimeUnit.NANOSECONDS\);
 
 尾。实现代码如下。
 
-public int compareTo\(Delayed other\) {
-
-if \(other == this\)　　// compare zero ONLY if same object
-
-return 0;
-
-if \(other instanceof ScheduledFutureTask\) {
-
-ScheduledFutureTask&lt;&gt; x = \(ScheduledFutureTask&lt;&gt;\)other;
-
-long diff = time - x.time;
-
-if \(diff &lt; 0\)
-
-return -1;
-
-else if \(diff &gt; 0\)
-
-return 1;
-
-else if \(sequenceNumber &lt; x.sequenceNumber\)
-
-return -1;
-
-else
-
-return 1;
-
-}
-
-long d = \(getDelay\(TimeUnit.NANOSECONDS\) -
-
-other.getDelay\(TimeUnit.NANOSECONDS\)\);
-
-return \(d == 0\) 0 : \(\(d &lt; 0\) -1 : 1\);
-
-}
+```
+public int compareTo(Delayed other) {
+    if (other == this)　　// compare zero ONLY if same object
+    return 0;
+    if (other instanceof ScheduledFutureTask) {
+    ScheduledFutureTask<> x = (ScheduledFutureTask<>)other;
+    long diff = time - x.time;
+    if (diff < 0)
+    return -1;
+    else if (diff > 0)
+    return 1;
+    else if (sequenceNumber < x.sequenceNumber)
+    return -1;
+    else
+    return 1;
+    }
+    long d = (getDelay(TimeUnit.NANOSECONDS) -other.getDelay(TimeUnit.NANOSECONDS));
+    return (d == 0) 0 : ((d < 0) -1 : 1);
+    }
+```
 
 （2）如何实现延时阻塞队列
 
@@ -176,35 +149,23 @@ return \(d == 0\) 0 : \(\(d &lt; 0\) -1 : 1\);
 
 间，就阻塞当前线程。
 
-long delay = first.getDelay\(TimeUnit.NANOSECONDS\);
-
-if \(delay &lt;= 0\)
-
-return q.poll\(\);
-
-else if \(leader != null\)
-
-available.await\(\);
-
+```
+long delay = first.getDelay(TimeUnit.NANOSECONDS);
+if (delay <= 0)
+return q.poll();
+else if (leader != null)
+available.await();
 else {
-
-Thread thisThread = Thread.currentThread\(\);
-
+Thread thisThread = Thread.currentThread();
 leader = thisThread;
-
 try {
-
-available.awaitNanos\(delay\);
-
+available.awaitNanos(delay);
 } finally {
-
-if \(leader == thisThread\)
-
+if (leader == thisThread)
 leader = null;
-
 }
-
 }
+```
 
 代码中的变量leader是一个等待获取队列头部元素的线程。如果leader不等于空，表示已
 
@@ -226,11 +187,11 @@ SynchronousQueue是一个不存储元素的阻塞队列。每一个put操作必�
 
 顺序访问队列。
 
-public SynchronousQueue\(boolean fair\) {
-
-transferer = fair new TransferQueue\(\) : new TransferStack\(\);
-
+```
+public SynchronousQueue(boolean fair) {
+    transferer = fair new TransferQueue() : new TransferStack();
 }
+```
 
 SynchronousQueue可以看成是一个传球手，负责把生产者线程处理的数据直接传递给消费
 
