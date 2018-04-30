@@ -1,7 +1,7 @@
 # Summary
 
 * [前言](README.md)
-* [第一章.Java多线程基础](di-yi-7ae0-java-duo-xian-cheng-ji-chu.md)
+* [Java多线程基础](di-yi-7ae0-java-duo-xian-cheng-ji-chu.md)
   * [线程简介](di-yi-7ae0-java-duo-xian-cheng-ji-chu/11-xian-cheng-jian-jie.md)
     * [什么是线程](di-yi-7ae0-java-duo-xian-cheng-ji-chu/11-xian-cheng-jian-jie/shi-yao-shi-xian-cheng.md)
     * [为什么要使用多线程](di-yi-7ae0-java-duo-xian-cheng-ji-chu/11-xian-cheng-jian-jie/wei-shi-yao-yao-shi-yong-duo-xian-cheng.md)
@@ -20,11 +20,11 @@
   * [ThreadLocal关键字](di-yi-7ae0-java-duo-xian-cheng-ji-chu/threadlocalguan-jian-zi.md)
   * [volatile、ThreadLocal、synchronized3个关键字区别](di-yi-7ae0-java-duo-xian-cheng-ji-chu/volatilethreadlocalsynchronized3ge-guan-jian-zi-qu-bie.md)
   * [多线程环境下，局部变量和全局变量都会共享吗？](di-yi-7ae0-java-duo-xian-cheng-ji-chu/duo-xian-cheng-huan-jing-xia-ff0c-ju-bu-bian-liang-he-quan-ju-bian-liang-du-hui-gong-xiang-ma-ff1f.md)
-* [第二章 Java线程池与框架](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia.md)
+* [Java线程池与框架](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia.md)
   * [Executor 框架](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/executor-kuang-jia-yu-xian-cheng-chi.md)
   * [自定义线程池——ThreadPoolExecutor](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/zi-ding-yi-xian-cheng-chi-2014-2014-threadpoolexecutor.md)
   * [线程池工具类](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/xian-cheng-chi-gong-ju-lei.md)
-* [第三章 Java内存模型](di-san-zhang-java-nei-cun-mo-xing.md)
+* [Java内存模型](di-san-zhang-java-nei-cun-mo-xing.md)
   * [Java 内存模型的基础](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu.md)
     * [并发编程模型的两个关键问题](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu/bing-fa-bian-cheng-mo-xing-de-liang-ge-guan-jian-wen-ti.md)
     * [Java内存模型的抽象结构](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu/javanei-cun-mo-xing-de-chou-xiang-jie-gou.md)
