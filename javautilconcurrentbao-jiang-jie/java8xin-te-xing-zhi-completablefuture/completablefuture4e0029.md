@@ -74,7 +74,7 @@ completableFuture实现了CompletionStage接口，如下：
         BiConsumer<? super T, ? super U> action, Executor executor) {
         return biAcceptStage(screenExecutor(executor), other, action);
     }
-    
+
     public CompletableFuture<Void> runAfterBoth(CompletionStage<?> other,
                                                 Runnable action) {
         return biRunStage(null, other, action);
@@ -479,7 +479,7 @@ public static void runAfterBoth(){
             }
         }
     }
-    
+
     //hello world
     //线程任务都已经完成
 ```
@@ -559,15 +559,82 @@ public static void exceptionally() {
         }).join();
         System.out.println(result);
     }
-    
+
     //java.lang.RuntimeException: 测试一下异常情况
     //hello world
 ```
 
-* whenComplete、whenCompleteAsync  当运行完成时，对结果的记录。这里的完成时有两种情况，一种是正常执行，返回值。另外一种是遇到异常抛出造成程序的中断。这里为什么要说成记录，因为这几个方法都会返回CompletableFuture，当Action执行完毕后它的结果返回原始的CompletableFuture的计算结果或者返回异常。所以不会对结果产生任何的作用。  示例如下：
+* whenComplete、whenCompleteAsync  当运行完成时，对结果的记录。这里的完成时有两种情况，一种是正常执行，返回值。另外一种是遇到异常抛出造成程序的中断。这里为什么要说成记录，因为这几个方法都会返回CompletableFuture，当Action执行完毕后它的结果返回原始的CompletableFuture的计算结果或者返回异常。所以不会对结果产生任何的作用。
+  示例如下：
 
 ```
+public static void whenComplete() {
+        String result = CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (1 == 1) {
+                throw new RuntimeException("测试一下异常情况");
+            }
+            return "s1";
+        }).whenComplete((s, t) -> {
+            System.out.println("s：" + s);
+            System.out.println(t.getMessage());
+        }).exceptionally(e -> {
+            System.out.println(e.getMessage());
+            return "hello world";
+        }).join();
+        System.out.println(result);
+    }
+```
 
+这里也可以看出，如果使用了exceptionally，就会对最终的结果产生影响，它没有口子返回如果没有异常时的正确的值，这也就引出下面我们要介绍的handle。
+
+* handle、handleAsync 运行完成时，对结果的处理。这里的完成时有两种情况，一种是正常执行，返回值。另外一种是遇到异常抛出造成程序的中断示例如下：
+
+```
+public static void handle() {
+        //出现异常时
+        String result = CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //出现异常
+            if (1 == 1) {
+                throw new RuntimeException("测试一下异常情况");
+            }
+            return "s1";
+        }).handle((s, t) -> {
+            if (t != null) {
+                return "hello world";
+            }
+            return s;
+        }).join();
+        System.out.println(result);
+    }
+    
+    
+public static void handle1() {
+    //出现异常时
+    String result = CompletableFuture.supplyAsync(() -> {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "s1";
+    }).handle((s, t) -> {
+        if (t != null) {
+            return "hello world";
+        }
+        return s;
+    }).join();
+    System.out.println(result);
+}
 ```
 
 
