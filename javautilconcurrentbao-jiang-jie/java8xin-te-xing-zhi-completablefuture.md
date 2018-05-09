@@ -18,3 +18,11 @@ CompletableFuture提供更多的特性：
 
 5.异步任务完成响应事件。
 
+
+
+参考：
+
+[https://www.jianshu.com/p/6f3ee90ab7d3](https://www.jianshu.com/p/6f3ee90ab7d3)
+
+[https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html?is-external=true](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html?is-external=true)
+
