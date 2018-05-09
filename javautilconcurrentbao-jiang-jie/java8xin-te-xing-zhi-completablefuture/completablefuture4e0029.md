@@ -38,6 +38,24 @@ completableFuture实现了CompletionStage接口，如下：
     public CompletableFuture<Void> thenRunAsync(Runnable action, Executor executor) {
         return uniRunStage(screenExecutor(executor), action);
     }
+    
+    public <U,V> CompletableFuture<V> thenCombine(
+        CompletionStage<? extends U> other,
+        BiFunction<? super T,? super U,? extends V> fn) {
+        return biApplyStage(null, other, fn);
+    }
+
+    public <U,V> CompletableFuture<V> thenCombineAsync(
+        CompletionStage<? extends U> other,
+        BiFunction<? super T,? super U,? extends V> fn) {
+        return biApplyStage(asyncPool, other, fn);
+    }
+
+    public <U,V> CompletableFuture<V> thenCombineAsync(
+        CompletionStage<? extends U> other,
+        BiFunction<? super T,? super U,? extends V> fn, Executor executor) {
+        return biApplyStage(screenExecutor(executor), other, fn);
+    }
 ```
 
 首先说明一下已Async结尾的方法都是可以异步执行的，如果指定了线程池，会在指定的线程池中执行，如果没有指定，默认会在ForkJoinPool.commonPool\(\)中执行，下文中将会有好多类似的，都不详细解释了。关键的入参只有一个Function，它是函数式接口，所以使用Lambda表示起来会更加优雅。它的入参是上一个阶段计算后的结果，返回值是经过转化后结果。
@@ -220,6 +238,55 @@ public static void thenRun(){
             }
         }
 
+    }
+```
+
+* thenCombine、thenCombineAsync  它需要原来的处理返回值，利用这两个返回值，进行转换后返回指定类型的值。
+
+```
+public static void thenCombine() {
+        String result = CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(2000);
+                System.out.println("线程名称：" + Thread.currentThread().getName());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "hello";
+        }).thenCombine(CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("线程名称：" + Thread.currentThread().getName());
+            return "world";
+        }), (s1, s2) -> s1 + " " + s2).join();
+        System.out.println(result);
+    }
+
+
+    public static void thenCombineAsync() {
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        String result = CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("线程名称：" + Thread.currentThread().getName());
+            return "hello";
+        }).thenCombineAsync(CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("线程名称：" + Thread.currentThread().getName());
+            return "world";
+        }), (s1, s2) -> s1 + " " + s2, executor).join();
+        executor.shutdown();
+        System.out.println(result);
     }
 ```
 
