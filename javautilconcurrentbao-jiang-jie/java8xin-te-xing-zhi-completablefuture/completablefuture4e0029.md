@@ -58,7 +58,7 @@ public static void init(){
     }
 ```
 
-* thenAccpet、thenAcceptAsync 是针对结果进行消耗\(输出\)，因为他的入参是Consumer，有入参无返回值 示例如下：
+* thenAccpet、thenAcceptAsync 是针对结果进行消耗，因为他的入参是Consumer，有入参无返回值 示例如下：
 
 ```
     public static void thenAccept(){
@@ -123,14 +123,6 @@ public static void init(){
         //主线程名：main
     }
 ```
-
-
-
-
-
-
-
-
 
 
 
