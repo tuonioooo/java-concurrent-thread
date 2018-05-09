@@ -91,5 +91,13 @@ public static void init(){
     }
 ```
 
+* thenApply、thenApplyAsync 是针对结果进行转换，有返回值，他的入参是Function，可以使用lambda表达式，示例如下：
+
+```
+
+```
+
+
+
 
 
