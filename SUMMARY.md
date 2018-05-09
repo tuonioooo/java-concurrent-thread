@@ -93,6 +93,6 @@
 * [java.util.concurrent包讲解](javautilconcurrentbao-jiang-jie.md)
   * [线程安全AtomicInteger的讲解](javautilconcurrentbao-jiang-jie/xian-cheng-an-quan-atomicinteger-de-jiang-jie.md)
   * [CompletableFuture讲解](javautilconcurrentbao-jiang-jie/java8xin-te-xing-zhi-completablefuture.md)
-    * [CompletableFuture\(Ⅰ\)](javautilconcurrentbao-jiang-jie/java8xin-te-xing-zhi-completablefuture/completablefuture4e0029.md)
+    * [CompletableFuture接口详解](javautilconcurrentbao-jiang-jie/java8xin-te-xing-zhi-completablefuture/completablefuture4e0029.md)
     * [CompletableFuture与parallelStream\(\)性能差异](javautilconcurrentbao-jiang-jie/java8xin-te-xing-zhi-completablefuture/completablefutureyu-parallelstream-xing-neng-cha-yi.md)
 
