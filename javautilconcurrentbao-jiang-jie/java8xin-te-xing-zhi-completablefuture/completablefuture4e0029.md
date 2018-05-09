@@ -135,7 +135,93 @@ public static void init(){
         //主线程名：main
 ```
 
-* thenRun、thenRunAsync对上一步的计算结果不关心，执行下一个操作，他的入参是Runnable,表示当得到上一步的结果时的操作，无返回值，示例如下：
+* thenRun、thenRunAsync对上一步的计算结果不关心，执行下一个操作，他的入参是Runnable,无返回值，示例如下：
+
+```
+public static void thenRun(){
+        IntStream stream = IntStream.of(10,9,8,7,6,5,4,3,2,1);
+        Runnable runnable = ()->{
+            stream.forEach(i->{
+                try {
+                    Thread.sleep(1000);
+                    System.out.format("线程名称：%s, 倒计时：%d\n", Thread.currentThread().getName(), i);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        };
+
+        CompletableFuture.supplyAsync(()->{
+            try {
+                Thread.sleep(3000);
+                System.out.format("线程名称：%s\n" , Thread.currentThread().getName());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "hello";
+        }).thenRun(runnable);
+        while (true){}
+
+    }
+
+    public static void thenRunAsync(){
+        IntStream stream = IntStream.of(10,9,8,7,6,5,4,3,2,1);
+        CompletableFuture.supplyAsync(()->{
+            try {
+                Thread.sleep(3000);
+                System.out.format("线程名称：%s\n" , Thread.currentThread().getName());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "hello";
+        }).thenRunAsync(()->{
+            stream.forEach(i->{
+                try {
+                    Thread.sleep(1000);
+                    System.out.format("线程名称：%s, 倒计时：%d\n", Thread.currentThread().getName(), i);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        });
+        while (true){}
+
+    }
+
+    public static void thenRunAsyncOfExecutor(){
+        ExecutorService executor = Executors.newCachedThreadPool();
+        IntStream stream = IntStream.of(10,9,8,7,6,5,4,3,2,1);
+        CompletableFuture.supplyAsync(()->{
+            try {
+                Thread.sleep(3000);
+                System.out.format("线程名称：%s\n" , Thread.currentThread().getName());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "hello";
+        }).thenRunAsync(()->{
+            stream.forEach(i->{
+                try {
+                    Thread.sleep(1000);
+                    System.out.format("线程名称：%s, 倒计时：%d\n", Thread.currentThread().getName(), i);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            executor.shutdown();
+
+        }, executor);
+
+        while(true){
+            if(executor.isTerminated()){
+                System.out.println("线程任务都已经完成");
+                break;
+            }
+        }
+
+    }
+```
 
 
 
