@@ -616,10 +616,10 @@ public static void handle() {
         }).join();
         System.out.println(result);
     }
-    
-    
+
+
 public static void handle1() {
-    //出现异常时
+    //未出现异常时
     String result = CompletableFuture.supplyAsync(() -> {
         try {
             Thread.sleep(3000);
