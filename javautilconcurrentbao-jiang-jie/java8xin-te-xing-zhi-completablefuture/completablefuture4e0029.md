@@ -94,10 +94,35 @@ public static void init(){
 * thenApply、thenApplyAsync 是针对结果进行转换，有返回值，他的入参是Function，可以使用lambda表达式，示例如下：
 
 ```
+   public static void thenApply(){
+        String result = CompletableFuture.supplyAsync(()->"hello")
+                .thenApply(s -> s + " world")
+                .thenApply(v-> v + " done").join();
+        System.out.println("result = " + result);
+        //hello world done
+    }
 
+    public static void thenApplyAsync(){
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        String result = CompletableFuture.supplyAsync(()->"hello")
+                .thenApplyAsync(s -> s + " world")
+                .thenApplyAsync(v-> v + ", 异步线程名：" + Thread.currentThread().getName()).join();
+        System.out.println("result = " + result);
+        System.out.println("主线程名：" + Thread.currentThread().getName());
+        //result = hello world, 异步线程名：ForkJoinPool.commonPool-worker-1
+        //主线程名：main
+    }
+
+    public static void thenApplyOfExecutor(){
+        String result = CompletableFuture.supplyAsync(()->"hello")
+                .thenApplyAsync(s -> s + " world")
+                .thenApplyAsync(v-> v + ", 异步线程名：" + Thread.currentThread().getName()).join();
+        System.out.println("result = " + result);
+        System.out.println("主线程名：" + Thread.currentThread().getName());
+        //result = hello world, 异步线程名：ForkJoinPool.commonPool-worker-1
+        //主线程名：main
+    }
 ```
-
-
 
 
 
