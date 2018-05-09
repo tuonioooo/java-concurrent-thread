@@ -11,9 +11,20 @@ completableFuture实现了CompletionStage接口，如下：
         return uniAcceptStage(asyncPool, action);
     }
 
-    public CompletableFuture<Void> thenAcceptAsync(Consumer<? super T> action,
-                                                   Executor executor) {
+    public CompletableFuture<Void> thenAcceptAsync(Consumer<? super T> action,Executor executor) {
         return uniAcceptStage(screenExecutor(executor), action);
+    }
+    
+    public <U> CompletableFuture<U> thenApply(Function<? super T,? extends U> fn) {
+        return uniApplyStage(null, fn);
+    }
+
+    public <U> CompletableFuture<U> thenApplyAsync(Function<? super T,? extends U> fn) {
+        return uniApplyStage(asyncPool, fn);
+    }
+
+    public <U> CompletableFuture<U> thenApplyAsync(Function<? super T,? extends U> fn, Executor executor) {
+        return uniApplyStage(screenExecutor(executor), fn);
     }
 ```
 
@@ -26,11 +37,13 @@ public static void thenAccept1(){
         future
                 .thenAccept(System.out::println)
                 .thenAccept(v -> System.out.println("done"));
+        //42
+        //done
  }
 
 public static void thenAccept2(){
         String result = CompletableFuture.supplyAsync(() -> "hello").thenApply(s -> s + " world").join();
-        System.out.println(result);
+        System.out.println(result);//hello world
 }
 ```
 
