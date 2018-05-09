@@ -1,4 +1,4 @@
-# CompletableFuture\(Ⅰ\)
+# CompletableFuture接口详解
 
 completableFuture实现了CompletionStage接口，如下：
 
