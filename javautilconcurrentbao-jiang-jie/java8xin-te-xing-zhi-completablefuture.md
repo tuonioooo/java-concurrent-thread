@@ -20,7 +20,7 @@ CompletableFuture提供更多的特性：
 
 github demo示例：
 
-
+[https://github.com/tuonioooo/java8-examples-master](https://github.com/tuonioooo/java8-examples-master)
 
 参考：
 
