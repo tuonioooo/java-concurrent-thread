@@ -135,7 +135,7 @@ public static void init(){
         //主线程名：main
 ```
 
-* thenRun、thenRunAsync对上一步的计算结果不关心，执行下一个操作，他的入参是Runnable,表示当得到上一步的结果时的操作，无返回值
+* thenRun、thenRunAsync对上一步的计算结果不关心，执行下一个操作，他的入参是Runnable,表示当得到上一步的结果时的操作，无返回值，示例如下：
 
 
 
