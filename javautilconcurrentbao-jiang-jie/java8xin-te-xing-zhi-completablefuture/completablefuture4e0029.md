@@ -26,7 +26,7 @@ completableFuture实现了CompletionStage接口，如下：
     public <U> CompletableFuture<U> thenApplyAsync(Function<? super T,? extends U> fn, Executor executor) {
         return uniApplyStage(screenExecutor(executor), fn);
     }
-    
+
     public CompletableFuture<Void> thenRun(Runnable action) {
         return uniRunStage(null, action);
     }
@@ -135,7 +135,7 @@ public static void init(){
         //主线程名：main
 ```
 
-* thenRun、thenRunAsync对上一步的计算结果不关心，执行下一个操作
+* thenRun、thenRunAsync对上一步的计算结果不关心，执行下一个操作，他的入参是Runnable,无返回值
 
 
 
