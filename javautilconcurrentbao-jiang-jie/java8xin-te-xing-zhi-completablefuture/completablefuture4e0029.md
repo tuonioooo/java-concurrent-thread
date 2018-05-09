@@ -26,6 +26,18 @@ completableFuture实现了CompletionStage接口，如下：
     public <U> CompletableFuture<U> thenApplyAsync(Function<? super T,? extends U> fn, Executor executor) {
         return uniApplyStage(screenExecutor(executor), fn);
     }
+    
+    public CompletableFuture<Void> thenRun(Runnable action) {
+        return uniRunStage(null, action);
+    }
+
+    public CompletableFuture<Void> thenRunAsync(Runnable action) {
+        return uniRunStage(asyncPool, action);
+    }
+
+    public CompletableFuture<Void> thenRunAsync(Runnable action, Executor executor) {
+        return uniRunStage(screenExecutor(executor), action);
+    }
 ```
 
 首先说明一下已Async结尾的方法都是可以异步执行的，如果指定了线程池，会在指定的线程池中执行，如果没有指定，默认会在ForkJoinPool.commonPool\(\)中执行，下文中将会有好多类似的，都不详细解释了。关键的入参只有一个Function，它是函数式接口，所以使用Lambda表示起来会更加优雅。它的入参是上一个阶段计算后的结果，返回值是经过转化后结果。
@@ -121,8 +133,9 @@ public static void init(){
         System.out.println("主线程名：" + Thread.currentThread().getName());
         //result = hello world, 异步线程名：ForkJoinPool.commonPool-worker-1
         //主线程名：main
-    }
 ```
+
+* thenRun、thenRunAsync对上一步的计算结果不关心，执行下一个操作
 
 
 
