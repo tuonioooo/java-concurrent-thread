@@ -38,7 +38,7 @@ completableFuture实现了CompletionStage接口，如下：
     public CompletableFuture<Void> thenRunAsync(Runnable action, Executor executor) {
         return uniRunStage(screenExecutor(executor), action);
     }
-    
+
     public <U,V> CompletableFuture<V> thenCombine(
         CompletionStage<? extends U> other,
         BiFunction<? super T,? super U,? extends V> fn) {
@@ -55,6 +55,24 @@ completableFuture实现了CompletionStage接口，如下：
         CompletionStage<? extends U> other,
         BiFunction<? super T,? super U,? extends V> fn, Executor executor) {
         return biApplyStage(screenExecutor(executor), other, fn);
+    }
+    
+    public <U> CompletableFuture<Void> thenAcceptBoth(
+        CompletionStage<? extends U> other,
+        BiConsumer<? super T, ? super U> action) {
+        return biAcceptStage(null, other, action);
+    }
+
+    public <U> CompletableFuture<Void> thenAcceptBothAsync(
+        CompletionStage<? extends U> other,
+        BiConsumer<? super T, ? super U> action) {
+        return biAcceptStage(asyncPool, other, action);
+    }
+
+    public <U> CompletableFuture<Void> thenAcceptBothAsync(
+        CompletionStage<? extends U> other,
+        BiConsumer<? super T, ? super U> action, Executor executor) {
+        return biAcceptStage(screenExecutor(executor), other, action);
     }
 ```
 
