@@ -56,7 +56,7 @@ completableFuture实现了CompletionStage接口，如下：
         BiFunction<? super T,? super U,? extends V> fn, Executor executor) {
         return biApplyStage(screenExecutor(executor), other, fn);
     }
-    
+
     public <U> CompletableFuture<Void> thenAcceptBoth(
         CompletionStage<? extends U> other,
         BiConsumer<? super T, ? super U> action) {
@@ -73,6 +73,112 @@ completableFuture实现了CompletionStage接口，如下：
         CompletionStage<? extends U> other,
         BiConsumer<? super T, ? super U> action, Executor executor) {
         return biAcceptStage(screenExecutor(executor), other, action);
+    }
+    
+    public CompletableFuture<Void> runAfterBoth(CompletionStage<?> other,
+                                                Runnable action) {
+        return biRunStage(null, other, action);
+    }
+
+    public CompletableFuture<Void> runAfterBothAsync(CompletionStage<?> other,Runnable action) {
+        return biRunStage(asyncPool, other, action);
+    }
+
+    public CompletableFuture<Void> runAfterBothAsync(CompletionStage<?> other,Runnable action, Executor executor) {
+        return biRunStage(screenExecutor(executor), other, action);
+    }
+    public <U> CompletableFuture<U> applyToEither(
+        CompletionStage<? extends T> other, Function<? super T, U> fn) {
+        return orApplyStage(null, other, fn);
+    }
+
+    public <U> CompletableFuture<U> applyToEitherAsync(
+        CompletionStage<? extends T> other, Function<? super T, U> fn) {
+        return orApplyStage(asyncPool, other, fn);
+    }
+
+    public <U> CompletableFuture<U> applyToEitherAsync(
+        CompletionStage<? extends T> other, Function<? super T, U> fn,
+        Executor executor) {
+        return orApplyStage(screenExecutor(executor), other, fn);
+    }
+
+    public CompletableFuture<Void> acceptEither(
+        CompletionStage<? extends T> other, Consumer<? super T> action) {
+        return orAcceptStage(null, other, action);
+    }
+
+    public CompletableFuture<Void> acceptEitherAsync(
+        CompletionStage<? extends T> other, Consumer<? super T> action) {
+        return orAcceptStage(asyncPool, other, action);
+    }
+
+    public CompletableFuture<Void> acceptEitherAsync(
+        CompletionStage<? extends T> other, Consumer<? super T> action,
+        Executor executor) {
+        return orAcceptStage(screenExecutor(executor), other, action);
+    }
+
+    public CompletableFuture<Void> runAfterEither(CompletionStage<?> other,
+                                                  Runnable action) {
+        return orRunStage(null, other, action);
+    }
+
+    public CompletableFuture<Void> runAfterEitherAsync(CompletionStage<?> other,
+                                                       Runnable action) {
+        return orRunStage(asyncPool, other, action);
+    }
+
+    public CompletableFuture<Void> runAfterEitherAsync(CompletionStage<?> other,
+                                                       Runnable action,
+                                                       Executor executor) {
+        return orRunStage(screenExecutor(executor), other, action);
+    }
+
+    public <U> CompletableFuture<U> thenCompose(
+        Function<? super T, ? extends CompletionStage<U>> fn) {
+        return uniComposeStage(null, fn);
+    }
+
+    public <U> CompletableFuture<U> thenComposeAsync(
+        Function<? super T, ? extends CompletionStage<U>> fn) {
+        return uniComposeStage(asyncPool, fn);
+    }
+
+    public <U> CompletableFuture<U> thenComposeAsync(
+        Function<? super T, ? extends CompletionStage<U>> fn,
+        Executor executor) {
+        return uniComposeStage(screenExecutor(executor), fn);
+    }
+
+    public CompletableFuture<T> whenComplete(
+        BiConsumer<? super T, ? super Throwable> action) {
+        return uniWhenCompleteStage(null, action);
+    }
+
+    public CompletableFuture<T> whenCompleteAsync(
+        BiConsumer<? super T, ? super Throwable> action) {
+        return uniWhenCompleteStage(asyncPool, action);
+    }
+
+    public CompletableFuture<T> whenCompleteAsync(
+        BiConsumer<? super T, ? super Throwable> action, Executor executor) {
+        return uniWhenCompleteStage(screenExecutor(executor), action);
+    }
+
+    public <U> CompletableFuture<U> handle(
+        BiFunction<? super T, Throwable, ? extends U> fn) {
+        return uniHandleStage(null, fn);
+    }
+
+    public <U> CompletableFuture<U> handleAsync(
+        BiFunction<? super T, Throwable, ? extends U> fn) {
+        return uniHandleStage(asyncPool, fn);
+    }
+
+    public <U> CompletableFuture<U> handleAsync(
+        BiFunction<? super T, Throwable, ? extends U> fn, Executor executor) {
+        return uniHandleStage(screenExecutor(executor), fn);
     }
 ```
 
@@ -306,6 +412,162 @@ public static void thenCombine() {
         executor.shutdown();
         System.out.println(result);
     }
+```
+
+* thenAcceptBoth、thenAcceptBothAsync 它需要原来的处理返回值，并且other代表的CompletionStage也要返回值之后，利用这两个返回值，进行消耗
+
+```
+public static void thenAcceptBoth() {
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "hello";
+        }).thenAcceptBothAsync(CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            return "world";
+        }), (s1, s2) ->{
+            System.out.println(s1 + " " + s2);
+            executor.shutdown();
+        }, executor);
+
+        while(true){
+            if(executor.isTerminated()){
+                System.out.println("线程任务都已经完成");
+                break;
+            }
+        }
+    }
+```
+
+* runAfterBoth、runAfterBothAsync 不关心这两个CompletionStage的结果，只关心这两个CompletionStage执行完毕，之后在进行操作（Runnable）。
+
+```
+public static void runAfterBoth(){
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "s1";
+        }).runAfterBothAsync(CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "s2";
+        }), () -> {
+            System.out.println("hello world");
+            executor.shutdown();
+        }, executor);
+
+        while(true){
+            if(executor.isTerminated()){
+                System.out.println("线程任务都已经完成");
+                break;
+            }
+        }
+    }
+    
+    //hello world
+    //线程任务都已经完成
+```
+
+* applyToEither、applyToEitherAsync 两个CompletionStage，谁计算的快，我就用那个CompletionStage的结果进行下一步的转化操作。我们现实开发场景中，总会碰到有两种渠道完成同一个事情，所以就可以调用这个方法，找一个最快的结果进行处理。
+* 示例如下：
+
+```
+public static void acceptEither() {
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "s1";
+        }).acceptEither(CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "hello world";
+        }), System.out::println);
+        while (true){}
+    }
+```
+
+* runAfterEither、runAfterEitherAsync 两个CompletionStage，任何一个完成了都会执行下一步的操作（Runnable）示例如下：
+
+```
+public static void runAfterEither() {
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "s1";
+        }).runAfterEither(CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "s2";
+        }), () -> System.out.println("hello world"));
+        while (true) {
+        }
+    }
+```
+
+* 当运行时出现了异常，可以通过exceptionally进行补偿
+
+```
+public CompletableFuture<T> exceptionally(
+        Function<Throwable, ? extends T> fn) {
+        return uniExceptionallyStage(fn);
+    }
+```
+
+```
+public static void exceptionally() {
+        String result = CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (1 == 1) {
+                throw new RuntimeException("测试一下异常情况");
+            }
+            return "s1";
+        }).exceptionally(e -> {
+            System.out.println(e.getMessage());
+            return "hello world";
+        }).join();
+        System.out.println(result);
+    }
+    
+    //java.lang.RuntimeException: 测试一下异常情况
+    //hello world
+```
+
+* whenComplete、whenCompleteAsync  当运行完成时，对结果的记录。这里的完成时有两种情况，一种是正常执行，返回值。另外一种是遇到异常抛出造成程序的中断。这里为什么要说成记录，因为这几个方法都会返回CompletableFuture，当Action执行完毕后它的结果返回原始的CompletableFuture的计算结果或者返回异常。所以不会对结果产生任何的作用。  示例如下：
+
+```
+
 ```
 
 
