@@ -1,4 +1,4 @@
-# 线程池工具类
+# 线程池工具类（单例模式）
 
 ```
 package com.ise.api.pool.threadpoolexecutor;
@@ -113,8 +113,9 @@ public class RoomTask implements Runnable {
         executor.shutdown();
     }
 }
-
 ```
+
+> 注意：如果是在WEB环境中使用一个共享的单例线程池，一般不用关闭线程池，是设置超时时间，自动回收的，否则显示调用shutdown\(\)，会导致RejectedExecutionException异常
 
 
 
