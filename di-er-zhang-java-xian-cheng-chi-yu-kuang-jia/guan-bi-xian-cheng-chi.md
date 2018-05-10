@@ -14,8 +14,6 @@
 
 * 等到第二步完成后，才真正停止
 
-
-
 **shutdownNow\(\)方法**：**企图**立即停止，事实上不一定\(比如死循环的任务\)。
 
 * 跟shutdown\(\)一样，先停止接收外部提交的任务
@@ -25,8 +23,6 @@
 * 对于正在执行的任务，发出interrupt\(\)
 
 > 它试图终止线程的方法是通过调用`Thread.interrupt()`方法来实现的，但是大家知道，这种方法的作用有限，如果线程中**没有sleep 、wait、Condition、定时锁等应用**, interrupt\(\)方法是**无法中断当前的线程**的。所以，ShutdownNow\(\)并不代表线程池就一定立即就能退出，它也可能必须要等待所有正在执行的任务都执行完成了才能退出。但是大多数时候是能立即退出的。
-
-
 
 **awaitTermination**\(long timeOut, TimeUnit unit\)  
 方法：当前线程阻塞，直到
@@ -41,13 +37,11 @@
 
 > 实验发现，shuntdown\(\)和awaitTermination\(\)效果差不多，方法执行之后，都要等到提交的任务全部执行完才停。
 
-
-
 **shutdown\(\)和shutdownNow\(\)的区别**
 
 > shutdownNow\(\)能立即停止线程池，正在跑的和正在等待的任务都停下了。这样做立即生效，但是风险也比较大；
 >
->  shutdown\(\)只是关闭了提交通道，用submit\(\)是无效的；而内部该怎么跑还是怎么跑，跑完再停。
+> shutdown\(\)只是关闭了提交通道，用submit\(\)是无效的；而内部该怎么跑还是怎么跑，跑完再停。
 
 **shutdown\(\)和awaitTermination\(\)的区别**
 
@@ -83,12 +77,28 @@ public class ConcurrentUtils {
         try {
             executor.shutdown();
             executor.awaitTermination(60, TimeUnit.SECONDS);
+            /*
+            阻塞的时候，可以做一些其他操作，这段注释的可以忽略
+            while(!executor.isTerminated()){
+                System.out.println("running...");
+            }
+            */
+            
+            /*
+            阻塞的时候，可以做一些其他操作，这段注释的可以忽略
+            while (true){
+                if(executor.isTerminated()){
+                    System.out.println("线程任务都已经完成");
+                    break;
+                }
+            }
+            */
         }
         catch (InterruptedException e) {
             System.err.println("termination interrupted");
         }
         finally {
-            if (!executor.isTerminated()) {
+            if (!executor.isTerminated()) {//isTerminated() 一定在shutdown()后面使用，否则永远是false
                 System.err.println("killing non-finished tasks");
             }
             executor.shutdownNow();
