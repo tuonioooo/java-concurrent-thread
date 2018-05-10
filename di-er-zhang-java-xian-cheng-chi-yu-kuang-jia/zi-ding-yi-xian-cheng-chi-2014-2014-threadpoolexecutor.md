@@ -256,7 +256,15 @@ shutdownNow()
 
 ## 终止
 
+工作线程回收需要满足三个条件：
+
+**1\) ** 参数allowCoreThreadTimeOut为true   
+
+> 注意：allowCoreThreadTimeOut 的设置需要在任务执行之前，一般在new一个线程池后设置；在allowCoreThreadTimeOut设置为true时，ThreadPoolExecutor的keepAliveTime参数必须大于0。
+
+**2\)**  该线程在keepAliveTime时间内获取不到任务，即空闲这么长时间
+
+**3\)  ** 当前线程池大小  &gt; 核心线程池大小corePoolSize。
+
 程序不再引用的池没有剩余线程会自动shutdown。如果希望确保回收取消引用的池（即使用户忘记调用shutdown\(\)），则必须安排未使用的线程最终终止。
-
-
 

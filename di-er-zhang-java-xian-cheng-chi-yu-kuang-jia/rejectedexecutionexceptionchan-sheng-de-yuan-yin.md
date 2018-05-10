@@ -164,11 +164,19 @@ public class TextExecutor {
 public ExecutorService customerExecutorService = new ThreadPoolExecutor(3, Integer.MAX_VALUE, 0, TimeUnit.MILLISECONDS, new SynchronousQueue<Runnable>());
 ```
 
-   2.使用其他排队策略，例如LinkedBlockingQueue
+2.使用其他排队策略，例如LinkedBlockingQueue
 
 ```
 public ExecutorService customerExecutorService = new ThreadPoolExecutor(3, 5, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 ```
 
+**总结**：
 
+1. 控制提交的任务数量，即提交的任务数量不要超过它当前能处理的能力 \(这里可以用生产者消费者的模式来解决\)
+
+2. 同一个线程池，确保不要在shutdown\(\)之后在执行任务
+
+3. 可以用LinkedBlockingQueue代替ArrayBlockingQueue,因为LinkedBlockingQueue可以设成无界的，但是需要注意，设成无界后最终可能发生OOM（内存溢出），
+
+所以要保证第一二点。
 
