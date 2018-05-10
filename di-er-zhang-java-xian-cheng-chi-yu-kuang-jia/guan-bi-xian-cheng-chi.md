@@ -76,7 +76,7 @@ public class ConcurrentUtils {
     public static void stop(ExecutorService executor) {
         try {
             executor.shutdown();
-            executor.awaitTermination(60, TimeUnit.SECONDS);
+            executor.awaitTermination(60, TimeUnit.SECONDS);//时间可以根据业务场景，设置大小
             /*
             阻塞的时候，可以做一些其他操作，这段注释代码可以忽略
             while(!executor.isTerminated()){
