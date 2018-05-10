@@ -25,6 +25,7 @@
   * [自定义线程池——ThreadPoolExecutor](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/zi-ding-yi-xian-cheng-chi-2014-2014-threadpoolexecutor.md)
   * [线程池工具类](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/xian-cheng-chi-gong-ju-lei.md)
   * [关闭线程池](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/guan-bi-xian-cheng-chi.md)
+  * [合理地配置线程池](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/he-li-di-pei-zhi-xian-cheng-chi.md)
 * [Java内存模型](di-san-zhang-java-nei-cun-mo-xing.md)
   * [Java 内存模型的基础](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu.md)
     * [并发编程模型的两个关键问题](di-san-zhang-java-nei-cun-mo-xing/java-nei-cun-mo-xing-de-ji-chu/bing-fa-bian-cheng-mo-xing-de-liang-ge-guan-jian-wen-ti.md)
