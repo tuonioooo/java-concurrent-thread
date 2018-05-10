@@ -78,14 +78,14 @@ public class ConcurrentUtils {
             executor.shutdown();
             executor.awaitTermination(60, TimeUnit.SECONDS);
             /*
-            阻塞的时候，可以做一些其他操作，这段注释的可以忽略
+            阻塞的时候，可以做一些其他操作，这段注释代码可以忽略
             while(!executor.isTerminated()){
                 System.out.println("running...");
             }
             */
-            
+
             /*
-            阻塞的时候，可以做一些其他操作，这段注释的可以忽略
+            阻塞的时候，可以做一些其他操作，这段注释代码可以忽略
             while (true){
                 if(executor.isTerminated()){
                     System.out.println("线程任务都已经完成");
