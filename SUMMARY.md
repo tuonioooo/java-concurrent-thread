@@ -23,7 +23,7 @@
 * [Java线程池与框架](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia.md)
   * [Executor 框架](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/executor-kuang-jia-yu-xian-cheng-chi.md)
   * [自定义线程池——ThreadPoolExecutor](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/zi-ding-yi-xian-cheng-chi-2014-2014-threadpoolexecutor.md)
-  * [线程池工具类](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/xian-cheng-chi-gong-ju-lei.md)
+  * [线程池工具类（单例模式）](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/xian-cheng-chi-gong-ju-lei.md)
   * [关闭线程池](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/guan-bi-xian-cheng-chi.md)
   * [合理地配置线程池](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/he-li-di-pei-zhi-xian-cheng-chi.md)
   * [线程池的监控](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/xian-cheng-chi-de-jian-kong.md)
