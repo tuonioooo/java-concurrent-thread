@@ -13,22 +13,22 @@
 ```
 import java.util.concurrent.ExecutorService;  
 import java.util.concurrent.Executors;  
-  
-  
+
+
 public class TextExecutor {  
     public ExecutorService fixedExecutorService = Executors.newFixedThreadPool(5);  
     public ExecutorService cachedExecutorService = Executors.newCachedThreadPool();  
     public ExecutorService singleExecutorService = Executors.newSingleThreadExecutor();  
-      
+
     public void testExecutorException() {  
         for (int i = 0; i < 10; i ++) {  
             fixedExecutorService.execute(new SayHelloRunnable());  
             fixedExecutorService.shutdown();  
         }  
     }  
-      
+
     private class SayHelloRunnable implements Runnable {  
-  
+
         @Override  
         public void run() {  
             try {  
@@ -39,15 +39,15 @@ public class TextExecutor {
             } finally {  
                 System.out.println("hello world!");  
             }  
-              
+
         }  
     }  
-      
+
     public static void main(String[] args) {  
         TextExecutor testExecutor = new TextExecutor();  
         testExecutor.testExecutorException();  
     }  
-}  
+}
 ```
 
 ### 解决方案
@@ -59,13 +59,13 @@ public class TextExecutor {
 ```
 import java.util.concurrent.ExecutorService;  
 import java.util.concurrent.Executors;  
-  
-  
+
+
 public class TextExecutor {  
     public ExecutorService fixedExecutorService = Executors.newFixedThreadPool(5);  
     public ExecutorService cachedExecutorService = Executors.newCachedThreadPool();  
     public ExecutorService singleExecutorService = Executors.newSingleThreadExecutor();  
-      
+
     public void testExecutorException() {  
         for (int i = 0; i < 10; i ++) {  
             // 增加isShutdown()判断  
@@ -75,9 +75,9 @@ public class TextExecutor {
             fixedExecutorService.shutdown();  
         }  
     }  
-      
+
     private class SayHelloRunnable implements Runnable {  
-  
+
         @Override  
         public void run() {  
             try {  
@@ -88,10 +88,10 @@ public class TextExecutor {
             } finally {  
                 System.out.println("hello world!");  
             }  
-              
+
         }  
     }  
-      
+
     public static void main(String[] args) {  
         TextExecutor testExecutor = new TextExecutor();  
         testExecutor.testExecutorException();  
@@ -109,14 +109,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.SynchronousQueue;  
 import java.util.concurrent.ThreadPoolExecutor;  
 import java.util.concurrent.TimeUnit;  
-  
-  
+
+
 public class TextExecutor {  
     public ExecutorService fixedExecutorService = Executors.newFixedThreadPool(5);  
     public ExecutorService cachedExecutorService = Executors.newCachedThreadPool();  
     public ExecutorService singleExecutorService = Executors.newSingleThreadExecutor();  
     public ExecutorService customerExecutorService = new ThreadPoolExecutor(3, 5, 0, TimeUnit.MILLISECONDS, new SynchronousQueue<Runnable>());  
-      
+
     public void testExecutorException() {  
         for (int i = 0; i < 10; i ++) {  
             // 增加isShutdown()判断  
@@ -126,15 +126,15 @@ public class TextExecutor {
             fixedExecutorService.shutdown();  
         }  
     }  
-      
+
     public void testCustomerExecutorException() {  
         for (int i = 0; i < 100; i ++) {  
             customerExecutorService.execute(new SayHelloRunnable());  
         }  
     }  
-      
+
     private class SayHelloRunnable implements Runnable {  
-  
+
         @Override  
         public void run() {  
             try {  
@@ -145,15 +145,15 @@ public class TextExecutor {
             } finally {  
                 System.out.println("hello world!");  
             }  
-              
+
         }  
     }  
-      
+
     public static void main(String[] args) {  
         TextExecutor testExecutor = new TextExecutor();  
         testExecutor.testCustomerExecutorException();;  
     }  
-} 
+}
 ```
 
 ### 解决方案
@@ -161,13 +161,13 @@ public class TextExecutor {
 1. 尽量调大maximumPoolSize，例如设置为Integer.MAX\_VALUE
 
 ```
-public ExecutorService customerExecutorService = new ThreadPoolExecutor(3, Integer.MAX_VALUE, 0, TimeUnit.MILLISECONDS, new SynchronousQueue<Runnable>()); 
+public ExecutorService customerExecutorService = new ThreadPoolExecutor(3, Integer.MAX_VALUE, 0, TimeUnit.MILLISECONDS, new SynchronousQueue<Runnable>());
 ```
 
-2. 使用其他排队策略，例如LinkedBlockingQueue
+   2.使用其他排队策略，例如LinkedBlockingQueue
 
 ```
-public ExecutorService customerExecutorService = new ThreadPoolExecutor(3, 5, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>()); 
+public ExecutorService customerExecutorService = new ThreadPoolExecutor(3, 5, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 ```
 
 
