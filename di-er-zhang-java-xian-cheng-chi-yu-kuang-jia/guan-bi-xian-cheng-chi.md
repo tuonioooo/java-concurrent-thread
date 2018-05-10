@@ -14,6 +14,8 @@
 
 * 等到第二步完成后，才真正停止
 
+
+
 **shutdownNow\(\)方法**：**企图**立即停止，事实上不一定\(比如死循环的任务\)。
 
 * 跟shutdown\(\)一样，先停止接收外部提交的任务
@@ -26,9 +28,10 @@
 
 
 
-**awaitTermination**\(long timeOut, TimeUnit unit\)方法：当前线程阻塞，直到
+**awaitTermination**\(long timeOut, TimeUnit unit\)  
+方法：当前线程阻塞，直到
 
-*  等所有已提交的任务（包括正在跑的和队列中等待的）执行完
+* 等所有已提交的任务（包括正在跑的和队列中等待的）执行完
 
 * 或者等超时时间到
 
@@ -40,9 +43,35 @@
 
 
 
+**shutdown\(\)和shutdownNow\(\)的区别**
 
+> shutdownNow\(\)能立即停止线程池，正在跑的和正在等待的任务都停下了。这样做立即生效，但是风险也比较大；
+>
+>  shutdown\(\)只是关闭了提交通道，用submit\(\)是无效的；而内部该怎么跑还是怎么跑，跑完再停。
+
+**shutdown\(\)和awaitTermination\(\)的区别**
+
+> shutdown\(\)后，不能再提交新的任务进去；但是awaitTermination\(\)后，可以继续提交。 awaitTermination\(\)是阻塞的，返回结果是线程池是否已停止（true/false）；shutdown\(\)不阻塞。
+
+## 总结 {#总结}
+
+* 优雅的关闭，用shutdown\(\)
+* 想立马关闭，并得到未执行任务列表，用shutdownNow\(\)
+* 优雅的关闭，并允许关闭声明后新任务能提交，用awaitTermination\(\)
 
 常用的线程池关闭示例如下：
+
+1.直接使用代码shutdown\(\)/shutdownNow\(\)
+
+```
+executor.shutdown();//可以使用，但不优雅
+```
+
+```
+executor.shutdownNow();//风险太大不建议直接使用
+```
+
+2.优雅的方式
 
 ```
 /**
@@ -77,11 +106,5 @@ public class ConcurrentUtils {
 }
 ```
 
-说明：
 
-awaitTermination方法：
-
-awaitTermination方法正是可以实现这个中止作用的角色。
-
-具体的使用方法是，在shutdown方法调用后，接着调用awaitTermination方法。这时只需要等待awaitTermination方法里第一个参数指定的时间
 
