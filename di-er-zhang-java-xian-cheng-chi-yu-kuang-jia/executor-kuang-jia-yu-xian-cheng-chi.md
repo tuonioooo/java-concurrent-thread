@@ -33,6 +33,8 @@ public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize)
 * 能 reuse 的线程，必须是 timeout IDLE 内的池中线程，缺省 timeout 是 60s,超过这个 IDLE 时长，线程实例将被终止及移出池。
 
   > 注意，放入 CachedThreadPool 的线程不必担心其结束，超过 TIMEOUT 不活动，其会自动被终止。
+  >
+  > 无界线程池，可以进行自动线程回收
 
 **newFixedThreadPool\(int\)**
 
@@ -43,12 +45,14 @@ public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize)
   * fixed 池线程数固定，并且是0秒IDLE（无IDLE）。
   * cache 池线程数支持 0-Integer.MAX\_VALUE\(显然完全没考虑主机的资源承受能力），60 秒 IDLE 。
 
+  > **注意**：固定大小线程池
+
 **newScheduledThreadPool\(int\)**
 
 * 调度型线程池
 * 这个池子里的线程可以按 schedule 依次 delay 执行，或周期执行
 
-**SingleThreadExecutor\(\)**
+**newSingleThreadExecutor\(\)**
 
 * 单例线程，任意时间池中只能有一个线程
 * 用的是和 cache 池和 fixed 池相同的底层池，但线程数目是 1-1,0 秒 IDLE（无 IDLE）
