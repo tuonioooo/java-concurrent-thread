@@ -237,7 +237,21 @@ shutdownNow()
 
 另外，当线程池中的线程数量大于 corePoolSize 时，如果里面有线程的空闲时间超过了 keepAliveTime，就将其移除线程池，这样，可以动态地调整线程池中线程的数量。
 
+
+
+# 排队
+
+所有BlockingQueue都可用于传输和保持提交的任务。可以使用此队列与池大小进行交互：
+
+* 如果运行的线程少于corePoolSize，则Executor始终首选添加新的线程，而不进行排队。
+* 如果运行的线程等于或多于corePoolSize，则Executor始终首选将请求加入队列，而不添加新的线程。
+* 如果无法将请求加入队列，则创建新的线程，
+  除非创建此线程超出maximumPoolSize，在这种情况下，任务将被拒绝（抛出RejectedExecutionException）
+  。
+
 ## 几种排队的策略 {#3cc4964d81f8879a8e244eb2fe18ca65}
+
+
 
 * 直接提交。缓冲队列采用 SynchronousQueue，它将任务直接交给线程处理而不保持它们。如果不存在可用于立即运行任务的线程（即线程池中的线程都在工作），则试图把任务加入缓冲队列将会失败，因此会构造一个新的线程来处理新添加的任务，并将其加入到线程池中。直接提交通常要求无界 maximumPoolSizes（Integer.MAX\_VALUE） 以避免拒绝新提交的任务。newCachedThreadPool 采用的便是这种策略。
 
