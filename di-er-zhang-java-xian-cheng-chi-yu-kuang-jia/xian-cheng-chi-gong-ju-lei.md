@@ -110,7 +110,7 @@ public class RoomTask implements Runnable {
         System.out.println("队列是否满员-->" + threadPoolConfig.isQueueFull());
         System.out.println("线程池数量-->" + threadPoolConfig.getPoolSize());
         System.out.println("线程池队列数量-->" + threadPoolConfig.getQueueSize());
-        executor.shutdown();
+        executor.shutdown();//一般不用关闭线程池,这里只是为了示例效果
     }
 }
 ```
