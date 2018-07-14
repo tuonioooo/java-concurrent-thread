@@ -39,7 +39,6 @@ public class SleepInterrupt extends Object implements Runnable{
         System.out.println("in main() - leaving");  
     }  
 }
-
 ```
 
 运行结果如下：
@@ -112,7 +111,7 @@ public class InterruptCheck extends Object{
         //抛出异常后，会清除中断标志，这里会返回false  
         System.out.println("Point D: t.isInterrupted()=" + t.isInterrupted());  
     }  
-}  
+}
 ```
 
 运行结果如下：
@@ -151,6 +150,36 @@ public class InterruptReset extends Object {
 
 * join 方法用线程对象调用，如果在一个线程 A 中调用另一个线程 B 的 join 方法，线程 A 将会等待线程 B 执行完毕后再执行。
 * yield 可以直接用 Thread 类调用，yield 让出 CPU 执行权给同等级的线程，如果没有相同级别的线程在等待 CPU 的执行权，则该线程继续执行。
+
+
+
+## **结论：**
+
+1.interrupt这个方法并不会让线程立即停下来。  
+2.问题来了，如果我就是想让线程立即停止，需要怎么做？这时候可以加个判断，用抛出异常的方法来让线程停止。
+
+```
+public class InterruptThread extends Thread{
+    @Override
+    public void run(){
+        super.run();
+        try {
+            for (int i=0; i < 5000; i++){
+                if (this.isInterrupted()){
+                    System.out.println("已经是停止状态了，我要退出");
+                    throw new InterruptedException();
+                }
+                System.out.println("i = " + (i+1));
+            }
+        }catch (InterruptedException e){
+            System.out.println("进入InterruptThread的catch块");
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+
 
 
 
