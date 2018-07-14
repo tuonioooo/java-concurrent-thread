@@ -151,8 +151,6 @@ public class InterruptReset extends Object {
 * join 方法用线程对象调用，如果在一个线程 A 中调用另一个线程 B 的 join 方法，线程 A 将会等待线程 B 执行完毕后再执行。
 * yield 可以直接用 Thread 类调用，yield 让出 CPU 执行权给同等级的线程，如果没有相同级别的线程在等待 CPU 的执行权，则该线程继续执行。
 
-
-
 ## **结论：**
 
 1.interrupt这个方法并不会让线程立即停下来。  
@@ -179,7 +177,26 @@ public class InterruptThread extends Thread{
 }
 ```
 
-
+```
+public class InterruptRun {
+    public static void main(String[] args) {
+        try {
+            InterruptThread threadI = new InterruptThread();
+            threadI.start();
+            Thread.sleep(10);
+            threadI.interrupt();
+            Thread.currentThread().interrupt();
+            System.out.println("main:" + Thread.currentThread().getName() + "是否停止1？ = " + Thread.interrupted());
+            System.out.println("main:" + Thread.currentThread().getName() + "是否停止2？ = " + Thread.interrupted());
+            System.out.println(threadI.getName() + "是否停止3？ = " + threadI.isInterrupted());
+            System.out.println(threadI.getName() + "是否停止4？ = " + threadI.isInterrupted());
+        }catch (InterruptedException e){
+            System.out.println("main catch");
+            e.printStackTrace();
+        }
+    }
+}
+```
 
 
 
