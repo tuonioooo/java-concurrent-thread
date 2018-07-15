@@ -124,3 +124,92 @@ Thread[WaitThread,5,main] flag is false. running @ 22:23:14
 
 在图4-3中，WaitThread首先获取了对象的锁，然后调用对象的wait\(\)方法，从而放弃了锁并进入了对象的等待队列WaitQueue中，进入等待状态。由于WaitThread释放了对象的锁，NotifyThread随后获取了对象的锁，并调用对象的notify\(\)方法，将WaitThread从WaitQueue移到SynchronizedQueue中，此时WaitThread的状态变为阻塞状态。NotifyThread释放了锁之后，WaitThread再次获取到锁并从wait\(\)方法返回继续执行。
 
+
+
+**补充：**
+
+**1.notify（）**
+
+        具体是怎么个意思呢？就是用来唤醒在此对象上等待的单个线程。说的有点太专业。打个比方，现在有十栋大房子，里面有很多被上了锁的房间，奇怪的是锁都是一样的，更不可思议的是，现在只有一把钥匙。而此时，张三用完钥匙后，就会发出归还钥匙的提醒，就相当于发出notify（）通知，但是要注意的是，此时钥匙还在张三手中，只不过，当张三发出notify（）通知后，JVM从那些整个沉睡的线程，唤醒一个。对应本例子，就是从其余的九栋大房子中唤醒一家，至于提醒谁来拿这把钥匙，就看JVM如何分配资源了。等到张三把钥匙归还后，那个被提醒的哪家，就可以使用该把钥匙来开房间门了。与此相对应的，还有一个notifyAll（）方法。这是什么意思呢，还是本例，张三嗓门大，这时吼了一嗓子，即notifyAll（），所有沉睡的线程全都被吵醒了，当张三归还钥匙后，他们就可以竞争了，注意，刚才是JVM自动分配，而此时是线程之间竞争，比如优先级等等条件，是有区别的。
+
+![](/assets/import-notify.png)
+
+
+
+ 
+
+**注意：**_**notify（）方法执行后，并不是立即释放锁，而是等到加锁的代码块执行完后，才开始释放的，相当于本例中，张三只是发出了归还的通知，但是钥匙还没有归还，需要等到代码块，执行完后，才可以归还。**_
+
+**2.wait（）**
+
+        这个方法又是怎么个意思呢？当执行到这个方法时，就把钥匙归还，开始睡觉了。Thread.sleep\(\)与Object.wait\(\)二者都可以暂停当前线程，释放CPU控制权，_**主要的区别在于Object.wait\(\)在释放CPU同时，释放了对象锁的控制**_。
+
+        下面来看一个例子，加入我们要实现三个线程之间的同步操作，如何来实现呢？加入有三个线程分别用来输出A/B/C，如何能够三个线程之间顺序执行呢？这时候就需要采取线程之间同步的操作了，详见下面的代码。
+
+```
+package com.test;
+ 
+ 
+public class MyThreadPrinter2 implements Runnable {
+ 
+	private String name;
+	private Object prev;
+	private Object self;
+ 
+	private MyThreadPrinter2(String name, Object prev, Object self) {
+		this.name = name; // A B C
+		this.prev = prev; // c a b
+		this.self = self; // a b c
+	}
+ 
+	@Override
+	public void run() {
+		int count = 10;
+		while (count > 0) {
+			// 加锁，锁的钥匙是prev
+			synchronized (prev) {
+				// 一把锁，锁的钥匙是self变量
+				synchronized (self) {
+					System.out.print(name);
+					count--;
+					try {
+						Thread.sleep(1);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					// 唤醒另一个线程，但是也需要把本线程执行完后，才可以释放锁
+					self.notify(); //a b c
+				}
+ 
+				try {
+					// 释放对象锁，本线程进入休眠状态，等待被唤醒
+					prev.wait();  //睡觉觉了，等待被叫醒吧   // c a b
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+ 
+		}
+	}
+ 
+	public static void main(String[] args) throws Exception {
+		Object a = new Object();
+		Object b = new Object();
+		Object c = new Object();
+		MyThreadPrinter2 pa = new MyThreadPrinter2("A", c, a);
+		MyThreadPrinter2 pb = new MyThreadPrinter2("B", a, b);
+		MyThreadPrinter2 pc = new MyThreadPrinter2("C", b, c);
+ 
+		new Thread(pa).start();
+		// 这样才可以保证按照顺序执行
+		 Thread.sleep(10);
+		new Thread(pb).start();
+		 Thread.sleep(10);
+		new Thread(pc).start();
+		 Thread.sleep(10);
+	}
+}
+```
+
+参考示例：[https://blog.csdn.net/luckyzhoustar/article/details/48179161](https://blog.csdn.net/luckyzhoustar/article/details/48179161)
+
