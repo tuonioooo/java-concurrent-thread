@@ -43,7 +43,10 @@
 >
 > 总之，计算密集型程序适合C语言多线程，I/O密集型适合脚本语言开发的多线程。
 
-
+```
+/**返回可用处理器的Java虚拟机的数量*/
+private static int PROCESSORS = Runtime.getRuntime().availableProcessors();
+```
 
 如果一台服务器上只部署这一个应用并且只有这一个线程池，那么这种估算或许合理，具体还需自行测试验证。
 
