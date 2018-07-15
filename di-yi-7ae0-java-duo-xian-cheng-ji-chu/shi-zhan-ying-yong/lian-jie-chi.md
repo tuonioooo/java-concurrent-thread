@@ -26,15 +26,13 @@
 
 连接池能够使性能最大化，同时还能将资源利用控制在一定的水平之下，如果超过该水平，应用程序将崩溃而不仅仅是变慢。
 
-
-
 ## 运作原理
 
 在实际应用开发中，特别是在WEB应用系统中，如果[JSP](https://baike.baidu.com/item/JSP)、[Servlet](https://baike.baidu.com/item/Servlet)或EJB使用[JDBC](https://baike.baidu.com/item/JDBC)
 
 直接访问数据库中的数据，每一次数据访问请求都必须经历建立数据库连接、打开数据库、存取数据和关闭数据库连接等步骤，而连接并打开数据库是一件既消耗资源又费时的工作，如果频繁发生这种数据库操作，系统的性能必然会急剧下降，甚至会导致系统崩溃。
 
-[数据库连接池](https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0)
+[数据库连接池](https://baike.baidu.com/item/数据库连接池)
 
 技术是解决这个问题最常用的方法，在许多应用程序服务器（例如：Weblogic,WebSphere,JBoss）中，基本都提供了这项技术，无需自己编程，但是，深入了解这项技术是非常必要的。
 
@@ -46,7 +44,7 @@
 
 （2）按照事先指定的参数创建初始数量的数据库连接（即：空闲连接数）。
 
-（3）对于一个数据库访问请求，直接从连接池中得到一个连接。如果[数据库连接池](https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0)
+（3）对于一个数据库访问请求，直接从连接池中得到一个连接。如果[数据库连接池](https://baike.baidu.com/item/数据库连接池)
 
 对象中没有空闲的连接，且连接数没有达到最大（即：最大活跃连接数），创建一个新的数据库连接。
 
@@ -114,7 +112,7 @@ private ArrayList drivers = new ArrayList\(\);//容器，存放数据库驱动�
 
 private HashMap pools = new HashMap \(\);//以name/value的形式存取连接池//对象的名字及连接池对象
 
-static synchronized public DBConnectionManager getInstance\(\)//如果唯一的//实例instance已经创建，直接返回这个实例;否则，调用私有[构造函数](https://baike.baidu.com/item/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0)，创//建连接池管理类的唯一实例
+static synchronized public DBConnectionManager getInstance\(\)//如果唯一的//实例instance已经创建，直接返回这个实例;否则，调用私有[构造函数](https://baike.baidu.com/item/构造函数)，创//建连接池管理类的唯一实例
 
 private DBConnectionManager\(\)//私有构造函数,在其中调用初始化函数init\(\)
 
@@ -130,7 +128,7 @@ public synchronized void release\(\)//释放所有资源
 
 private void createPools\(Properties props\)//根据属性文件提供的信息，创建//一个或多个连接池
 
-private void init\(\)//初始化连接池管理类的唯一实例，由私有[构造函数](https://baike.baidu.com/item/%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0)调用
+private void init\(\)//初始化连接池管理类的唯一实例，由私有[构造函数](https://baike.baidu.com/item/构造函数)调用
 
 private void loadDrivers\(Properties props\)//装载数据库驱动程序
 
@@ -159,4 +157,10 @@ public void destroy\(\) {
 connMgr.release\(\); super.destroy\(\);
 
 }
+
+
+
+
+
+
 
