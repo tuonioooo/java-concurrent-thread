@@ -20,6 +20,8 @@
   * [ThreadLocal关键字](di-yi-7ae0-java-duo-xian-cheng-ji-chu/threadlocalguan-jian-zi.md)
   * [volatile、ThreadLocal、synchronized3个关键字区别](di-yi-7ae0-java-duo-xian-cheng-ji-chu/volatilethreadlocalsynchronized3ge-guan-jian-zi-qu-bie.md)
   * [多线程环境下，局部变量和全局变量都会共享吗？](di-yi-7ae0-java-duo-xian-cheng-ji-chu/duo-xian-cheng-huan-jing-xia-ff0c-ju-bu-bian-liang-he-quan-ju-bian-liang-du-hui-gong-xiang-ma-ff1f.md)
+  * [Java线程之间的通信](di-yi-7ae0-java-duo-xian-cheng-ji-chu/javaxian-cheng-zhi-jian-de-tong-xin.md)
+  * [Java线程等待和通知的相关方法](di-yi-7ae0-java-duo-xian-cheng-ji-chu/javadeng-dai-he-tong-zhi-de-xiang-guan-fang-fa.md)
 * [Java线程池与框架](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia.md)
   * [Executor 框架](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/executor-kuang-jia-yu-xian-cheng-chi.md)
   * [自定义线程池——ThreadPoolExecutor](di-er-zhang-java-xian-cheng-chi-yu-kuang-jia/zi-ding-yi-xian-cheng-chi-2014-2014-threadpoolexecutor.md)
