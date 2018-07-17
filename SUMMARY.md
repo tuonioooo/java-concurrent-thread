@@ -121,7 +121,7 @@
   * [CountDownLatch](javachang-yong-bing-fa-kai-fa-gong-ju-he-lei-de-yuan-ma-fen-xi/countdownlatch.md)
   * [CyclicBarrier](javachang-yong-bing-fa-kai-fa-gong-ju-he-lei-de-yuan-ma-fen-xi/cyclicbarrier.md)
   * [Semaphore](javachang-yong-bing-fa-kai-fa-gong-ju-he-lei-de-yuan-ma-fen-xi/semaphore.md)
-  * Exchange
+  * [Exchange](javachang-yong-bing-fa-kai-fa-gong-ju-he-lei-de-yuan-ma-fen-xi/exchange.md)
   * ConcurrentHashMap
   * ConcurrentSkipListMap
   * [HashMap](javachang-yong-bing-fa-kai-fa-gong-ju-he-lei-de-yuan-ma-fen-xi/hashmap.md)
