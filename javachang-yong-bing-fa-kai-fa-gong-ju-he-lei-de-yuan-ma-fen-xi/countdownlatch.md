@@ -14,6 +14,8 @@ java.util.concurrent.CountDownLatch 是一个并发构造，它允许一个或�
 
 join\(\)方法，如代码清单8-1所示。
 
+> 代码清单8-1　JoinCountDownLatchTest.java
+
 ```
 public class JoinCountDownLatchTest {
     public static void main(String[] args) throws InterruptedException {
