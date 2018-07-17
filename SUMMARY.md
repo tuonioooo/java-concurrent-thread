@@ -112,7 +112,7 @@
     * [CompletableFuture与parallelStream\(\)性能差异](javautilconcurrentbao-jiang-jie/java8xin-te-xing-zhi-completablefuture/completablefutureyu-parallelstream-xing-neng-cha-yi.md)
 * [Java线程安全](javaxian-cheng-an-quan.md)
   * [性能与可伸缩性](javaxian-cheng-an-quan/xing-neng-yu-ke-shen-suo-xing.md)
-  * 解决死锁
+  * [解决死锁](javaxian-cheng-an-quan/jie-jue-si-suo.md)
   * 死锁定义
   * 如何让多线程下的类安全
   * 类的线程安全性定义
