@@ -1,4 +1,4 @@
-# CountDownLatch
+# CountDownLatch（闭锁）
 
 ## 概述
 
