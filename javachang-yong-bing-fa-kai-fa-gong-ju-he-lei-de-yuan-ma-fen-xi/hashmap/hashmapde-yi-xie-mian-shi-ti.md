@@ -1,4 +1,4 @@
-1**、HashMap的工作原理**
+## 1**、HashMap的工作原理**
 
 HashMap，都知道哪里要用HashMap，知道Hashtable和HashMap之间的区别，那么为何这道面试题如此特殊呢？是因为这道题考察的深度很深。
 
@@ -60,7 +60,7 @@ hashing以及HashMap的工作原理。但是这仅仅是故事的开始，当面
 
 完美的答案！
 
-2.HashMap和Hashtable的区别
+## **2.HashMap和Hashtable的区别**
 
 两者最主要的区别在于Hashtable是线程安全，而HashMap则非线程安全
 
@@ -78,27 +78,25 @@ hashing以及HashMap的工作原理。但是这仅仅是故事的开始，当面
    ```
    int hash = key.hashCode();
    int index = (hash & 0x7FFFFFFF) % tab.length;
-
-
    ```
 
       HashMap计算hash对key的hashcode进行了二次hash，以获得更好的散列值，然后对table数组长度取摸
 
 ```
-     static int hash(int h) {
-     // This function ensures that hashCodes that differ only by
-     // constant multiples at each bit position have a bounded
-     // number of collisions (approximately 8 at default load factor).
-     h ^= (h >>> 20) ^ (h >>> 12);
-     return h ^ (h >>> 7) ^ (h >>> 4);
-     }
+ static int hash(int h) {
+ // This function ensures that hashCodes that differ only by
+ // constant multiples at each bit position have a bounded
+ // number of collisions (approximately 8 at default load factor).
+ h ^= (h >>> 20) ^ (h >>> 12);
+ return h ^ (h >>> 7) ^ (h >>> 4);
+ }
 
-     static int indexFor(int h, int length) {
-     return h & (length-1);
-     }
+ static int indexFor(int h, int length) {
+ return h & (length-1);
+ }
 ```
 
-1. HashMap和Hashtable的底层实现都是数组+链表结构实现
+7.HashMap和Hashtable的底层实现都是数组+链表结构实现
 
 
 
