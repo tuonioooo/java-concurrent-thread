@@ -42,6 +42,7 @@ public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize)
 * 其独特之处:任意时间点，最多只能有固定数目的活动线程存在，此时如果有新的线程要建立，只能放在另外的队列中等待，直到当前的线程中某个线程终止直接被移出池子。
 * 和 cacheThreadPool 不同，FixedThreadPool 没有 IDLE 机制（可能也有，但既然文档没提，肯定非常长，类似依赖上层的 TCP 或 UDP IDLE 机制之类的），所以 FixedThreadPool 多数针对一些很稳定很固定的正规并发线程，多用于服务器。
 * 从方法的源代码看，cache池和fixed 池调用的是同一个底层 池，只不过参数不同:
+
   * fixed 池线程数固定，并且是0秒IDLE（无IDLE）。
   * cache 池线程数支持 0-Integer.MAX\_VALUE\(显然完全没考虑主机的资源承受能力），60 秒 IDLE 。
 

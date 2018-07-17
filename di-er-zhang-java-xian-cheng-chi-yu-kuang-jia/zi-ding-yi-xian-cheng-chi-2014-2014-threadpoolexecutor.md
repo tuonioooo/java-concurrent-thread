@@ -1,5 +1,7 @@
 # 自定义线程池——ThreadPoolExecutor
 
+ThreadPoolExecutor（_**线程池**_）工作原理：执行多个异步任务，提供性能，减少线程创建的开销，节省系统资源开销。
+
 自定义线程池，可以用 ThreadPoolExecutor 类创建，它有多个构造方法来创建线程池，用该类很容易实现自定义的线程池，这里先贴上示例程序：
 
 ```
@@ -258,13 +260,13 @@ shutdownNow()
 
 工作线程回收需要满足三个条件：
 
-**1\) ** 参数allowCoreThreadTimeOut为true   
+**1\) ** 参数allowCoreThreadTimeOut为true
 
 > 注意：allowCoreThreadTimeOut 的设置需要在任务执行之前，一般在new一个线程池后设置；在allowCoreThreadTimeOut设置为true时，ThreadPoolExecutor的keepAliveTime参数必须大于0。
 
-**2\)**  该线程在keepAliveTime时间内获取不到任务，即空闲这么长时间
+**2\)**  该线程在keepAliveTime时间内获取不到任务，即空闲这么长时间
 
-**3\)  ** 当前线程池大小  &gt; 核心线程池大小corePoolSize。
+**3\)  ** 当前线程池大小  &gt; 核心线程池大小corePoolSize。
 
 程序不再引用的池没有剩余线程会自动shutdown。如果希望确保回收取消引用的池（即使用户忘记调用shutdown\(\)），则必须安排未使用的线程最终终止。
 
