@@ -26,7 +26,7 @@
 
 我们知道，数据结构的物理存储结构只有两种：_**顺序存储结构**和**链式存储结构**_（像栈，队列，树，图等是从逻辑结构去抽象的，映射到内存中，也这两种物理组织形式），而在上面我们提到过，在数组中根据下标查找某个元素，一次定位就可以达到，哈希表利用了这种特性，**哈希表的主干就是数组**。
 
-比如我们要新增或查找某个元素，我们通过把当前元素的关键字 通过某个函数映射到数组中的某个位置，通过数组下标一次定位就可完成操作。**          
+比如我们要新增或查找某个元素，我们通过把当前元素的关键字 通过某个函数映射到数组中的某个位置，通过数组下标一次定位就可完成操作。**            
 **
 
 **存储位置 = f\(关键字\)**
@@ -94,8 +94,6 @@ static class Node<K,V> implements Map.Entry<K,V> {
 ```
 
 > 注意：jdk1.8 是node数组，jdk以前的版本是entry数组，下面我还是会用以前的entry来讲解
-
-
 
 所以，HashMap的整体结构如下
 
@@ -202,4 +200,49 @@ public V put(K key, V value) {
 ```
 
 当然HashMap里面也包含一些优化方面的实现，这里也说一下。比如：Entry\[\]的长度一定后，随着map里面数据的越来越长，这样同一个index的链就会很长，会不会影响性能？HashMap里面设置一个因子，随着map的size越来越大，Entry\[\]会以一定的规则加长长度。
+
+inflateTable方法：
+
+```
+private void inflateTable(int toSize) {
+        int capacity = roundUpToPowerOf2(toSize);//capacity一定是2的次幂
+        threshold = (int) Math.min(capacity * loadFactor, MAXIMUM_CAPACITY + 1);//此处为threshold赋值，取capacity*loadFactor和MAXIMUM_CAPACITY+1的最小值，capaticy一定不会超过MAXIMUM_CAPACITY，除非loadFactor大于1
+        table = new Entry[capacity];
+        initHashSeedAsNeeded(capacity);
+    }
+```
+
+inflateTable这个方法用于为主干数组table在内存中分配存储空间，通过roundUpToPowerOf2\(toSize\)可以确保capacity为大于或等于toSize的最接近toSize的二次幂，比如toSize=13,则capacity=16;to\_size=16,capacity=16;to\_size=17,capacity=32.
+
+```
+private static int roundUpToPowerOf2(int number) {
+        // assert number >= 0 : "number must be non-negative";
+        return number >= MAXIMUM_CAPACITY
+                ? MAXIMUM_CAPACITY
+                : (number > 1) ? Integer.highestOneBit((number - 1) << 1) : 1;
+    }
+```
+
+roundUpToPowerOf2中的这段处理使得数组长度一定为2的次幂，Integer.highestOneBit是用来获取最左边的bit（其他bit位为0）所代表的数值.
+
+hash函数
+
+```
+//这是一个神奇的函数，用了很多的异或，移位等运算，对key的hashcode进一步进行计算以及二进制位的调整等来保证最终获取的存储位置尽量分布均匀
+final int hash(Object k) {
+        int h = hashSeed;
+        if (0 != h && k instanceof String) {
+            return sun.misc.Hashing.stringHash32((String) k);
+        }
+
+        h ^= k.hashCode();
+
+        h ^= (h >>> 20) ^ (h >>> 12);
+        return h ^ (h >>> 7) ^ (h >>> 4);
+    }
+```
+
+
+
+
 
