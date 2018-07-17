@@ -1,3 +1,5 @@
+# 实战：实现一个线程安全的单例模式
+
 在GoF的23种设计模式中，单例模式是比较简单的一种。然而，有时候越是简单的东西越容易出现问题。下面就单例设计模式详细的探讨一下。
 
 所谓单例模式，简单来说，就是在整个应用中保证只有一个类的实例存在。就像是Java Web中的application，也就是提供了一个全局变量，用处相当广泛，比如保存全局数据，实现全局性的操作等。
@@ -10,20 +12,20 @@
 public class SingletonClass { 
 
   private static final SingletonClass instance = new SingletonClass(); 
-    
+
   public static SingletonClass getInstance() { 
     return instance; 
   } 
-    
+
   private SingletonClass() { 
-     
+
   } 
 }
 ```
 
 如上例，外部使用者如果需要使用SingletonClass的实例，只能通过getInstance\(\)方法，并且它的构造方法是private的，这样就保证了只能有一个对象存在。
 
-2. 性能优化——lazy loaded
+1. 性能优化——lazy loaded
 
 上面的代码虽然简单，但是有一个问题——无论这个类是否被使用，都会创建一个instance对象。如果这个创建过程很耗时，比如需要连接10000次数据库\(夸张了…:-\)\)，并且这个类还并不一定会被使用，那么这个创建过程就是无用的。怎么办呢？
 
@@ -33,18 +35,18 @@ public class SingletonClass {
 public class SingletonClass { 
 
   private static SingletonClass instance = null; 
-    
+
   public static SingletonClass getInstance() { 
     if(instance == null) { 
       instance = new SingletonClass(); 
     } 
     return instance; 
   } 
-    
+
   private SingletonClass() { 
-     
+
   } 
-    
+
 }
 ```
 
@@ -54,7 +56,7 @@ public class SingletonClass {
 
 这个过程就成为lazy loaded，也就是迟加载——直到使用的时候才进行加载。
 
-3. 同步
+1. 同步
 
 上面的代码很清楚，也很简单。然而就像那句名言：“80%的错误都是由20%代码优化引起的”。单线程下，这段代码没有什么问题，可是如果是多线程，麻烦就来了。我们来分析一下：
 
@@ -66,23 +68,23 @@ public class SingletonClass {
 public class SingletonClass { 
 
   private static SingletonClass instance = null; 
-    
+
   public synchronized static SingletonClass getInstance() { 
     if(instance == null) { 
       instance = new SingletonClass(); 
     } 
     return instance; 
   } 
-    
+
   private SingletonClass() { 
-     
+
   } 
 }
 ```
 
 是要getInstance\(\)加上同步锁，一个线程必须等待另外一个线程创建完成后才能使用这个方法，这就保证了单例的唯一性。
 
-4. 又是性能
+1. 又是性能
 
 上面的代码又是很清楚很简单的，然而，简单的东西往往不够理想。这段代码毫无疑问存在性能的问题——synchronized修饰的同步块可是要比一般的代码段慢上几倍的！如果存在很多次getInstance\(\)的调用，那性能问题就不得不考虑了！
 
@@ -92,7 +94,7 @@ public class SingletonClass {
 public class SingletonClass { 
 
   private static SingletonClass instance = null; 
-    
+
   public static SingletonClass getInstance() { 
     synchronized (SingletonClass.class) { 
       if(instance == null) { 
@@ -101,11 +103,11 @@ public class SingletonClass {
     }     
     return instance; 
   } 
-    
+
   private SingletonClass() { 
-     
+
   } 
-    
+
 }
 ```
 
@@ -137,7 +139,7 @@ public class SingletonClass {
 
 这就是double-checked locking设计实现单例模式。到此为止，一切都很完美。我们用一种很聪明的方式实现了单例模式。
 
-5. 从源头检查
+1. 从源头检查
 
 下面我们开始说编译原理。所谓编译，就是把源代码“翻译”成目标代码——大多数是指机器代码——的过程。针对Java，它的目标代码不是本地机器代码，而是虚拟机代码。编译原理里面有一个很重要的内容是编译器优化。所谓编译器优化是指，在不改变原来语义的情况下，通过调整语句顺序，来让程序运行的更快。这个过程成为reorder。
 
@@ -175,7 +177,7 @@ public class SingletonClass {
   private SingletonClass() { 
 
   } 
-    
+
 }
 ```
 
@@ -187,7 +189,7 @@ public class SingletonClass {
 
 的！同步块的释放保证在此之前——也就是同步块里面——的操作必须完成，但是并不保证同步块之后的操作不能因编译器优化而调换到同步块结束之前进行。因此，编译器完全可以把instance=sc;这句移到内部同步块里面执行。这样，程序又是错误的了！
 
-6. 解决方案
+1. 解决方案
 
 说了这么多，难道单例没有办法在Java中实现吗？其实不然！
 
@@ -219,7 +221,7 @@ public class SingletonClass {
 
 ```
 public class SingletonClass { 
-    
+
   private static class SingletonClassInstance { 
     private static final SingletonClass instance = new SingletonClass(); 
   } 
@@ -231,7 +233,7 @@ public class SingletonClass {
   private SingletonClass() { 
 
   } 
-    
+
 }
 ```
 
