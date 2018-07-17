@@ -26,7 +26,7 @@
 
 我们知道，数据结构的物理存储结构只有两种：_**顺序存储结构**和**链式存储结构**_（像栈，队列，树，图等是从逻辑结构去抽象的，映射到内存中，也这两种物理组织形式），而在上面我们提到过，在数组中根据下标查找某个元素，一次定位就可以达到，哈希表利用了这种特性，**哈希表的主干就是数组**。
 
-比如我们要新增或查找某个元素，我们通过把当前元素的关键字 通过某个函数映射到数组中的某个位置，通过数组下标一次定位就可完成操作。**      
+比如我们要新增或查找某个元素，我们通过把当前元素的关键字 通过某个函数映射到数组中的某个位置，通过数组下标一次定位就可完成操作。**        
 **
 
 **存储位置 = f\(关键字\)**
@@ -49,7 +49,7 @@ HashMap的主干是一个Node数组。Node是HashMap的基本组成单元，每�
 transient Node<K,V>[] table;
 ```
 
-> 注意：jdk1.8 是node数组，jdk以前的版本是entry数组
+> 注意：jdk1.8 是node数组，jdk以前的版本是entry数组，下面我还是会用以前的entry来讲解
 
 Node是HashMap中的一个静态内部类。代码如下：
 
@@ -136,4 +136,68 @@ public HashMap(int initialCapacity, float loadFactor) {
 ```
 
 从上面这段代码我们可以看出，**在常规构造器中，没有为数组table分配内存空间（有一个入参为指定Map的构造器例外），而是在执行put操作的时候才真正构建table数组**
+
+#### HashMap的存取实现
+
+```
+既然是线性数组，为什么能随机存取？这里HashMap用了一个小算法，大致是这样实现：
+
+
+// 存储时:
+int hash = key.hashCode(); // 这个hashCode方法这里不详述,只要理解每个key的hash是一个固定的int值
+int index = hash % Entry[].length;
+Entry[index] = value;
+
+// 取值时:
+int hash = key.hashCode();
+int index = hash % Entry[].length;
+return Entry[index];
+```
+
+### 1）put
+
+疑问：如果两个key通过hash%Entry\[\].length得到的index相同，会不会有覆盖的危险？
+
+　　这里HashMap里面用到链式数据结构的一个概念。上面我们提到过Entry类里面有一个next属性，作用是指向下一个Entry。打个比方， 第一个键值对A进来，通过计算其key的hash得到的index=0，记做:Entry\[0\] = A。一会后又进来一个键值对B，通过计算其index也等于0，现在怎么办？HashMap会这样做:
+
+B.next = A
+
+,Entry\[0\] = B,如果又进来C,index也等于0,那么
+
+C.next = B
+
+,Entry\[0\] = C；这样我们发现index=0的地方其实存取了A,B,C三个键值对,他们通过next这个属性链接在一起。所以疑问不用担心。
+
+也就是说数组中存储的是最后插入的元素。
+
+到这里为止，HashMap的大致实现，我们应该已经清楚了。
+
+```
+public V put(K key, V value) {
+        //如果table数组为空数组{}，进行数组填充（为table分配实际内存空间），入参为threshold，此时threshold为initialCapacity 默认是1<<4(24=16)
+        if (table == EMPTY_TABLE) {
+            inflateTable(threshold);
+        }
+       //如果key为null，存储位置为table[0]或table[0]的冲突链上
+        if (key == null)
+            return putForNullKey(value);
+        int hash = hash(key);//对key的hashcode进一步计算，确保散列均匀
+        int i = indexFor(hash, table.length);//获取在table中的实际位置
+        for (Entry<K,V> e = table[i]; e != null; e = e.next) {
+        //如果该对应数据已存在，执行覆盖操作。用新value替换旧value，并返回旧value
+            Object k;
+            if (e.hash == hash && ((k = e.key) == key || key.equals(k))) {
+                V oldValue = e.value;
+                e.value = value;
+                e.recordAccess(this);
+                return oldValue;
+            }
+        }
+        modCount++;//保证并发访问时，若HashMap内部结构发生变化，快速响应失败
+        addEntry(hash, key, value, i);//新增一个entry
+        return null;
+    }
+```
+
+　　当然HashMap里面也包含一些优化方面的实现，这里也说一下。比如：Entry\[\]的长度一定后，随着map里面数据的越来越长，这样同一个index的链就会很长，会不会影响性能？HashMap里面设置一个因子，随着map的size越来越大，Entry\[\]会以一定的规则加长长度。
 
