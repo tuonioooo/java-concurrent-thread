@@ -10,8 +10,6 @@
 
 **四、重写equals方法需同时重写hashCode方法**
 
-**五、总结**
-
 # 一、什么是哈希表
 
 在讨论哈希表之前，我们先大概了解下其他数据结构在新增，查找等基础操作执行性能
@@ -26,7 +24,7 @@
 
 我们知道，数据结构的物理存储结构只有两种：_**顺序存储结构**和**链式存储结构**_（像栈，队列，树，图等是从逻辑结构去抽象的，映射到内存中，也这两种物理组织形式），而在上面我们提到过，在数组中根据下标查找某个元素，一次定位就可以达到，哈希表利用了这种特性，**哈希表的主干就是数组**。
 
-比如我们要新增或查找某个元素，我们通过把当前元素的关键字 通过某个函数映射到数组中的某个位置，通过数组下标一次定位就可完成操作。**                  
+比如我们要新增或查找某个元素，我们通过把当前元素的关键字 通过某个函数映射到数组中的某个位置，通过数组下标一次定位就可完成操作。**                    
 **
 
 **存储位置 = f\(关键字\)**
@@ -319,7 +317,7 @@ private V putForNullKey(V value) {
         addEntry(0, null, value, 0);
         return null;
 }
- 
+
 private V getForNullKey() {
     for (Entry<K,V> e = table[0]; e != null; e = e.next) {
         if (e.key == null)
@@ -377,21 +375,71 @@ void transfer(Entry[] newTable, boolean rehash) {
 
 这个方法将老数组中的数据逐个链表地遍历，扔到新的扩容后的数组中，我们的数组索引位置的计算是通过 对key值的hashcode进行hash扰乱运算后，再通过和 length-1进行位运算得到最终数组索引位置。
 
-　　hashMap的数组长度一定保持2的次幂，比如16的二进制表示为 10000，那么length-1就是15，二进制为01111，同理扩容后的数组长度为32，二进制表示为100000，length-1为31，二进制表示为011111。从下图可以我们也能看到这样会保证低位全为1，而扩容后只有一位差异，也就是多出了最左位的1，这样在通过 h&\(length-1\)的时候，只要h对应的最左边的那一个差异位为0，就能保证得到的新的数组索引和老数组索引一致\(大大减少了之前已经散列良好的老数组的数据位置重新调换\)，个人理解。
+hashMap的数组长度一定保持2的次幂，比如16的二进制表示为 10000，那么length-1就是15，二进制为01111，同理扩容后的数组长度为32，二进制表示为100000，length-1为31，二进制表示为011111。从下图可以我们也能看到这样会保证低位全为1，而扩容后只有一位差异，也就是多出了最左位的1，这样在通过 h&\(length-1\)的时候，只要h对应的最左边的那一个差异位为0，就能保证得到的新的数组索引和老数组索引一致\(大大减少了之前已经散列良好的老数组的数据位置重新调换\)，个人理解。
 
 ![](https://images2015.cnblogs.com/blog/1024555/201611/1024555-20161115215812138-679881037.png)
 
- 还有，数组长度保持2的次幂，length-1的低位都为1，会使得获得的数组索引index更加均匀，比如：
+还有，数组长度保持2的次幂，length-1的低位都为1，会使得获得的数组索引index更加均匀，比如：
 
 ![](https://images2015.cnblogs.com/blog/1024555/201611/1024555-20161116001404732-625340289.png)
 
-　　我们看到，上面的&运算，高位是不会对结果产生影响的（hash函数采用各种位运算可能也是为了使得低位更加散列），我们只关注低位bit，如果低位全部为1，那么对于h低位部分来说，任何一位的变化都会对结果产生影响，也就是说，要得到index=21这个存储位置，h的低位只有这一种组合。这也是数组长度设计为必须为2的次幂的原因。
+我们看到，上面的&运算，高位是不会对结果产生影响的（hash函数采用各种位运算可能也是为了使得低位更加散列），我们只关注低位bit，如果低位全部为1，那么对于h低位部分来说，任何一位的变化都会对结果产生影响，也就是说，要得到index=21这个存储位置，h的低位只有这一种组合。这也是数组长度设计为必须为2的次幂的原因。
 
 ![](https://images2015.cnblogs.com/blog/1024555/201611/1024555-20161116001717560-1455096254.png)
 
-　　如果不是2的次幂，也就是低位不是全为1此时，要使得index=21，h的低位部分不再具有唯一性了，哈希冲突的几率会变的更大，同时，index对应的这个bit位无论如何不会等于1了，而对应的那些数组位置也就被白白浪费了。
+如果不是2的次幂，也就是低位不是全为1此时，要使得index=21，h的低位部分不再具有唯一性了，哈希冲突的几率会变的更大，同时，index对应的这个bit位无论如何不会等于1了，而对应的那些数组位置也就被白白浪费了。
 
+# 四、重写equals方法需同时重写hashCode方法
 
+关于HashMap的源码分析就介绍到这儿了，最后我们再聊聊老生常谈的一个问题，各种资料上都会提到，“重写equals时也要同时覆盖hashcode”，我们举个小例子来看看，如果重写了equals而不重写hashcode会发生什么样的问题
+
+```
+/**
+ * Created by chengxiao on 2016/11/15.
+ */
+public class MyTest {
+    private static class Person{
+        int idCard;
+        String name;
+
+        public Person(int idCard, String name) {
+            this.idCard = idCard;
+            this.name = name;
+        }
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()){
+                return false;
+            }
+            Person person = (Person) o;
+            //两个对象是否等值，通过idCard来确定
+            return this.idCard == person.idCard;
+        }
+
+    }
+    public static void main(String []args){
+        HashMap<Person,String> map = new HashMap<Person, String>();
+        Person person = new Person(1234,"乔峰");
+        //put到hashmap中去
+        map.put(person,"天龙八部");
+        //get取出，从逻辑上讲应该能输出“天龙八部”
+        System.out.println("结果:"+map.get(new Person(1234,"萧峰")));
+    }
+}
+```
+
+输出结果
+
+```
+结果：null
+```
+
+如果我们已经对HashMap的原理有了一定了解，这个结果就不难理解了。尽管我们在进行get和put操作的时候，使用的key从逻辑上讲是等值的（通过equals比较是相等的），但由于没有重写hashCode方法，所以put操作时，key\(hashcode1\)--&gt;hash--&gt;indexFor--&gt;最终索引位置 ，而通过key取出value的时候 key\(hashcode1\)--&gt;hash--&gt;indexFor--&gt;最终索引位置，由于hashcode1不等于hashcode2，导致没有定位到一个数组位置而返回逻辑上错误的值null（也有可能碰巧定位到一个数组位置，但是也会判断其entry的hash值是否相等，上面get方法中有提到。）
+
+　　所以，在重写equals的方法的时候，必须注意重写hashCode方法，同时还要保证通过equals判断相等的两个对象，调用hashCode方法要返回同样的整数值。而如果equals判断不相等的两个对象，其hashCode可以相同（只不过会发生哈希冲突，应尽量避免）。
 
 
 
