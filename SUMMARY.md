@@ -120,7 +120,7 @@
 * [Java常用并发开发工具和类的源码分析](javachang-yong-bing-fa-kai-fa-gong-ju-he-lei-de-yuan-ma-fen-xi.md)
   * [CountDownLatch](javachang-yong-bing-fa-kai-fa-gong-ju-he-lei-de-yuan-ma-fen-xi/countdownlatch.md)
   * [CyclicBarrier](javachang-yong-bing-fa-kai-fa-gong-ju-he-lei-de-yuan-ma-fen-xi/cyclicbarrier.md)
-  * Semaphore
+  * [Semaphore](javachang-yong-bing-fa-kai-fa-gong-ju-he-lei-de-yuan-ma-fen-xi/semaphore.md)
   * Exchange
   * ConcurrentHashMap
   * ConcurrentSkipListMap
