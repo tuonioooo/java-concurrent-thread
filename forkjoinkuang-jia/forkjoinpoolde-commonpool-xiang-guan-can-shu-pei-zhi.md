@@ -158,7 +158,6 @@ System.setProperty("java.util.concurrent.ForkJoinPool.common.threadFactory",Your
 
 ```
 -Djava.util.concurrent.ForkJoinPool.common.threadFactory=com.xxx.xxx.YourForkJoinWorkerThreadFactory
-
 ```
 
 * exceptionHandler
@@ -222,7 +221,6 @@ System.setProperty("java.util.concurrent.ForkJoinPool.common.exceptionHandler",Y
 
 ```
 -Djava.util.concurrent.ForkJoinPool.common.exceptionHandler=com.xxx.xxx.YourUncaughtExceptionHandler
-
 ```
 
 ## WorkQueue {#articleHeader4}
@@ -248,15 +246,65 @@ System.setProperty("java.util.concurrent.ForkJoinPool.common.exceptionHandler",Y
 
 > ForkJoinPool 的每个工作线程都维护着一个工作队列（WorkQueue），这是一个双端队列（Deque），里面存放的对象是任务（ForkJoinTask）。
 >
->   
->
->
-> 每个工作线程在运行中产生新的任务（通常是因为调用了 fork\(\)）时，会放入工作队列的队尾，并且工作线程在处理自己的工作队列时，使用的是 LIFO 方式，也就是说每次从队尾取出任务来执行。
->
->   
->
+> 每个工作线程在运行中产生新的任务（通常是因为调用了 fork\(\)）时，会放入工作队列的队尾，并且工作线程在处理自己的工作队列时，使用的是 LIFO 方式，也就是说每次从队尾取出任务来执行
 >
 > 每个工作线程在处理自己的工作队列同时，会尝试窃取一个任务（或是来自于刚刚提交到 pool的任务，或是来自于其他工作线程的工作队列），窃取的任务位于其他线程的工作队列的队首，也就是说工作线程在窃取其他工作线程的任务时，使用的是 FIFO 方式。
+
+* queue capacity
+
+```
+/**
+         * Capacity of work-stealing queue array upon initialization.
+         * Must be a power of two; at least 4, but should be larger to
+         * reduce or eliminate cacheline sharing among queues.
+         * Currently, it is much larger, as a partial workaround for
+         * the fact that JVMs often place arrays in locations that
+         * share GC bookkeeping (especially cardmarks) such that
+         * per-write accesses encounter serious memory contention.
+         */
+        static final int INITIAL_QUEUE_CAPACITY = 1 << 13;
+
+        /**
+         * Maximum size for queue arrays. Must be a power of two less
+         * than or equal to 1 << (31 - width of array entry) to ensure
+         * lack of wraparound of index calculations, but defined to a
+         * value a bit less than this to help users trap runaway
+         * programs before saturating systems.
+         */
+        static final int MAXIMUM_QUEUE_CAPACITY = 1 << 26; // 64M
+```
+
+超出报异常
+
+```
+        /**
+         * Initializes or doubles the capacity of array. Call either
+         * by owner or with lock held -- it is OK for base, but not
+         * top, to move while resizings are in progress.
+         */
+        final ForkJoinTask<?>[] growArray() {
+            ForkJoinTask<?>[] oldA = array;
+            int size = oldA != null ? oldA.length << 1 : INITIAL_QUEUE_CAPACITY;
+            if (size > MAXIMUM_QUEUE_CAPACITY)
+                throw new RejectedExecutionException("Queue capacity exceeded");
+            int oldMask, t, b;
+            ForkJoinTask<?>[] a = array = new ForkJoinTask<?>[size];
+            if (oldA != null && (oldMask = oldA.length - 1) >= 0 &&
+                (t = top) - (b = base) > 0) {
+                int mask = size - 1;
+                do { // emulate poll from old array, push to new array
+                    ForkJoinTask<?> x;
+                    int oldj = ((b & oldMask) << ASHIFT) + ABASE;
+                    int j    = ((b &    mask) << ASHIFT) + ABASE;
+                    x = (ForkJoinTask<?>)U.getObjectVolatile(oldA, oldj);
+                    if (x != null &&
+                        U.compareAndSwapObject(oldA, oldj, x, null))
+                        U.putObjectVolatile(a, j, x);
+                } while (++b != t);
+            }
+            return a;
+        }
+```
 
 
 
