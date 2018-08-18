@@ -107,10 +107,156 @@ static {
 
 > 通过代码指定，必须得在commonPool初始化之前（parallel的stream被调用之前，一般可在系统启动后设置）注入进去，否则无法生效。
 >
+> 通过启动参数指定无此限制，较为安全
+
+* parallelism\(`即配置线程池个数`\)
+
+  可以通过java.util.concurrent.ForkJoinPool.common.parallelism进行配置，最大值不能超过MAX\_CAP,即32767.
+
+```
+static final int MAX_CAP = 0x7fff; //32767
+```
+
+如果没有指定，则默认为Runtime.getRuntime\(\).availableProcessors\(\) - 1.
+
+代码指定\(`必须得在commonPool初始化之前注入进去，否则无法生效`\)
+
+```
+System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "8");
+```
+
+或者参数指定
+
+```
+-Djava.util.concurrent.ForkJoinPool.common.parallelism=8
+```
+
+* threadFactory
+
+默认为defaultForkJoinWorkerThreadFactory，没有securityManager的话。
+
+```
+/**
+     * Default ForkJoinWorkerThreadFactory implementation; creates a
+     * new ForkJoinWorkerThread.
+     */
+    static final class DefaultForkJoinWorkerThreadFactory
+        implements ForkJoinWorkerThreadFactory {
+        public final ForkJoinWorkerThread newThread(ForkJoinPool pool) {
+            return new ForkJoinWorkerThread(pool);
+        }
+    }
+```
+
+代码指定\(`必须得在commonPool初始化之前注入进去，否则无法生效`\)
+
+```
+System.setProperty("java.util.concurrent.ForkJoinPool.common.threadFactory",YourForkJoinWorkerThreadFactory.class.getName());
+```
+
+参数指定
+
+```
+-Djava.util.concurrent.ForkJoinPool.common.threadFactory=com.xxx.xxx.YourForkJoinWorkerThreadFactory
+
+```
+
+* exceptionHandler
+
+如果没有设置，默认为null
+
+```
+/**
+     * Callback from ForkJoinWorkerThread constructor to establish and
+     * record its WorkQueue.
+     *
+     * @param wt the worker thread
+     * @return the worker's queue
+     */
+    final WorkQueue registerWorker(ForkJoinWorkerThread wt) {
+        UncaughtExceptionHandler handler;
+        wt.setDaemon(true);                           // configure thread
+        if ((handler = ueh) != null)
+            wt.setUncaughtExceptionHandler(handler);
+        WorkQueue w = new WorkQueue(this, wt);
+        int i = 0;                                    // assign a pool index
+        int mode = config & MODE_MASK;
+        int rs = lockRunState();
+        try {
+            WorkQueue[] ws; int n;                    // skip if no array
+            if ((ws = workQueues) != null && (n = ws.length) > 0) {
+                int s = indexSeed += SEED_INCREMENT;  // unlikely to collide
+                int m = n - 1;
+                i = ((s << 1) | 1) & m;               // odd-numbered indices
+                if (ws[i] != null) {                  // collision
+                    int probes = 0;                   // step by approx half n
+                    int step = (n <= 4) ? 2 : ((n >>> 1) & EVENMASK) + 2;
+                    while (ws[i = (i + step) & m] != null) {
+                        if (++probes >= n) {
+                            workQueues = ws = Arrays.copyOf(ws, n <<= 1);
+                            m = n - 1;
+                            probes = 0;
+                        }
+                    }
+                }
+                w.hint = s;                           // use as random seed
+                w.config = i | mode;
+                w.scanState = i;                      // publication fence
+                ws[i] = w;
+            }
+        } finally {
+            unlockRunState(rs, rs & ~RSLOCK);
+        }
+        wt.setName(workerNamePrefix.concat(Integer.toString(i >>> 1)));
+        return w;
+    }
+```
+
+代码指定\(`必须得在commonPool初始化之前注入进去，否则无法生效`\)
+
+```
+System.setProperty("java.util.concurrent.ForkJoinPool.common.exceptionHandler",YourUncaughtExceptionHandler.class.getName());
+```
+
+参数指定
+
+```
+-Djava.util.concurrent.ForkJoinPool.common.exceptionHandler=com.xxx.xxx.YourUncaughtExceptionHandler
+
+```
+
+## WorkQueue {#articleHeader4}
+
+```
+// Mode bits for ForkJoinPool.config and WorkQueue.config
+    static final int MODE_MASK    = 0xffff << 16;  // top half of int
+    static final int LIFO_QUEUE   = 0;
+    static final int FIFO_QUEUE   = 1 << 16;
+    static final int SHARED_QUEUE = 1 << 31;       // must be negative
+```
+
+控制是FIFO还是LIFO
+
+```
+   /**
+         * Takes next task, if one exists, in order specified by mode.
+         */
+        final ForkJoinTask<?> nextLocalTask() {
+            return (config & FIFO_QUEUE) == 0 ? pop() : poll();
+        }
+```
+
+> ForkJoinPool 的每个工作线程都维护着一个工作队列（WorkQueue），这是一个双端队列（Deque），里面存放的对象是任务（ForkJoinTask）。
+>
 >   
 >
 >
-> 通过启动参数指定无此限制，较为安全
+> 每个工作线程在运行中产生新的任务（通常是因为调用了 fork\(\)）时，会放入工作队列的队尾，并且工作线程在处理自己的工作队列时，使用的是 LIFO 方式，也就是说每次从队尾取出任务来执行。
+>
+>   
+>
+>
+> 每个工作线程在处理自己的工作队列同时，会尝试窃取一个任务（或是来自于刚刚提交到 pool的任务，或是来自于其他工作线程的工作队列），窃取的任务位于其他线程的工作队列的队首，也就是说工作线程在窃取其他工作线程的任务时，使用的是 FIFO 方式。
 
 
 
