@@ -51,7 +51,7 @@ static final class Segment<K,V> extends ReentrantLock implements Serializable {
 
 原理上来说：ConcurrentHashMap 采用了分段锁技术，其中 Segment 继承于 ReentrantLock。不会像 HashTable 那样不管是 put 还是 get 操作都需要做同步处理，理论上 ConcurrentHashMap 支持 CurrencyLevel \(Segment 数组数量\)的线程并发。每当一个线程占用锁访问一个 Segment 时，不会影响到其他的 Segment。
 
-核心的 put get 方法
+核心的 put get 方法
 
 #### **put 方法**
 
@@ -119,7 +119,7 @@ final V put(K key, int hash, V value, boolean onlyIfAbsent) {
 
 虽然 HashEntry 中的 value 是用 volatile 关键词修饰的，但是并不能保证并发的原子性，所以 put 操作时仍然需要加锁处理。
 
-首先第一步的时候会尝试获取锁，如果获取失败肯定就有其他线程存在竞争，则利用 scanAndLockForPut\(\) 自旋获取锁。
+首先第一步的时候会尝试获取锁，如果获取失败肯定就有其他线程存在竞争，则利用 scanAndLockForPut\(\) 自旋获取锁。
 
 ![](https://mmbiz.qpic.cn/mmbiz_jpg/csD7FygBVl2YrHfgckicQvCZFaT240KJuQahXKiaeuX1t5Xn8vqMhDpCic05KvuyvN5lrrK17BlDiaE2Qrh4aw9KAQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1)1.尝试自旋获取锁。
 
@@ -161,13 +161,30 @@ get 逻辑比较简单：
 
 只需要将 Key 通过 Hash 之后定位到具体的 Segment ，再通过一次 Hash 定位到具体的元素上。
 
-  
-
-
 由于 HashEntry 中的 value 属性是用 volatile 关键词修饰的，保证了内存可见性，所以每次获取时都是最新值。
 
+ConcurrentHashMap 的 get 方法是非常高效的，因为整个过程都不需要加锁。
+
+* ### **Base 1.8**
+
+1.7 已经解决了并发问题，并且能支持 N 个 Segment 这么多次数的并发，但依然存在 HashMap 在 1.7 版本中的问题。
+
+> 那就是查询遍历链表效率太低。
+
+因此 1.8 做了一些数据结构上的调整。
+
+首先来看下底层的组成结构：
+
+![](https://mmbiz.qpic.cn/mmbiz_jpg/csD7FygBVl2YrHfgckicQvCZFaT240KJuUfRMPmJ4ib95BpUVDkecPy5kBCXxdq15XzO6MMhH5FRvsADhwFXZI5Q/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1)
+
+看起来是不是和 1.8 HashMap 结构类似？
+
   
 
 
-ConcurrentHashMap 的 get 方法是非常高效的，因为整个过程都不需要加锁。
+其中抛弃了原有的 Segment 分段锁，而采用了 CAS + synchronized 来保证并发安全性。
+
+
+
+
 
