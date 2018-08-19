@@ -1,5 +1,7 @@
 # ConcurrentHashMap讲解\(一\)
 
+原文：https://mp.weixin.qq.com/s/wNmAi1FICNu7rkmCe1GDyw
+
 ConcurrentHashMap 同样也分为 1.7 、1.8 版，两者在实现上略有不同。
 
 * ### **Base 1.7**
@@ -208,13 +210,7 @@ ConcurrentHashMap 的 get 方法是非常高效的，因为整个过程都不需
 
 ## **总结**
 
-  
-
-
 看完了整个 HashMap 和 ConcurrentHashMap 在 1.7 和 1.8 中不同的实现方式相信大家对他们的理解应该会更加到位。
-
-  
-
 
 其实这块也是面试的重点内容，通常的套路是：
 
@@ -230,13 +226,7 @@ ConcurrentHashMap 的 get 方法是非常高效的，因为整个过程都不需
 
 6. ConcurrentHashMap 是如何实现的？ 1.7、1.8 实现有何不同？为什么这么做？
 
-  
-
-
 这一串问题相信大家仔细看完都能怼回面试官。
 
-  
-
-
-除了面试会问到之外平时的应用其实也蛮多，像之前谈到的 [Guava](http://mp.weixin.qq.com/s?__biz=MzIyMzgyODkxMQ==&mid=2247483822&idx=1&sn=6bbb43401ba3d7f0241943daa7229c5a&chksm=e8190f6edf6e86785c5bf3914782d6b5bba9f13802c2f0c5c63cb03eb4e16c81ce9011238898&scene=21#wechat_redirect) 中 Cache 的实现就是利用 ConcurrentHashMap 的思想。同时也能学习 JDK 作者大牛们的优化思路以及并发解决方案。
+除了面试会问到之外平时的应用其实也蛮多，像之前谈到的 [Guava](http://mp.weixin.qq.com/s?__biz=MzIyMzgyODkxMQ==&mid=2247483822&idx=1&sn=6bbb43401ba3d7f0241943daa7229c5a&chksm=e8190f6edf6e86785c5bf3914782d6b5bba9f13802c2f0c5c63cb03eb4e16c81ce9011238898&scene=21#wechat_redirect) 中 Cache 的实现就是利用 ConcurrentHashMap 的思想。同时也能学习 JDK 作者大牛们的优化思路以及并发解决方案。
 
