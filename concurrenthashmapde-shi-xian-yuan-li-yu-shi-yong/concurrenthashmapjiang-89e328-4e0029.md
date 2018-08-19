@@ -183,7 +183,7 @@ ConcurrentHashMap 的 get 方法是非常高效的，因为整个过程都不需
 
 ![](https://mmbiz.qpic.cn/mmbiz_jpg/csD7FygBVl2YrHfgckicQvCZFaT240KJuX0QiaOcnzqugCVfdNR0KRDHlMOic8Pn7TZ0BcG8Oc1NBiaZSgVsmQGt2g/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1)也将 1.7 中存放数据的 HashEntry 改为 Node，但作用都是相同的。
 
-其中的 val next 都用了 volatile 修饰，保证了可见性。
+其中的 val next 都用了 volatile 修饰，保证了可见性。
 
 #### **put 方法**
 
@@ -191,14 +191,52 @@ ConcurrentHashMap 的 get 方法是非常高效的，因为整个过程都不需
 
 1. 根据 key 计算出 hashcode 。
 2. 判断是否需要进行初始化。
-3. f 即为当前 key 定位出的 Node，如果为空表示当前位置可以写入数据，利用 CAS 尝试写入，失败则自旋保证成功。
-4. 如果当前位置的 hashcode == MOVED == -1,则需要进行扩容。
+3. f 即为当前 key 定位出的 Node，如果为空表示当前位置可以写入数据，利用 CAS 尝试写入，失败则自旋保证成功。
+4. 如果当前位置的 hashcode == MOVED == -1,则需要进行扩容。
 5. 如果都不满足，则利用 synchronized 锁写入数据。
-6. 如果数量大于 TREEIFY\_THRESHOLD 则要转换为红黑树。
+6. 如果数量大于 TREEIFY\_THRESHOLD 则要转换为红黑树。
+
+#### **get 方法**
+
+![](https://mmbiz.qpic.cn/mmbiz_jpg/csD7FygBVl2YrHfgckicQvCZFaT240KJuKGCGoSfbyPIEV7gea97OXFVVicDU4qYicxprd6xJjeLcfjQUTgBIqBaA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1)
+
+1. 根据计算出来的 hashcode 寻址，如果就在桶上那么直接返回值。
+2. 如果是红黑树那就按照树的方式获取值。
+3. 就不满足那就按照链表的方式遍历获取值。
+
+> 1.8 在 1.7 的数据结构上做了大的改动，采用红黑树之后可以保证查询效率（O\(logn\)），甚至取消了 ReentrantLock 改为了 synchronized，这样可以看出在新版的 JDK 中对 synchronized 优化是很到位的。
+
+## **总结**
+
+  
 
 
+看完了整个 HashMap 和 ConcurrentHashMap 在 1.7 和 1.8 中不同的实现方式相信大家对他们的理解应该会更加到位。
+
+  
 
 
+其实这块也是面试的重点内容，通常的套路是：
+
+1. 谈谈你理解的 HashMap，讲讲其中的 get put 过程。
+
+2. 1.8 做了什么优化？
+
+3. 是线程安全的嘛？
+
+4. 不安全会导致哪些问题？
+
+5. 如何解决？有没有线程安全的并发容器？
+
+6. ConcurrentHashMap 是如何实现的？ 1.7、1.8 实现有何不同？为什么这么做？
+
+  
 
 
+这一串问题相信大家仔细看完都能怼回面试官。
+
+  
+
+
+除了面试会问到之外平时的应用其实也蛮多，像之前谈到的 [Guava](http://mp.weixin.qq.com/s?__biz=MzIyMzgyODkxMQ==&mid=2247483822&idx=1&sn=6bbb43401ba3d7f0241943daa7229c5a&chksm=e8190f6edf6e86785c5bf3914782d6b5bba9f13802c2f0c5c63cb03eb4e16c81ce9011238898&scene=21#wechat_redirect) 中 Cache 的实现就是利用 ConcurrentHashMap 的思想。同时也能学习 JDK 作者大牛们的优化思路以及并发解决方案。
 
