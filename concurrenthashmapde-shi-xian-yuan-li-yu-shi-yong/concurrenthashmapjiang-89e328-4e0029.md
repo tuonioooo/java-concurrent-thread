@@ -179,10 +179,24 @@ ConcurrentHashMap 的 get 方法是非常高效的，因为整个过程都不需
 
 看起来是不是和 1.8 HashMap 结构类似？
 
-  
+其中抛弃了原有的 Segment 分段锁，而采用了 CAS + synchronized 来保证并发安全性。
+
+![](https://mmbiz.qpic.cn/mmbiz_jpg/csD7FygBVl2YrHfgckicQvCZFaT240KJuX0QiaOcnzqugCVfdNR0KRDHlMOic8Pn7TZ0BcG8Oc1NBiaZSgVsmQGt2g/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1)也将 1.7 中存放数据的 HashEntry 改为 Node，但作用都是相同的。
+
+其中的 val next 都用了 volatile 修饰，保证了可见性。
+
+#### **put 方法**
+
+![](https://mmbiz.qpic.cn/mmbiz_jpg/csD7FygBVl2YrHfgckicQvCZFaT240KJu606XAOtEmOlp5WZyCNUL2PklOSq1SgbWtoNy06MpyVW3euNqibLRibWg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1)
+
+1. 根据 key 计算出 hashcode 。
+2. 判断是否需要进行初始化。
+3. f 即为当前 key 定位出的 Node，如果为空表示当前位置可以写入数据，利用 CAS 尝试写入，失败则自旋保证成功。
+4. 如果当前位置的 hashcode == MOVED == -1,则需要进行扩容。
+5. 如果都不满足，则利用 synchronized 锁写入数据。
+6. 如果数量大于 TREEIFY\_THRESHOLD 则要转换为红黑树。
 
 
-其中抛弃了原有的 Segment 分段锁，而采用了 CAS + synchronized 来保证并发安全性。
 
 
 
