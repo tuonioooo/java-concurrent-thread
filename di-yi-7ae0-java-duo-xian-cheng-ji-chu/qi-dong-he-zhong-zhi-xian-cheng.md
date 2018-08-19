@@ -1,4 +1,4 @@
-# [启动和终止线程](/di-yi-7ae0-java-duo-xian-cheng-ji-chu/qi-dong-he-zhong-zhi-xian-cheng.md)
+# 启动和终止线程
 
 ## 目录
 
