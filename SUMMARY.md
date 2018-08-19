@@ -95,6 +95,7 @@
   * [ConcurrentHashMap的初始化](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/concurrenthashmapde-chu-shi-hua.md)
   * [定位Segment](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/ding-wei-segment.md)
   * [ConcurrentHashMap的操作](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/concurrenthashmapde-cao-zuo.md)
+  * [ConcurrentHashMap讲解\(一\)](concurrenthashmapde-shi-xian-yuan-li-yu-shi-yong/concurrenthashmapjiang-89e328-4e0029.md)
 * [Java中的阻塞队列](javazhong-de-zu-sai-dui-lie.md)
   * [什么是阻塞队列](javazhong-de-zu-sai-dui-lie/shi-yao-shi-zu-sai-dui-lie.md)
   * [Java里的阻塞队列](javazhong-de-zu-sai-dui-lie/javali-de-zu-sai-dui-lie.md)
