@@ -84,7 +84,7 @@
     * [处理器的内存模型](di-san-zhang-java-nei-cun-mo-xing/javanei-cun-mo-xing-zong-shu/chu-li-qi-de-nei-cun-mo-xing.md)
     * [各种内存模型之间的关系](di-san-zhang-java-nei-cun-mo-xing/javanei-cun-mo-xing-zong-shu/ge-zhong-nei-cun-mo-xing-zhi-jian-de-guan-xi.md)
     * [JMM的内存可见性保证](di-san-zhang-java-nei-cun-mo-xing/javanei-cun-mo-xing-zong-shu/jmmde-nei-cun-ke-jian-xing-bao-zheng.md)
-    * JSR-133对旧内存模型的修补
+    * [JSR-133对旧内存模型的修补](di-san-zhang-java-nei-cun-mo-xing/javanei-cun-mo-xing-zong-shu/jsr-133dui-jiu-nei-cun-mo-xing-de-xiu-bu.md)
 * [HashMap实现原理](hashmapshi-xian-yuan-li.md)
   * [讲解\(一\)](yuan-li-ff08-yi-ff09.md)
   * [讲解\(二\)](jiang-89e328-4e8c29.md)
