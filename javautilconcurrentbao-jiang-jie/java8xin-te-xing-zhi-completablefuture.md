@@ -26,5 +26,12 @@ github demo示例：
 
 [https://www.jianshu.com/p/6f3ee90ab7d3](https://www.jianshu.com/p/6f3ee90ab7d3)
 
-[https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html?is-external=true](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html?is-external=true)
+[https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html?is-external=true](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html?is-external=true) 
+
+## 目录
+
+* [CompletableFuture接口详解](/javautilconcurrentbao-jiang-jie/java8xin-te-xing-zhi-completablefuture/completablefuture4e0029.md) 
+* [CompletableFuture与parallelStream\(\)性能差异](/javautilconcurrentbao-jiang-jie/java8xin-te-xing-zhi-completablefuture/completablefutureyu-parallelstream-xing-neng-cha-yi.md)
+
+
 
