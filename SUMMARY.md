@@ -131,4 +131,6 @@
     * [HashMap源码实现及分析](javachang-yong-bing-fa-kai-fa-gong-ju-he-lei-de-yuan-ma-fen-xi/hashmap/hashmapyuan-ma-shi-xian-ji-fen-xi.md)
     * [HashMap的一些面试题](javachang-yong-bing-fa-kai-fa-gong-ju-he-lei-de-yuan-ma-fen-xi/hashmap/hashmapde-yi-xie-mian-shi-ti.md)
   * [List](javachang-yong-bing-fa-kai-fa-gong-ju-he-lei-de-yuan-ma-fen-xi/list.md)
+* [Java中的锁](javazhong-de-suo.md)
+  * [基础知识](javazhong-de-suo/ji-chu-zhi-shi.md)
 
