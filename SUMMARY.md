@@ -134,4 +134,6 @@
 * [Java中的锁](javazhong-de-suo.md)
   * [基础知识](javazhong-de-suo/ji-chu-zhi-shi.md)
   * [番外篇](javazhong-de-suo/fan-wai-pian.md)
+* [Java多线程的常见问题](javaduo-xian-cheng-de-chang-jian-wen-ti.md)
+  * [常见问题一](javaduo-xian-cheng-de-chang-jian-wen-ti/chang-jian-wen-ti-yi.md)
 
