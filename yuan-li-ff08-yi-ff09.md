@@ -14,9 +14,6 @@ HashMap实际上是一个“链表散列”的数据结构，即数组和链表�
 链表：存储区间离散，占用内存比较宽松，寻址困难，插入删除容易；  
 Hashmap综合应用了这两种数据结构，实现了寻址容易，插入删除也容易。
 
-hashMap的结构示意图如下：  
-![](https://img-blog.csdn.net/20170208131626900?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbHl0XzdjczFkbjk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "这里写图片描述")
-
 ## HashMap的基本存储原理以及存储内容的组成 {#hashmap的基本存储原理以及存储内容的组成}
 
 基本原理：先声明一个下标范围比较大的数组来存储元素。另外设计一个哈希函数（也叫做散列函数）来获得每一个元素的Key（关键字）的函数值（即数组下标，hash值）相对应，数组存储的元素是一个Entry类，这个类有三个数据域，key、value（键值对），next\(指向下一个Entry\)。  
