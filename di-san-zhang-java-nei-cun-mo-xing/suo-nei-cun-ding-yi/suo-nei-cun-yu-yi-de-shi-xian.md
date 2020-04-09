@@ -4,9 +4,7 @@
 
 请看下面的示例代码：
 
----
-
-```
+```text
 class ReentrantLockExample {
     int a = 0;
     ReentrantLock lock = new ReentrantLock();
@@ -30,8 +28,6 @@ class ReentrantLockExample {
 }
 ```
 
----
-
 在ReentrantLock中，调用lock\(\)方法获取锁；调用unlock\(\)方法释放锁。
 
 ReentrantLock的实现依赖于Java同步器框架AbstractQueuedSynchronizer（本文简称之为
@@ -44,7 +40,7 @@ AQS）。AQS使用一个整型的volatile变量（命名为state）来维护同�
 
 图3-5-3-1
 
-![](/assets/import-3-5-3-1.png)
+![](../../.gitbook/assets/import-3-5-3-1.png)
 
 ReentrantLock分为公平锁和非公平锁，我们首先分析公平锁。
 
@@ -60,9 +56,7 @@ ReentrantLock分为公平锁和非公平锁，我们首先分析公平锁。
 
 在第4步真正开始加锁，下面是该方法的源代码：
 
----
-
-```
+```text
 protected final boolean tryAcquire(int acquires) {
         final Thread current = Thread.currentThread();
         int c = getState();　　　　// 获取锁的开始，首先读volatile变量state
@@ -84,8 +78,6 @@ protected final boolean tryAcquire(int acquires) {
     }
 ```
 
----
-
 从上面源代码中我们可以看出，加锁方法首先读volatile变量state。
 
 在使用公平锁时，解锁方法unlock\(\)调用轨迹如下。
@@ -98,9 +90,7 @@ protected final boolean tryAcquire(int acquires) {
 
 在第3步真正开始释放锁，下面是该方法的源代码：
 
----
-
-```
+```text
 protected final boolean tryRelease(int releases) {
         int c = getState() - releases;
         if (Thread.currentThread() != getExclusiveOwnerThread())
@@ -115,8 +105,6 @@ protected final boolean tryRelease(int releases) {
     }
 ```
 
----
-
 从上面的源代码可以看出，在释放锁的最后写volatile变量state。
 
 公平锁在释放锁的最后写volatile变量state，在获取锁时首先读这个volatile变量。根据volatile的happens-before规则，释放锁的线程在写volatile变量之前可见的共享变量，在获取锁的线程读取同一个volatile变量后将立即变得对获取锁的线程可见。
@@ -129,15 +117,11 @@ protected final boolean tryRelease(int releases) {
 
 3）AbstractQueuedSynchronizer:compareAndSetState\(int expect,int update\)。
 
----
-
-```
+```text
 protected final boolean compareAndSetState(int expect, int update) {
         return unsafe.compareAndSwapInt(this, stateOffset, expect, update);
     }
 ```
-
----
 
 该方法以原子操作的方式更新state变量，本文把Java的compareAndSet\(\)方法调用简称为CAS。
 
@@ -147,7 +131,7 @@ JDK文档对该方法的说明如下：如果当前状态值等于预期值，�
 
 下面是sun.misc.Unsafe类的compareAndSwapInt\(\)方法的源代码。
 
-```
+```text
 public final native boolean compareAndSwapInt(Object o, long offset,int expected,int x);
 ```
 
@@ -155,7 +139,7 @@ public final native boolean compareAndSwapInt(Object o, long offset,int expected
 
 unsafe.cpp，atomic.cpp和atomic\_windows\_x86.inline.hpp。这个本地方法的最终实现在openjdk的如下位置：openjdk-7-fcs-src-b147-27\_jun\_2011\openjdk\hotspot\src\os\_cpu\windows\_x86\vm\atomic\_windows\_x86.inline.hpp（对应于Windows操作系统，X86处理器）。下面是对应于intel X86处理器的源代码的片段。
 
-```
+```text
 inline jint Atomic::cmpxchg (jint exchange_value, volatile jint* dest,
 jint compare_value) {
 // alternative for InterlockedCompareExchange

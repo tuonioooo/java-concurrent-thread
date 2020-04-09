@@ -1,5 +1,7 @@
 # HashMap源码实现及分析
 
+## HashMap源码实现及分析
+
 **目录**
 
 **一、什么是哈希表**
@@ -10,7 +12,7 @@
 
 **四、重写equals方法需同时重写hashCode方法**
 
-# 一、什么是哈希表
+## 一、什么是哈希表
 
 在讨论哈希表之前，我们先大概了解下其他数据结构在新增，查找等基础操作执行性能
 
@@ -24,8 +26,8 @@
 
 我们知道，数据结构的物理存储结构只有两种：_**顺序存储结构**和**链式存储结构**_（像栈，队列，树，图等是从逻辑结构去抽象的，映射到内存中，也这两种物理组织形式），而在上面我们提到过，在数组中根据下标查找某个元素，一次定位就可以达到，哈希表利用了这种特性，**哈希表的主干就是数组**。
 
-比如我们要新增或查找某个元素，我们通过把当前元素的关键字 通过某个函数映射到数组中的某个位置，通过数组下标一次定位就可完成操作。**                    
-**
+比如我们要新增或查找某个元素，我们通过把当前元素的关键字 通过某个函数映射到数组中的某个位置，通过数组下标一次定位就可完成操作。    
+****
 
 **存储位置 = f\(关键字\)**
 
@@ -39,17 +41,17 @@
 
 然而万事无完美，如果两个不同的元素，通过哈希函数得出的实际存储地址相同怎么办？也就是说，当我们对某个元素进行哈希运算，得到一个存储地址，然后要进行插入的时候，发现已经被其他元素占用了，其实这就是所谓的**哈希冲突**，也叫哈希碰撞。前面我们提到过，哈希函数的设计至关重要，好的哈希函数会尽可能地保证**计算简单**和**散列地址分布均匀,**但是，我们需要清楚的是，数组是一块连续的固定长度的内存空间，再好的哈希函数也不能保证得到的存储地址绝对不发生冲突。那么哈希冲突如何解决呢？哈希冲突的解决方案有多种:开放定址法（发生冲突，继续寻找下一块未被占用的存储地址），再散列函数法，链地址法，而HashMap即是采用了链地址法，也就是**数组+链表**的方式，我们可以理解为“链表的数组”。
 
-# 二、HashMap实现原理
+## 二、HashMap实现原理
 
 HashMap的主干是一个Node数组。Node是HashMap的基本组成单元，每一个Node包含一个key-value键值对。
 
-```
+```text
 transient Node<K,V>[] table;
 ```
 
 Node是HashMap中的一个静态内部类。代码如下：
 
-```
+```text
 static class Node<K,V> implements Map.Entry<K,V> {
         final int hash;
         final K key;
@@ -101,7 +103,7 @@ static class Node<K,V> implements Map.Entry<K,V> {
 
 其他几个重要字段
 
-```
+```text
 //实际存储的key-value键值对的个数
 transient int size;
 //阈值，当table == {}时，该值为初始容量（初始容量默认为16）；当table被填充了，也就是为table分配内存空间后，threshold一般为 capacity*loadFactory。HashMap在进行扩容时需要参考threshold，后面会详细谈到
@@ -114,7 +116,7 @@ transient int modCount;
 
 HashMap有4个构造器，其他构造器如果用户没有传入initialCapacity 和loadFactor这两个参数，会使用默认值initialCapacity默认为16，loadFactory默认为0.75我们看下其中一个
 
-```
+```text
 public HashMap(int initialCapacity, float loadFactor) {
 　　　　　//此处对传入的初始容量进行校验，最大不能超过MAXIMUM_CAPACITY = 1<<30(230)
         if (initialCapacity < 0)
@@ -137,7 +139,7 @@ public HashMap(int initialCapacity, float loadFactor) {
 
 #### HashMap的存取实现
 
-```
+```text
 既然是线性数组，为什么能随机存取？这里HashMap用了一个小算法，大致是这样实现：
 
 
@@ -170,7 +172,7 @@ C.next = B
 
 到这里为止，HashMap的大致实现，我们应该已经清楚了。
 
-```
+```text
 public V put(K key, V value) {
         //如果table数组为空数组{}，进行数组填充（为table分配实际内存空间），入参为threshold，此时threshold为initialCapacity 默认是1<<4(24=16)
         if (table == EMPTY_TABLE) {
@@ -201,7 +203,7 @@ public V put(K key, V value) {
 
 inflateTable方法：
 
-```
+```text
 private void inflateTable(int toSize) {
         int capacity = roundUpToPowerOf2(toSize);//capacity一定是2的次幂
         threshold = (int) Math.min(capacity * loadFactor, MAXIMUM_CAPACITY + 1);//此处为threshold赋值，取capacity*loadFactor和MAXIMUM_CAPACITY+1的最小值，capaticy一定不会超过MAXIMUM_CAPACITY，除非loadFactor大于1
@@ -212,7 +214,7 @@ private void inflateTable(int toSize) {
 
 inflateTable这个方法用于为主干数组table在内存中分配存储空间，通过roundUpToPowerOf2\(toSize\)可以确保capacity为大于或等于toSize的最接近toSize的二次幂，比如toSize=13,则capacity=16;to\_size=16,capacity=16;to\_size=17,capacity=32.
 
-```
+```text
 private static int roundUpToPowerOf2(int number) {
         // assert number >= 0 : "number must be non-negative";
         return number >= MAXIMUM_CAPACITY
@@ -225,7 +227,7 @@ roundUpToPowerOf2中的这段处理使得数组长度一定为2的次幂，Integ
 
 **hash函数实现：**
 
-```
+```text
 //这是一个神奇的函数，用了很多的异或，移位等运算，对key的hashcode进一步进行计算以及二进制位的调整等来保证最终获取的存储位置尽量分布均匀
 final int hash(Object k) {
         int h = hashSeed;
@@ -242,7 +244,7 @@ final int hash(Object k) {
 
 以上hash函数计算出的值，通过indexFor进一步处理来获取实际的存储位置
 
-```
+```text
 /**
      * 返回数组下标
      */
@@ -253,7 +255,7 @@ final int hash(Object k) {
 
 h&（length-1）保证获取的index一定在数组范围内，举个例子，默认容量16，length-1=15，h=18,转换成二进制计算为
 
-```
+```text
         1  0  0  1  0
     &   0  1  1  1  1
     __________________
@@ -264,9 +266,9 @@ h&（length-1）保证获取的index一定在数组范围内，举个例子，�
 
 所以最终存储位置的确定流程是这样的：
 
-![](/assets/import-hashmap-01.png)**addEntry的实现：**
+![](../../.gitbook/assets/import-hashmap-01.png)**addEntry的实现：**
 
-```
+```text
 void addEntry(int hash, K key, V value, int bucketIndex) {
         if ((size >= threshold) && (null != table[bucketIndex])) {
             resize(2 * table.length);//当size超过临界阈值threshold，并且即将发生哈希冲突时进行扩容
@@ -282,7 +284,7 @@ void addEntry(int hash, K key, V value, int bucketIndex) {
 
 ### 2）get
 
-```
+```text
 public V get(Object key) {
         if (key == null)
             return getForNullKey();
@@ -303,7 +305,7 @@ public V get(Object key) {
 
 null key总是存放在Entry\[\]数组的第一个元素。
 
-```
+```text
 private V putForNullKey(V value) {
         for (Entry<K,V> e = table[0]; e != null; e = e.next) {
             if (e.key == null) {
@@ -331,11 +333,11 @@ private V getForNullKey() {
 
 最终索引位置，找到对应位置table\[i\]，再查看是否有链表，遍历链表，通过key的equals方法比对查找对应的记录。要注意的是，有人觉得上面在定位到数组位置之后然后遍历链表的时候，e.hash == hash这个判断没必要，仅通过equals判断就可以。其实不然，试想一下，如果传入的key对象重写了equals方法却没有重写hashCode，而恰巧此对象定位到这个数组位置，如果仅仅用equals判断可能是相等的，但其hashCode和当前对象不一致，这种情况，根据Object的hashCode的约定，不能返回当前对象，而应该返回null，后面的例子会做出进一步解释。
 
-# 三、为何HashMap的数组长度一定是2的次幂？
+## 三、为何HashMap的数组长度一定是2的次幂？
 
 resize方法
 
-```
+```text
 void resize(int newCapacity) {
         Entry[] oldTable = table;
         int oldCapacity = oldTable.length;
@@ -353,7 +355,7 @@ void resize(int newCapacity) {
 
 如果数组进行扩容，数组长度发生变化，而存储位置 index = h&\(length-1\),index也可能会发生变化，需要重新计算index，我们先来看看transfer这个方法
 
-```
+```text
 void transfer(Entry[] newTable, boolean rehash) {
         int newCapacity = newTable.length;
 　　　　　//for循环中的代码，逐个遍历链表，重新计算索引位置，将老数组数据复制到新数组中去（数组不存储实际数据，所以仅仅是拷贝引用而已）
@@ -389,11 +391,11 @@ hashMap的数组长度一定保持2的次幂，比如16的二进制表示为 100
 
 如果不是2的次幂，也就是低位不是全为1此时，要使得index=21，h的低位部分不再具有唯一性了，哈希冲突的几率会变的更大，同时，index对应的这个bit位无论如何不会等于1了，而对应的那些数组位置也就被白白浪费了。
 
-# 四、重写equals方法需同时重写hashCode方法
+## 四、重写equals方法需同时重写hashCode方法
 
 关于HashMap的源码分析就介绍到这儿了，最后我们再聊聊老生常谈的一个问题，各种资料上都会提到，“重写equals时也要同时覆盖hashcode”，我们举个小例子来看看，如果重写了equals而不重写hashcode会发生什么样的问题
 
-```
+```text
 /**
  * Created by chengxiao on 2016/11/15.
  */
@@ -433,13 +435,11 @@ public class MyTest {
 
 输出结果
 
-```
+```text
 结果：null
 ```
 
 如果我们已经对HashMap的原理有了一定了解，这个结果就不难理解了。尽管我们在进行get和put操作的时候，使用的key从逻辑上讲是等值的（通过equals比较是相等的），但由于没有重写hashCode方法，所以put操作时，key\(hashcode1\)--&gt;hash--&gt;indexFor--&gt;最终索引位置 ，而通过key取出value的时候 key\(hashcode1\)--&gt;hash--&gt;indexFor--&gt;最终索引位置，由于hashcode1不等于hashcode2，导致没有定位到一个数组位置而返回逻辑上错误的值null（也有可能碰巧定位到一个数组位置，但是也会判断其entry的hash值是否相等，上面get方法中有提到。）
 
-　　所以，在重写equals的方法的时候，必须注意重写hashCode方法，同时还要保证通过equals判断相等的两个对象，调用hashCode方法要返回同样的整数值。而如果equals判断不相等的两个对象，其hashCode可以相同（只不过会发生哈希冲突，应尽量避免）。
-
-
+所以，在重写equals的方法的时候，必须注意重写hashCode方法，同时还要保证通过equals判断相等的两个对象，调用hashCode方法要返回同样的整数值。而如果equals判断不相等的两个对象，其hashCode可以相同（只不过会发生哈希冲突，应尽量避免）。
 

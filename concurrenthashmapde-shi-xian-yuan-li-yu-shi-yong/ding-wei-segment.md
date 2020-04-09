@@ -2,7 +2,7 @@
 
 既然ConcurrentHashMap使用分段锁Segment来保护不同段的数据，那么在插入和获取元素的时候，必须先通过散列算法定位到Segment。可以看到ConcurrentHashMap会首先使用Wang/Jenkins hash的变种算法对元素的hashCode进行一次再散列。
 
-```
+```text
 private static int hash(int h) {
 
         h += (h << 15) ^ 0xffffcd7d;
@@ -22,7 +22,7 @@ private static int hash(int h) {
 
 之所以进行再散列，目的是减少散列冲突，使元素能够均匀地分布在不同的Segment上，从而提高容器的存取效率。假如散列的质量差到极点，那么所有的元素都在一个Segment中，不仅存取元素缓慢，分段锁也会失去意义。笔者做了一个测试，不通过再散列而直接执行散列计算。
 
-```
+```text
 System.out.println(Integer.parseInt("0001111", 2) & 15);
 System.out.println(Integer.parseInt("0011111", 2) & 15);
 System.out.println(Integer.parseInt("0111111", 2) & 15);
@@ -41,7 +41,7 @@ System.out.println(Integer.parseInt("1111111", 2) & 15);
 
 可以发现，每一位的数据都散列开了，通过这种再散列能让数字的每一位都参加到散列运算当中，从而减少散列冲突。ConcurrentHashMap通过以下散列算法定位segment。
 
-```
+```text
 final Segment<K,V> segmentFor(int hash) {
 return segments[(hash >>> segmentShift) & segmentMask];
 }

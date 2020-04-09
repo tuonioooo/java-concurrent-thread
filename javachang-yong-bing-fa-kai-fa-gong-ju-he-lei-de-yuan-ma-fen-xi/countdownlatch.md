@@ -1,4 +1,4 @@
-# CountDownLatch（闭锁）
+# CountDownLatch
 
 ## 概述
 
@@ -8,9 +8,9 @@ java.util.concurrent.CountDownLatch 是一个并发构造，它允许一个或�
 
 假如有这样一个需求：我们需要解析一个Excel里多个sheet的数据，此时可以考虑使用多线程，每个线程解析一个sheet里的数据，等到所有的sheet都解析完之后，程序需要提示解析完成。在这个需求中，要实现主线程等待所有线程完成sheet的解析操作，最简单的做法是使用join\(\)方法，如代码清单8-1所示。
 
-> 代码清单8-1　JoinCountDownLatchTest.java
+> 代码清单8-1 JoinCountDownLatchTest.java
 
-```
+```text
 public class JoinCountDownLatchTest {
     public static void main(String[] args) throws InterruptedException {
         Thread parser1 = new Thread(new Runnable() {
@@ -35,7 +35,7 @@ public class JoinCountDownLatchTest {
 
 join用于让当前执行线程等待join线程执行结束。其实现原理是不停检查join线程是否存活，如果join线程存活则让当前线程永远等待。其中，wait（0）表示永远等待下去，代码片段如下。
 
-```
+```text
 while (isAlive()) {
 wait(0);
 }
@@ -48,9 +48,9 @@ wait(0);
 在JDK 1.5之后的并发包中提供的CountDownLatch也可以实现join的功能，并且比join的功  
 能更多，如代码清单8-2所示。
 
-> 代码清单8-2　CountDownLatchTest.java
+> 代码清单8-2 CountDownLatchTest.java
 
-```
+```text
 public class CountDownLatchTest {
     staticCountDownLatch c = new CountDownLatch(2);
     public static void main(String[] args) throws InterruptedException {

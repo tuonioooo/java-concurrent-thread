@@ -4,40 +4,40 @@
 
 始化需要一些技巧，否则很容易出现问题。比如，下面是非线程安全的延迟初始化对象的示例代码。
 
-```
+```text
 public class UnsafeLazyInitialization {
 
-	private static Instance instance;
+    private static Instance instance;
 
-	public static Instance getInstance() {
+    public static Instance getInstance() {
 
-		if (instance == null) // 1：A线程执行
+        if (instance == null) // 1：A线程执行
 
-		instance = new Instance(); // 2：B线程执行
+        instance = new Instance(); // 2：B线程执行
 
-		return instance;
+        return instance;
 
-	}
+    }
 
 }
 ```
 
 在UnsafeLazyInitialization类中，假设A线程执行代码1的同时，B线程执行代码2。此时，线程A可能会看到instance引用的对象还没有完成初始化。对于UnsafeLazyInitialization类，我们可以对getInstance\(\)方法做同步处理来实现线程安全的延迟初始化。示例代码如下。
 
-```
+```text
 public class SafeLazyInitialization {
 
-	private static Instance instance;
+    private static Instance instance;
 
-	public synchronized static Instance getInstance() {
+    public synchronized static Instance getInstance() {
 
-	if (instance == null)
+    if (instance == null)
 
-	instance = new Instance();
+    instance = new Instance();
 
-	return instance;
+    return instance;
 
-	}
+    }
 
 }
 ```
@@ -46,28 +46,28 @@ public class SafeLazyInitialization {
 
 在早期的JVM中，synchronized（甚至是无竞争的synchronized）存在巨大的性能开销。因此，人们想出了一个“聪明”的技巧：双重检查锁定（Double-Checked Locking）。人们想通过双重检查锁定来降低同步的开销。下面是使用双重检查锁定来实现延迟初始化的示例代码。
 
-```
+```text
 public class DoubleCheckedLocking { // 1
 
-	private static Instance instance; // 2
+    private static Instance instance; // 2
 
-	public static Instance getInstance() { // 3
+    public static Instance getInstance() { // 3
 
-		if (instance == null) { // 4:第一次检查
+        if (instance == null) { // 4:第一次检查
 
-		synchronized (DoubleCheckedLocking.class) { // 5:加锁
+        synchronized (DoubleCheckedLocking.class) { // 5:加锁
 
-		if (instance == null) // 6:第二次检查
+        if (instance == null) // 6:第二次检查
 
-		instance = new Instance(); // 7:问题的根源出在这里
+        instance = new Instance(); // 7:问题的根源出在这里
 
-		} // 8
+        } // 8
 
-		} // 9
+        } // 9
 
-		return instance; // 10
+        return instance; // 10
 
-	} // 11
+    } // 11
 
 }
 ```
@@ -77,6 +77,4 @@ public class DoubleCheckedLocking { // 1
 * 多个线程试图在同一时间创建对象时，会通过加锁来保证只有一个线程能创建对象。
 * 在对象创建好之后，执行getInstance\(\)方法将不需要获取锁，直接返回已创建好的对象。
 * 双重检查锁定看起来似乎很完美，但这是一个错误的优化！在线程执行到第4行，代码读取到instance不为null时，instance引用的对象有可能还没有完成初始化。
-
-
 

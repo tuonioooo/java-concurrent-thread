@@ -14,24 +14,24 @@
 
 假设我们现在不知道它是不是一个可重入锁，那我们就应该想方设法来验证它是不是可重入锁？怎么验证呢？看下面的代码
 
-```
+```text
 public class Xttblog extends SuperXttblog {
     public static void main(String[] args) {
         Xttblog child = new Xttblog();
         child.doSomething();
     }
- 
+
     public synchronized void doSomething() {
         System.out.println("child.doSomething()" + Thread.currentThread().getName());
         doAnotherThing(); // 调用自己类中其他的synchronized方法
     }
- 
+
     private synchronized void doAnotherThing() {
         super.doSomething(); // 调用父类的synchronized方法
         System.out.println("child.doAnotherThing()" + Thread.currentThread().getName());
     }
 }
- 
+
 class SuperXttblog {
     public synchronized void doSomething() {
         System.out.println("father.doSomething()" + Thread.currentThread().getName());
@@ -41,7 +41,7 @@ class SuperXttblog {
 
 上面的代码也不是随便写的，我是根据维基百科的定义写出这段代码来验证它。现在运行一下上面的代码，我们看一下结果：
 
-```
+```text
 child.doSomething()Thread-5492
 father.doSomething()Thread-5492
 child.doAnotherThing()Thread-5492

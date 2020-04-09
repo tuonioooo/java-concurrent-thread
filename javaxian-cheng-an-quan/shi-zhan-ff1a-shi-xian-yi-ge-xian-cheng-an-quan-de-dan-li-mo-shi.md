@@ -8,7 +8,7 @@
 
 首先，能够想到的最简单的实现是，把类的构造函数写成private的，从而保证别的类不能实例化此类，然后在类中提供一个静态的实例并能够返回给使用者。这样，使用者就可以通过这个引用使用到这个类的实例了。
 
-```
+```text
 public class SingletonClass { 
 
   private static final SingletonClass instance = new SingletonClass(); 
@@ -31,7 +31,7 @@ public class SingletonClass {
 
 为了解决这个问题，我们想到了新的解决方案：
 
-```
+```text
 public class SingletonClass { 
 
   private static SingletonClass instance = null; 
@@ -64,7 +64,7 @@ public class SingletonClass {
 
 解决的方法也很简单，那就是加锁：
 
-```
+```text
 public class SingletonClass { 
 
   private static SingletonClass instance = null; 
@@ -90,7 +90,7 @@ public class SingletonClass {
 
 让我们来分析一下，究竟是整个方法都必须加锁，还是仅仅其中某一句加锁就足够了？我们为什么要加锁呢？分析一下出现lazy loaded的那种情形的原因。原因就是检测null的操作和创建对象的操作分离了。如果这两个操作能够原子地进行，那么单例就已经保证了。于是，我们开始修改代码：
 
-```
+```text
 public class SingletonClass { 
 
   private static SingletonClass instance = null; 
@@ -113,7 +113,7 @@ public class SingletonClass {
 
 首先去掉getInstance\(\)的同步操作，然后把同步锁加载if语句上。但是这样的修改起不到任何作用：因为每次调用getInstance\(\)的时候必然要同步，性能问题还是存在。如果……如果我们事先判断一下是不是为null再去同步呢？
 
-```
+```text
 public class SingletonClass { 
 
   private static SingletonClass instance = null; 
@@ -151,7 +151,7 @@ public class SingletonClass {
 
 于是，我们想到了下面的代码：
 
-```
+```text
 public class SingletonClass { 
 
   private static SingletonClass instance = null; 
@@ -195,7 +195,7 @@ public class SingletonClass {
 
 在JDK 5之后，Java使用了新的内存模型。volatile关键字有了明确的语义——在JDK1.5之前，volatile是个关键字，但是并没有明确的规定其用途——被volatile修饰的写变量不能和之前的读写代码调整，读变量不能和之后的读写代码调整！因此，只要我们简单的把instance加上volatile关键字就可以了。
 
-```
+```text
 public class SingletonClass { 
 
   private volatile static SingletonClass instance = null; 
@@ -219,7 +219,7 @@ public class SingletonClass {
 
 然而，这只是JDK1.5之后的Java的解决方案，那之前版本呢？其实，还有另外的一种解决方案，并不会受到Java版本的影响：
 
-```
+```text
 public class SingletonClass { 
 
   private static class SingletonClassInstance { 

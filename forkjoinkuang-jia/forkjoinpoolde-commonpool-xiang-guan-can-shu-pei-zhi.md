@@ -6,9 +6,9 @@ ForkJoinPool 主要用于实现“分而治之”的算法，特别是分治之�
 
 ForkJoinPool 最适合的是计算密集型的任务，如果存在 I/O，线程间同步，sleep\(\) 等会造成线程长时间阻塞的情况时，最好配合使用 ManagedBlocker。
 
-## commonPool {#articleHeader1}
+## commonPool <a id="articleHeader1"></a>
 
-```
+```text
 static {
         // initialize field offsets for CAS etc
         try {
@@ -59,9 +59,9 @@ static {
     }
 ```
 
-## makeCommonPool {#articleHeader2}
+## makeCommonPool <a id="articleHeader2"></a>
 
-```
+```text
 /**
      * Creates and returns the common pool, respecting user settings
      * specified via system properties.
@@ -103,7 +103,7 @@ static {
     }
 ```
 
-### 配置参数 {#articleHeader3}
+### 配置参数 <a id="articleHeader3"></a>
 
 > 通过代码指定，必须得在commonPool初始化之前（parallel的stream被调用之前，一般可在系统启动后设置）注入进去，否则无法生效。
 >
@@ -113,7 +113,7 @@ static {
 
   可以通过java.util.concurrent.ForkJoinPool.common.parallelism进行配置，最大值不能超过MAX\_CAP,即32767.
 
-```
+```text
 static final int MAX_CAP = 0x7fff; //32767
 ```
 
@@ -121,13 +121,13 @@ static final int MAX_CAP = 0x7fff; //32767
 
 代码指定\(`必须得在commonPool初始化之前注入进去，否则无法生效`\)
 
-```
+```text
 System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "8");
 ```
 
 或者参数指定
 
-```
+```text
 -Djava.util.concurrent.ForkJoinPool.common.parallelism=8
 ```
 
@@ -135,7 +135,7 @@ System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "8");
 
 默认为defaultForkJoinWorkerThreadFactory，没有securityManager的话。
 
-```
+```text
 /**
      * Default ForkJoinWorkerThreadFactory implementation; creates a
      * new ForkJoinWorkerThread.
@@ -150,13 +150,13 @@ System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "8");
 
 代码指定\(`必须得在commonPool初始化之前注入进去，否则无法生效`\)
 
-```
+```text
 System.setProperty("java.util.concurrent.ForkJoinPool.common.threadFactory",YourForkJoinWorkerThreadFactory.class.getName());
 ```
 
 参数指定
 
-```
+```text
 -Djava.util.concurrent.ForkJoinPool.common.threadFactory=com.xxx.xxx.YourForkJoinWorkerThreadFactory
 ```
 
@@ -164,7 +164,7 @@ System.setProperty("java.util.concurrent.ForkJoinPool.common.threadFactory",Your
 
 如果没有设置，默认为null
 
-```
+```text
 /**
      * Callback from ForkJoinWorkerThread constructor to establish and
      * record its WorkQueue.
@@ -213,19 +213,19 @@ System.setProperty("java.util.concurrent.ForkJoinPool.common.threadFactory",Your
 
 代码指定\(`必须得在commonPool初始化之前注入进去，否则无法生效`\)
 
-```
+```text
 System.setProperty("java.util.concurrent.ForkJoinPool.common.exceptionHandler",YourUncaughtExceptionHandler.class.getName());
 ```
 
 参数指定
 
-```
+```text
 -Djava.util.concurrent.ForkJoinPool.common.exceptionHandler=com.xxx.xxx.YourUncaughtExceptionHandler
 ```
 
-## WorkQueue {#articleHeader4}
+## WorkQueue <a id="articleHeader4"></a>
 
-```
+```text
 // Mode bits for ForkJoinPool.config and WorkQueue.config
     static final int MODE_MASK    = 0xffff << 16;  // top half of int
     static final int LIFO_QUEUE   = 0;
@@ -235,7 +235,7 @@ System.setProperty("java.util.concurrent.ForkJoinPool.common.exceptionHandler",Y
 
 控制是FIFO还是LIFO
 
-```
+```text
    /**
          * Takes next task, if one exists, in order specified by mode.
          */
@@ -252,7 +252,7 @@ System.setProperty("java.util.concurrent.ForkJoinPool.common.exceptionHandler",Y
 
 * queue capacity
 
-```
+```text
 /**
          * Capacity of work-stealing queue array upon initialization.
          * Must be a power of two; at least 4, but should be larger to
@@ -276,7 +276,7 @@ System.setProperty("java.util.concurrent.ForkJoinPool.common.exceptionHandler",Y
 
 超出报异常
 
-```
+```text
         /**
          * Initializes or doubles the capacity of array. Call either
          * by owner or with lock held -- it is OK for base, but not
@@ -305,6 +305,4 @@ System.setProperty("java.util.concurrent.ForkJoinPool.common.exceptionHandler",Y
             return a;
         }
 ```
-
-
 

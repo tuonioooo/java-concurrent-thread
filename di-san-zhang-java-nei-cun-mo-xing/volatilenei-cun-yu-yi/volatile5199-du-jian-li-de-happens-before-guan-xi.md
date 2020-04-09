@@ -6,9 +6,7 @@
 
 请看下面使用volatile变量的示例代码：
 
----
-
-```
+```text
 class VolatileExample {
     int a = 0;
     volatile boolean flag = false;
@@ -25,8 +23,6 @@ class VolatileExample {
 }
 ```
 
----
-
 假设线程A执行writer\(\)方法之后，线程B执行reader\(\)方法。
 
 根据happens-before规则，这个过程建立的happens-before关系可以分为3类：
@@ -39,13 +35,11 @@ class VolatileExample {
 
 上述happens-before关系的图形化表现形式如下图
 
-![](/assets/import-3-4-2-1.png)
+![](../../.gitbook/assets/import-3-4-2-1.png)
 
 在上图中，每一个箭头链接的两个节点，代表了一个happens-before关系。黑色箭头表示程序顺序规则；橙色箭头表示volatile规则；蓝色箭头表示组合这些规则后提供的happens-before保证。
 
 这里A线程写一个volatile变量后，B线程读同一个volatile变量。A线程在写volatile变量之前所有可见的共享变量，在B线程读同一个volatile变量后，将立即变得对B线程可见。
 
-> 注意　本文统一用粗实线标识组合后产生的happens-before关系。
-
-
+> 注意 本文统一用粗实线标识组合后产生的happens-before关系。
 

@@ -19,15 +19,15 @@
 
 如图3-37所示，只要保证2排在4的前面，即使2和3之间重排序了，也不会违反intra-threadsemantics。
 
-![](/assets/import-3-37.png)
+![](../../.gitbook/assets/import-3-37.png)
 
-```
+```text
                                                                     图3-37　线程执行时序图
 ```
 
-![](/assets/import-3-38.png)
+![](../../.gitbook/assets/import-3-38.png)
 
-```
+```text
                                                                       图3-38　多线程执行时序图
 ```
 
@@ -35,7 +35,7 @@
 
 回到本文的主题，DoubleCheckedLocking示例代码的第7行（instance=new Singleton\(\);）如果发生重排序，另一个并发执行的线程B就有可能在第4行判断instance不为null。线程B接下来将访问instance所引用的对象，但此时这个对象可能还没有被A线程初始化！表3-6是这个场景的具体执行时序。
 
-表3-6![](/assets/import-3-6.png)
+表3-6![](../../.gitbook/assets/import-3-6.png)
 
 这里A2和A3虽然重排序了，但Java内存模型的intra-thread semantics将确保A2一定会排在A4前面执行。因此，线程A的intra-thread semantics没有改变，但A2和A3的重排序，将导致线程B在B1处判断出instance不为空，线程B接下来将访问instance引用的对象。此时，线程B将会访问到一个还未初始化的对象。
 

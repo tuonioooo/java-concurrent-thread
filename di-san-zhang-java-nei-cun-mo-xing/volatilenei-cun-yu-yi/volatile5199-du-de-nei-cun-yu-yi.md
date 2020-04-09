@@ -6,7 +6,7 @@
 
 图1
 
-![](/assets/import-3-4-3-1.png)
+![](../../.gitbook/assets/import-3-4-3-1.png)
 
 如图1所示，线程A在写flag变量后，本地内存A中被线程A更新过的两个共享变量的值被刷新到主内存中。此时，本地内存A和主内存中的共享变量的值是一致的。
 
@@ -28,5 +28,5 @@
 
 图2
 
-![](/assets/import-3-4-3-2.png)
+![](../../.gitbook/assets/import-3-4-3-2.png)
 

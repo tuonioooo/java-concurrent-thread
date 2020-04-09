@@ -6,7 +6,7 @@ ConcurrentHashMap初始化方法是通过initialCapacity、loadFactor和concurre
 
 让我们来看一下初始化segments数组的源代码。
 
-```
+```text
 if(concurrencyLevel>MAX_SEGMENTS)
 
             concurrencyLevel=MAX_SEGMENTS;
@@ -34,7 +34,7 @@ if(concurrencyLevel>MAX_SEGMENTS)
 
 锁的个数也是16。
 
-**注意**　concurrencyLevel的最大值是65535，这意味着segments数组的长度最大为65536，对应的二进制是16位。
+**注意** concurrencyLevel的最大值是65535，这意味着segments数组的长度最大为65536，对应的二进制是16位。
 
 **2.初始化segmentShift和segmentMask**
 
@@ -46,7 +46,7 @@ segmentShift用于定位参与散列运算的位数，segmentShift等于32减ssh
 
 输入参数initialCapacity是ConcurrentHashMap的初始化容量，loadfactor是每个segment的负载因子，在构造方法里需要通过这两个参数来初始化数组中的每个segment。
 
-```
+```text
 if (initialCapacity > MAXIMUM_CAPACITY)
 
         initialCapacity = MAXIMUM_CAPACITY;

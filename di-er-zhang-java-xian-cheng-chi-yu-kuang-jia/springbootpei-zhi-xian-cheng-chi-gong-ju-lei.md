@@ -2,7 +2,7 @@
 
 * 配置类
 
-```
+```text
 package com.artron.ise.api.utils.pool;
 
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
@@ -54,16 +54,13 @@ public class ThreadPoolOfAsyncConfig implements AsyncConfigurer {
         return null;
     }
 }
-
 ```
 
 > 注意：这里已经在配置类里加了@EnableAsync注解，就不需要在启动类加了，我看其他文章说还得在启动类加一次，不需要
 
-
-
 * 异步接口使用
 
-```
+```text
 package com.artron.ise.api.service;
 
 import org.slf4j.Logger;
@@ -100,12 +97,11 @@ public class AsyncService {
 
     }
 }
-
 ```
 
 * controller测试
 
-```
+```text
 package com.artron.ise.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
@@ -147,15 +143,12 @@ public class RestController1 {
         JSONObject result = new JSONObject();
         result.put("asyncService.configName", str1);
         result.put("asyncService.noConfigName", str2);
-        
+
         //控制台打印其实是异步的，可以运行测试
-        
+
         return JSONObject.toJSONString(result);
     }
 
 }
-
 ```
-
-
 

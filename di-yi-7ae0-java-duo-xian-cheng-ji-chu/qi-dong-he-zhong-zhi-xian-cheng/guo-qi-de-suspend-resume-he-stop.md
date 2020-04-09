@@ -4,7 +4,7 @@
 
 清单1：
 
-```
+```text
 package com.ise.api.thread;
 
 import java.text.DateFormat;
@@ -48,7 +48,7 @@ public class Deprecated {
 
 输出如下（输出内容中的时间与示例执行的具体时间相关）。
 
-```
+```text
 PrintThread Run at 17:34:36
 PrintThread Run at 17:34:37
 PrintThread Run at 17:34:38
@@ -68,6 +68,6 @@ main stop PrintThread at 17:34:45
 一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会，  
 因此会导致程序可能工作在不确定状态下。
 
-**注意：**　正因为suspend\(\)、resume\(\)和stop\(\)方法带来的副作用，这些方法才被标注为不建  
+**注意：** 正因为suspend\(\)、resume\(\)和stop\(\)方法带来的副作用，这些方法才被标注为不建  
 议使用的过期方法，而暂停和恢复操作可以用后面提到的等待/通知机制来替代。
 

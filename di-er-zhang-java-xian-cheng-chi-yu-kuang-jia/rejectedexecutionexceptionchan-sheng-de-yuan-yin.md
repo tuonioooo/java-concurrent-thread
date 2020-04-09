@@ -1,16 +1,15 @@
-# RejectedExecutionException
+# RejectedExecutionException产生的原因
 
 引发java.util.concurrent.RejectedExecutionException**主要有两种原因**：
 
 1. 线程池显示的调用了shutdown\(\)之后，再向线程池提交任务的时候，如果你配置的拒绝策略是ThreadPoolExecutor.AbortPolicy的话，这个异常就被会抛出来。
-
 2. 当你的排队策略为有界队列，并且配置的拒绝策略是ThreadPoolExecutor.AbortPolicy，当线程池的线程数量已经达到了maximumPoolSize并且超过队列数量的时候，你再向它提交任务，就会抛出ThreadPoolExecutor.AbortPolicy异常。
 
-### 显示关闭掉线程池
+## 显示关闭掉线程池
 
 这一点很好理解。比如说，你向一个仓库去存放货物，一开始，仓库管理员把门给你打开了，你放了第一件商品到仓库里，但是当你放好出去后，有人把仓库门关了，那你下次再来存放物品时，你就会被拒绝。示例代码如下：
 
-```
+```text
 import java.util.concurrent.ExecutorService;  
 import java.util.concurrent.Executors;  
 
@@ -50,13 +49,12 @@ public class TextExecutor {
 }
 ```
 
-### 解决方案
+## 解决方案
 
 1. 不要显示的调用shutdown方法，例如Android里，只有你在Destory方法里cancel掉AsyncTask，则线程池里没有活跃线程会自己回收自己。
-
 2. 调用线程池时，判断是否已经shutdown，通过API方法isShutDown方法判断，示例代码：
 
-```
+```text
 import java.util.concurrent.ExecutorService;  
 import java.util.concurrent.Executors;  
 
@@ -99,11 +97,11 @@ public class TextExecutor {
 }
 ```
 
-### 线程数量超过maximumPoolSize
+## 线程数量超过maximumPoolSize
 
 示例代码里使用了自定义的ExecutorService，可以复现这种问题：
 
-```
+```text
 import java.util.concurrent.ExecutorService;  
 import java.util.concurrent.Executors;  
 import java.util.concurrent.SynchronousQueue;  
@@ -156,26 +154,24 @@ public class TextExecutor {
 }
 ```
 
-### 解决方案
+## 解决方案
 
 1. 尽量调大maximumPoolSize，例如设置为Integer.MAX\_VALUE
 
-```
+```text
 public ExecutorService customerExecutorService = new ThreadPoolExecutor(3, Integer.MAX_VALUE, 0, TimeUnit.MILLISECONDS, new SynchronousQueue<Runnable>());
 ```
 
 2.使用其他排队策略，例如LinkedBlockingQueue
 
-```
+```text
 public ExecutorService customerExecutorService = new ThreadPoolExecutor(3, 5, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 ```
 
 **总结**：
 
 1. 控制提交的任务数量，即提交的任务数量不要超过它当前能处理的能力 \(这里可以用生产者消费者的模式来解决\)
-
 2. 同一个线程池，确保不要在shutdown\(\)之后在执行任务
-
 3. 可以用LinkedBlockingQueue代替ArrayBlockingQueue,因为LinkedBlockingQueue可以设成无界的，但是需要注意，设成无界后最终可能发生OOM（内存溢出），
 
 所以要保证第一二点。

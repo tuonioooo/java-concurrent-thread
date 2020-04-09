@@ -8,7 +8,7 @@
 
 下面通过一些示例性的代码来分别说明这两个规则。
 
-```
+```text
 public class FinalExample {
 
     int i;　　　　　　　　　　// 普通变量

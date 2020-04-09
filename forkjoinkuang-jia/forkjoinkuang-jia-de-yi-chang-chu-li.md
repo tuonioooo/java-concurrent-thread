@@ -6,7 +6,7 @@ ForkJoinTask在执行的时候可能会抛出异常，但是我们没办法在�
 
 取消了，并且可以通过ForkJoinTask的getException方法获取异常。使用如下代码。
 
-```
+```text
 if(task.isCompletedAbnormally())
 {
     System.out.println(task.getException());

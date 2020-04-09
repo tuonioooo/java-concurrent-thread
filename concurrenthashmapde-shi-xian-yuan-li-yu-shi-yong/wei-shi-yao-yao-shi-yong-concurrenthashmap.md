@@ -6,7 +6,7 @@
 
 在多线程环境下，使用HashMap进行put操作会引起死循环，导致CPU利用率接近100%，所以在并发情况下不能使用HashMap。例如，执行以下代码会引起死循环。
 
-```
+```text
 final HashMap<String, String> map = new HashMap<String, String>(2);
 Thread t = new Thread(new Runnable() {
     @Override

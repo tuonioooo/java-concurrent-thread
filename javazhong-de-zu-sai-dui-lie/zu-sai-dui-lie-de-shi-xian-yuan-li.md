@@ -12,7 +12,7 @@
 
 发现ArrayBlockingQueue使用了Condition来实现，代码如下。
 
-```
+```text
 private final Condition notFull;
 private final Condition notEmpty;
 public ArrayBlockingQueue(int capacity, boolean fair) {
@@ -75,7 +75,7 @@ reportInterruptAfterWait(interruptMode);
 
 当前线程。
 
-```
+```text
 public static void park(Object blocker) {
 Thread t = Thread.currentThread();
 setBlocker(t, blocker);
@@ -106,7 +106,7 @@ Linux下使用的是系统方法pthread\_cond\_wait实现。实现代码在JVM�
 
 src/os/linux/vm/os\_linux.cpp里的os::PlatformEvent::park方法，代码如下。
 
-```
+```text
 void os::PlatformEvent::park() {
 int v ;
 for (;;) {
@@ -153,7 +153,7 @@ park方法在Windows下则是使用WaitForSingleObject实现的。想知道pthre
 
 阻塞的生产者线程看到这点，如下。
 
-```
+```text
 "main" prio=5 tid=0x00007fc83c000000 nid=0x10164e000 waiting on condition [0x000000010164d000]
 java.lang.Thread.State: WAITING (parking)
 at sun.misc.Unsafe.park(Native Method)
@@ -165,6 +165,4 @@ await(AbstractQueuedSynchronizer.java:2043)
 at java.util.concurrent.ArrayBlockingQueue.put(ArrayBlockingQueue.java:324)
 at blockingqueue.ArrayBlockingQueueTest.main(ArrayBlockingQueueTest.java
 ```
-
-
 

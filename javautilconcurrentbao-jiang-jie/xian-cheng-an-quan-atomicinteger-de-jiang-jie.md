@@ -1,8 +1,8 @@
-# AtomicInteger概念讲解
+# 线程安全AtomicInteger的讲解
 
 参考：[https://blog.csdn.net/tuoni123/article/details/80215749](https://blog.csdn.net/tuoni123/article/details/80215749)
 
-```
+```text
 package concurrent;
 
 import java.util.concurrent.ExecutorService;
@@ -113,12 +113,5 @@ public class Atomic1 {
     }
 
 }
-
 ```
-
-
-
-
-
-
 

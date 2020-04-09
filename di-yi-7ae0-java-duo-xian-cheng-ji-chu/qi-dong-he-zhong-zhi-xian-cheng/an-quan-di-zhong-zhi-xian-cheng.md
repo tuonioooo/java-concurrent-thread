@@ -4,7 +4,7 @@
 
 清单1
 
-```
+```text
 package com.ise.api.thread;
 
 import java.util.concurrent.TimeUnit;
@@ -43,6 +43,4 @@ public class Shutdown {
     }
 }
 ```
-
-
 

@@ -1,12 +1,12 @@
-# 线程中断
+# 中断线程
 
-## 使用 interrupt\(\)中断线程 {#7bffef4f3a13900393b7f8fde31b26bc}
+## 使用 interrupt\(\)中断线程 <a id="7bffef4f3a13900393b7f8fde31b26bc"></a>
 
 当一个线程运行时，另一个线程可以调用对应的 Thread 对象的 interrupt\(\)方法来中断它，该方法只是在目标线程中设置一个标志，表示它已经被中断，并立即返回。这里需要注意的是，如果只是单纯的调用 interrupt\(\)方法，线程并没有实际被中断，会继续往下执行。
 
 下面一段代码演示了休眠线程的中断:
 
-```
+```text
 public class SleepInterrupt extends Object implements Runnable{  
 
      public void run(){  
@@ -51,13 +51,13 @@ public class SleepInterrupt extends Object implements Runnable{
 
 另外，如果将 catch 块中的 return 语句注释掉，则线程在抛出异常后，会继续往下执行，而不会被中断，从而会打印出`leaving normally`信息。
 
-## 待决中断 {#5b954d550dec0df02f02ec740e8fd04d}
+## 待决中断 <a id="5b954d550dec0df02f02ec740e8fd04d"></a>
 
 在上面的例子中，sleep\(\)方法的实现检查到休眠线程被中断，它会相当友好地终止线程，并抛出 InterruptedException 异常。另外一种情况，如果线程在调用 sleep\(\)方法前被中断，那么该中断称为待决中断，它会在刚调用 sleep\(\)方法时，立即抛出 InterruptedException 异常。
 
 下面的代码演示了待决中断:
 
-```
+```text
 public class PendingInterrupt extends Object {  
     public static void main(String[] args){  
         //如果输入了参数，则在mian线程中中断当前线程（亦即main线程）  
@@ -86,13 +86,13 @@ public class PendingInterrupt extends Object {
 
 这种模式下，main 线程中断它自身。除了将中断标志（它是 Thread 的内部标志）设置为 true 外，没有其他任何影响。线程被中断了，但 main 线程仍然运行，main 线程继续监视实时时钟，并进入 try 块，一旦调用 sleep（）方法，它就会注意到待决中断的存在，并抛出 InterruptException。于是执行跳转到 catch 块，并打印出线程被中断的信息。最后，计算并打印出时间差。
 
-## 使用 isInterrupted\(\)方法判断中断状态 {#0018d242b5dcd98f86ecb279fe7b6814}
+## 使用 isInterrupted\(\)方法判断中断状态 <a id="0018d242b5dcd98f86ecb279fe7b6814"></a>
 
 可以在 Thread 对象上调用 isInterrupted\(\)方法来检查任何线程的中断状态。这里需要注意：线程一旦被中断，isInterrupted\(\)方法便会返回 true，而一旦 sleep\(\)方法抛出异常，它将清空中断标志，此时isInterrupted\(\)方法将返回 false。
 
 下面的代码演示了 isInterrupted\(\)方法的使用：
 
-```
+```text
 public class InterruptCheck extends Object{  
     public static void main(String[] args){  
         Thread t = Thread.currentThread();  
@@ -118,13 +118,13 @@ public class InterruptCheck extends Object{
 
 ![](http://wiki.jikexueyuan.com/project/java-concurrency/images/result4.png)
 
-## 使用 Thread.interrupted\(\)方法判断中断状态 {#19ec6ca1d810b2a1d8349b458563408f}
+## 使用 Thread.interrupted\(\)方法判断中断状态 <a id="19ec6ca1d810b2a1d8349b458563408f"></a>
 
 可以使用 Thread.interrupted\(\)方法来检查当前线程的中断状态（并隐式重置为 false）。又由于它是静态方法，因此不能在特定的线程上使用，而只能报告调用它的线程的中断状态，如果线程被中断，而且中断状态尚不清楚，那么，这个方法返回 true。与 isInterrupted\(\)不同，它将自动重置中断状态为 false，第二次调用 Thread.interrupted\(\)方法，总是返回 false，除非中断了线程。
 
 如下代码演示了 Thread.interrupted\(\)方法的使用：
 
-```
+```text
 public class InterruptReset extends Object {  
     public static void main(String[] args) {  
         System.out.println(  
@@ -144,7 +144,7 @@ public class InterruptReset extends Object {
 
 从结果中可以看出，当前线程中断自身后，在 Y 点，中断状态为 true，并由 Thread.interrupted\(\)自动重置为 false，那么下次调用该方法得到的结果便是 false。
 
-## 补充 {#9e048bb196a0b66774ec0ebd0a935f36}
+## 补充 <a id="9e048bb196a0b66774ec0ebd0a935f36"></a>
 
 这里补充下 yield 和 join 方法的使用。
 
@@ -156,7 +156,7 @@ public class InterruptReset extends Object {
 1.interrupt这个方法并不会让线程立即停下来。  
 2.问题来了，如果我就是想让线程立即停止，需要怎么做？这时候可以加个判断，用抛出异常的方法来让线程停止。
 
-```
+```text
 public class InterruptThread extends Thread{
     @Override
     public void run(){
@@ -177,7 +177,7 @@ public class InterruptThread extends Thread{
 }
 ```
 
-```
+```text
 public class InterruptRun {
     public static void main(String[] args) {
         try {
@@ -197,6 +197,4 @@ public class InterruptRun {
     }
 }
 ```
-
-
 

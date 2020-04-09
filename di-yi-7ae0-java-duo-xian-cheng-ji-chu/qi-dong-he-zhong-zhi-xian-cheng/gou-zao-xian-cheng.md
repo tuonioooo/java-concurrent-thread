@@ -1,10 +1,10 @@
-# **构造线程**
+# 构造线程
 
 在运行线程之前首先要构造一个线程对象，线程对象在构造的时候需要提供线程所需要的属性，如线程所属的线程组、线程优先级、是否是Daemon线程等信息。代码清单1所示的代码摘自java.lang.Thread中对线程进行初始化的部分。
 
 清单1
 
-```
+```text
 private void init(ThreadGroup g, Runnable target, String name, long stackSize, AccessControlContext acc) {
         if (name == null) {
             throw new NullPointerException("name cannot be null");

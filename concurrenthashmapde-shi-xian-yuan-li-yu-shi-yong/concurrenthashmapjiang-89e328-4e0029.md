@@ -1,10 +1,10 @@
 # ConcurrentHashMap讲解\(一\)
 
-原文：https://mp.weixin.qq.com/s/wNmAi1FICNu7rkmCe1GDyw
+原文：[https://mp.weixin.qq.com/s/wNmAi1FICNu7rkmCe1GDyw](https://mp.weixin.qq.com/s/wNmAi1FICNu7rkmCe1GDyw)
 
 ConcurrentHashMap 同样也分为 1.7 、1.8 版，两者在实现上略有不同。
 
-* ### **Base 1.7**
+* **Base 1.7**
 
 先来看看 1.7 的实现，下面是他的结构图：
 
@@ -14,7 +14,7 @@ ConcurrentHashMap 同样也分为 1.7 、1.8 版，两者在实现上略有不�
 
 核心成员变量：
 
-```
+```text
 /**
      * Segment 数组，存放数据时首先需要定位到具体的 Segment 中。
      */
@@ -26,7 +26,7 @@ ConcurrentHashMap 同样也分为 1.7 、1.8 版，两者在实现上略有不�
 
 Segment 是 ConcurrentHashMap 的一个内部类，主要的组成如下：
 
-```
+```text
 static final class Segment<K,V> extends ReentrantLock implements Serializable {
 
         private static final long serialVersionUID = 2249069246763182397L;
@@ -57,7 +57,7 @@ static final class Segment<K,V> extends ReentrantLock implements Serializable {
 
 #### **put 方法**
 
-```
+```text
 public V put(K key, V value) {
         Segment<K,V> s;
         if (value == null)
@@ -73,7 +73,7 @@ public V put(K key, V value) {
 
 首先是通过 key 定位到 Segment，之后在对应的 Segment 中进行具体的 put。
 
-```
+```text
 final V put(K key, int hash, V value, boolean onlyIfAbsent) {
             HashEntry<K,V> node = tryLock() ? null :
                 scanAndLockForPut(key, hash, value);
@@ -130,16 +130,13 @@ final V put(K key, int hash, V value, boolean onlyIfAbsent) {
 再结合图看看 put 的流程。
 
 1. 将当前 Segment 中的 table 通过 key 的 hashcode 定位到 HashEntry。
-
 2. 遍历该 HashEntry，如果不为空则判断传入的 key 和当前遍历的 key 是否相等，相等则覆盖旧的 value。
-
 3. 不为空则需要新建一个 HashEntry 并加入到 Segment 中，同时会先判断是否需要扩容。
-
 4. 最后会解除在 1 中所获取当前 Segment 的锁。
 
 #### **get 方法**
 
-```
+```text
 public V get(Object key) {
         Segment<K,V> s; // manually integrate access methods to reduce overhead
         HashEntry<K,V>[] tab;
@@ -167,7 +164,7 @@ get 逻辑比较简单：
 
 ConcurrentHashMap 的 get 方法是非常高效的，因为整个过程都不需要加锁。
 
-* ### **Base 1.8**
+* **Base 1.8**
 
 1.7 已经解决了并发问题，并且能支持 N 个 Segment 这么多次数的并发，但依然存在 HashMap 在 1.7 版本中的问题。
 
@@ -215,15 +212,10 @@ ConcurrentHashMap 的 get 方法是非常高效的，因为整个过程都不需
 其实这块也是面试的重点内容，通常的套路是：
 
 1. 谈谈你理解的 HashMap，讲讲其中的 get put 过程。
-
 2. 1.8 做了什么优化？
-
 3. 是线程安全的嘛？
-
 4. 不安全会导致哪些问题？
-
 5. 如何解决？有没有线程安全的并发容器？
-
 6. ConcurrentHashMap 是如何实现的？ 1.7、1.8 实现有何不同？为什么这么做？
 
 这一串问题相信大家仔细看完都能怼回面试官。

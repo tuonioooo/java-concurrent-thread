@@ -10,7 +10,7 @@ ExecutorService 的生命周期包括三种状态：运行、关闭、终止。�
 
 Executors 提供了一系列工厂方法用于创先线程池，返回的线程池都实现了 ExecutorService 接口。
 
-```
+```text
 创建固定数目线程的线程池。
 public static ExecutorService newFixedThreadPool(int nThreads)
 
@@ -64,7 +64,7 @@ public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize)
 
 通过 Executors 的以上四个静态工厂方法获得 ExecutorService 实例，而后调用该实例的 execute（Runnable command）方法即可。一旦 Runnable 任务传递到 execute\(\)方法，该方法便会自动在一个线程上执行。下面是 Executor 执行 Runnable 任务的示例代码：
 
-```
+```text
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -104,7 +104,7 @@ Callable 接口类似于 Runnable，两者都是为那些其实例可能被另�
 
 下面给出一个 Executor 执行 Callable 任务的示例代码：
 
-```
+```text
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -166,7 +166,7 @@ class TaskWithResult implements Callable<String>{
 
 我们大致来看下 Executors 的源码，newCachedThreadPool 的不带 RejectedExecutionHandler 参数（即第五个参数，线程数量超过 maximumPoolSize 时，指定处理方式）的构造方法如下：
 
-```
+```text
 public static ExecutorService newCachedThreadPool() {
         return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
         60L, TimeUnit.SECONDS,
@@ -178,7 +178,7 @@ public static ExecutorService newCachedThreadPool() {
 
 再来看 newFixedThreadPool 的不带 RejectedExecutionHandler 参数的构造方法，如下：
 
-```
+```text
 public static ExecutorService newFixedThreadPool(int nThreads) {  
     return new ThreadPoolExecutor(nThreads, nThreads,  
                                   0L, TimeUnit.MILLISECONDS,  
@@ -187,8 +187,4 @@ public static ExecutorService newFixedThreadPool(int nThreads) {
 ```
 
 它将 corePoolSize 和 maximumPoolSize 都设定为了 nThreads，这样便实现了线程池的大小的固定，不会动态地扩大，另外，keepAliveTime 设定为了 0，也就是说线程只要空闲下来，就会被移除线程池。
-
-## 
-
-
 

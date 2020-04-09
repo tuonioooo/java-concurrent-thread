@@ -1,6 +1,6 @@
 # 线程池工具类（单例模式）
 
-```
+```text
 package com.ise.api.pool.threadpoolexecutor;
 
 import java.util.concurrent.*;
@@ -78,7 +78,7 @@ public class ThreadPoolConfig {
 
 测试类
 
-```
+```text
 package com.ise.api.pool.threadpoolexecutor;
 
 import java.util.concurrent.ThreadPoolExecutor;
@@ -116,6 +116,4 @@ public class RoomTask implements Runnable {
 ```
 
 > 注意：如果是在WEB环境中使用一个共享的单例线程池，一般不用关闭线程池，是设置超时时间，自动回收的，否则显示调用shutdown\(\)，会导致RejectedExecutionException异常
-
-
 

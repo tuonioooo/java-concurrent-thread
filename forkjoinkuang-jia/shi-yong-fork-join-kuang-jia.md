@@ -10,7 +10,7 @@
 
 的结果。因为是有结果的任务，所以必须继承RecursiveTask，实现代码如下。
 
-```
+```text
 package fj;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;

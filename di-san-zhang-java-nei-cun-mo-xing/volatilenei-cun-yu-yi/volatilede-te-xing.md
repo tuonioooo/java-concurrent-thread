@@ -1,10 +1,10 @@
+# volatile的特性
+
 volatile的特性
 
 理解volatile特性的一个好方法是把对volatile变量的单个读/写，看成是使用同一个锁对这些单个读/写操作做了同步。下面通过具体的示例来说明，示例代码如下：
 
----
-
-```
+```text
 class VolatileFeaturesExample {
     volatile long vl = 0L; // 使用volatile声明64位的long型变量
     public void set(long l) {
@@ -19,13 +19,9 @@ class VolatileFeaturesExample {
 }
 ```
 
----
-
 假设有多个线程分别调用上面程序的3个方法，这个程序在语义上和下面程序等价。
 
----
-
-```
+```text
 class VolatileFeaturesExample {
     long vl = 0L; // 64位的long型普通变量
     public synchronized void set(long l) { // 对单个的普通变量的写用同一个锁同步
@@ -41,8 +37,6 @@ class VolatileFeaturesExample {
     }
 }
 ```
-
----
 
 如上面示例程序所示，一个volatile变量的单个读/写操作，与一个普通变量的读/写操作都是使用同一个锁来同步，它们之间的执行效果相同。
 

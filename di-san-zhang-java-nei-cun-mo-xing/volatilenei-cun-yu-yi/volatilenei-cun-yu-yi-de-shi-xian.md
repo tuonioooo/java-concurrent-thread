@@ -4,7 +4,7 @@
 
 前文提到过重排序分为编译器重排序和处理器重排序。为了实现volatile内存语义，JMM会分别限制这两种类型的重排序类型。表1是JMM针对编译器制定的volatile重排序规则表。
 
-表1![](/assets/import-3-4-4-1.png)
+表1![](../../.gitbook/assets/import-3-4-4-1.png)
 
 举例来说，第三行最后一个单元格的意思是：在程序中，当第一个操作为普通变量的读或写时，如果第二个操作为volatile写，则编译器不能重排序这两个操作。
 
@@ -30,7 +30,7 @@
 
 下面是保守策略下，volatile写插入内存屏障后生成的指令序列示意图，如图2所示。
 
-图2![](/assets/import-3-4-4-2.png)
+图2![](../../.gitbook/assets/import-3-4-4-2.png)
 
 图2中的StoreStore屏障可以保证在volatile写之前，其前面的所有普通写操作已经对任意处理器可见了。这是因为StoreStore屏障将保障上面所有的普通写在volatile写之前刷新到主内存。
 
@@ -40,7 +40,7 @@
 
 下面是在保守策略下，volatile读插入内存屏障后生成的指令序列示意图，如图3所示。
 
-图3![](/assets/import-3-4-4-3.png)
+图3![](../../.gitbook/assets/import-3-4-4-3.png)
 
 图3中的LoadLoad屏障用来禁止处理器把上面的volatile读与下面的普通读重排序。LoadStore屏障用来禁止处理器把上面的volatile读与下面的普通写重排序。
 
@@ -48,9 +48,7 @@
 
 下面通过具体的示例代码进行说明：
 
----
-
-```
+```text
 class VolatileBarrierExample {
     int a;
     volatile int v1 = 1;
@@ -66,11 +64,9 @@ class VolatileBarrierExample {
 }
 ```
 
----
-
 针对readAndWrite\(\)方法，编译器在生成字节码时可以做如下的优化。
 
-图4![](/assets/import-3-4-4-4.png)
+图4![](../../.gitbook/assets/import-3-4-4-4.png)
 
 注意，最后的StoreLoad屏障不能省略。因为第二个volatile写之后，方法立即return。此时编译器可能无法准确断定后面是否会有volatile读或写，为了安全起见，编译器通常会在这里插入一个StoreLoad屏障。
 
@@ -78,5 +74,5 @@ class VolatileBarrierExample {
 
 做重排序，因此在X86处理器中会省略掉这3种操作类型对应的内存屏障。在X86中，JMM仅需在volatile写后面插入一个StoreLoad屏障即可正确实现volatile写-读的内存语义。这意味着在X86处理器中，volatile写的开销比volatile读的开销会大很多（因为执行StoreLoad屏障开销会比较大）。
 
-图5![](/assets/import-3-4-4-5.png)
+图5![](../../.gitbook/assets/import-3-4-4-5.png)
 

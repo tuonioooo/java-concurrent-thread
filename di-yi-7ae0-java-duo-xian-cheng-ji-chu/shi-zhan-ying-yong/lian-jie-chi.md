@@ -1,3 +1,5 @@
+# 连接池
+
 ## 连接池
 
 连接池是创建和管理一个连接的缓冲池的技术，这些连接准备好被任何需要它们的[线程](https://baike.baidu.com/item/线程/103101)使用。
@@ -157,10 +159,4 @@ public void destroy\(\) {
 connMgr.release\(\); super.destroy\(\);
 
 }
-
-
-
-
-
-
 

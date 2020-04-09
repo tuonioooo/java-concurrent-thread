@@ -2,13 +2,13 @@
 
 Java线程在运行的生命周期中可能处于表1所示的6种不同的状态，在给定的一个时刻，线程只能处于其中的一个状态。
 
-表1![](/assets/import.png)
+表1![](../../.gitbook/assets/import.png)
 
 下面我们使用jstack工具（可以选择打开终端，键入jstack或者到JDK安装目录的bin目录下执行命令），尝试查看示例代码运行时的线程信息，更加深入地理解线程状态，示例如代码清单2所示。
 
 清单2
 
-```
+```text
 package com.ise.api.thread;
 
 public class ThreadState {
@@ -59,7 +59,7 @@ public class ThreadState {
 }
 ```
 
-```
+```text
 package com.ise.api.thread;
 
 import java.util.concurrent.TimeUnit;
@@ -76,12 +76,10 @@ public class SleepUtils {
 
 运行该示例，打开终端或者命令提示符，键入“jps”，输出如下。
 
-```
+```text
 611
 935 Jps
 929 ThreadState
 270
 ```
-
-
 

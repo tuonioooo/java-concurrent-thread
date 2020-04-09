@@ -2,7 +2,7 @@
 
 对于前面的基于双重检查锁定来实现延迟初始化的方案（指DoubleCheckedLocking示例代码），只需要做一点小的修改（把instance声明为volatile型），就可以实现线程安全的延迟初始化。请看下面的示例代码。
 
-```
+```text
 public class SafeDoubleCheckedLocking {
 
     private volatile static Instance instance;
@@ -34,5 +34,5 @@ public class SafeDoubleCheckedLocking {
 
 当声明对象的引用为volatile后，3.8.2节中的3行伪代码中的2和3之间的重排序，在多线程环境中将会被禁止。上面示例代码将按如下的时序执行，如图3-39所示。
 
-图3-39![](/assets/import-3-39.png)这个方案本质上是通过禁止图3-39中的2和3之间的重排序，来保证线程安全的延迟初始化。
+图3-39![](../../.gitbook/assets/import-3-39.png)这个方案本质上是通过禁止图3-39中的2和3之间的重排序，来保证线程安全的延迟初始化。
 

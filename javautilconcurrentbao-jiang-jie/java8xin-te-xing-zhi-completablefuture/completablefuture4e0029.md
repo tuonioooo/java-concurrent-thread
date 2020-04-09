@@ -2,7 +2,7 @@
 
 completableFuture实现了CompletionStage接口，如下：
 
-```
+```text
     public CompletableFuture<Void> thenAccept(Consumer<? super T> action) {
         return uniAcceptStage(null, action);
     }
@@ -186,7 +186,7 @@ completableFuture实现了CompletionStage接口，如下：
 
 * 初始化CompletableFuture的几种方式:
 
-```
+```text
 public static void init(){
         //方式一
         CompletableFuture<String> completableFuture1 = new CompletableFuture();
@@ -214,7 +214,7 @@ public static void init(){
 
 * thenAccpet、thenAcceptAsync 是针对结果进行消耗，因为他的入参是Consumer，有入参无返回值 示例如下：
 
-```
+```text
     public static void thenAccept(){
         CompletableFuture.supplyAsync(()->"hello")
                 .thenAccept(s -> System.out.println(s + " world"))
@@ -247,7 +247,7 @@ public static void init(){
 
 * thenApply、thenApplyAsync 是针对结果进行转换，有返回值，他的入参是Function，可以使用lambda表达式，示例如下：
 
-```
+```text
    public static void thenApply(){
         String result = CompletableFuture.supplyAsync(()->"hello")
                 .thenApply(s -> s + " world")
@@ -279,7 +279,7 @@ public static void init(){
 
 * thenRun、thenRunAsync对上一步的计算结果不关心，执行下一个操作，他的入参是Runnable,无返回值，示例如下：
 
-```
+```text
 public static void thenRun(){
         IntStream stream = IntStream.of(10,9,8,7,6,5,4,3,2,1);
         Runnable runnable = ()->{
@@ -367,7 +367,7 @@ public static void thenRun(){
 
 * thenCombine、thenCombineAsync  它需要原来的处理返回值，利用这两个返回值，进行转换后返回指定类型的值。
 
-```
+```text
 public static void thenCombine() {
         String result = CompletableFuture.supplyAsync(() -> {
             try {
@@ -416,7 +416,7 @@ public static void thenCombine() {
 
 * thenAcceptBoth、thenAcceptBothAsync 它需要原来的处理返回值，并且other代表的CompletionStage也要返回值之后，利用这两个返回值，进行消耗
 
-```
+```text
 public static void thenAcceptBoth() {
         ExecutorService executor = Executors.newFixedThreadPool(1);
         CompletableFuture.supplyAsync(() -> {
@@ -450,7 +450,7 @@ public static void thenAcceptBoth() {
 
 * runAfterBoth、runAfterBothAsync 不关心这两个CompletionStage的结果，只关心这两个CompletionStage执行完毕，之后在进行操作（Runnable）。
 
-```
+```text
 public static void runAfterBoth(){
         ExecutorService executor = Executors.newFixedThreadPool(1);
         CompletableFuture.supplyAsync(() -> {
@@ -487,7 +487,7 @@ public static void runAfterBoth(){
 * applyToEither、applyToEitherAsync 两个CompletionStage，谁计算的快，我就用那个CompletionStage的结果进行下一步的转化操作。我们现实开发场景中，总会碰到有两种渠道完成同一个事情，所以就可以调用这个方法，找一个最快的结果进行处理。
 * 示例如下：
 
-```
+```text
 public static void acceptEither() {
         CompletableFuture.supplyAsync(() -> {
             try {
@@ -510,7 +510,7 @@ public static void acceptEither() {
 
 * runAfterEither、runAfterEitherAsync 两个CompletionStage，任何一个完成了都会执行下一步的操作（Runnable）示例如下：
 
-```
+```text
 public static void runAfterEither() {
         CompletableFuture.supplyAsync(() -> {
             try {
@@ -534,14 +534,14 @@ public static void runAfterEither() {
 
 * 当运行时出现了异常，可以通过exceptionally进行补偿
 
-```
+```text
 public CompletableFuture<T> exceptionally(
         Function<Throwable, ? extends T> fn) {
         return uniExceptionallyStage(fn);
     }
 ```
 
-```
+```text
 public static void exceptionally() {
         String result = CompletableFuture.supplyAsync(() -> {
             try {
@@ -565,9 +565,10 @@ public static void exceptionally() {
 ```
 
 * whenComplete、whenCompleteAsync  当运行完成时，对结果的记录。这里的完成时有两种情况，一种是正常执行，返回值。另外一种是遇到异常抛出造成程序的中断。这里为什么要说成记录，因为这几个方法都会返回CompletableFuture，当Action执行完毕后它的结果返回原始的CompletableFuture的计算结果或者返回异常。所以不会对结果产生任何的作用。
+
   示例如下：
 
-```
+```text
 public static void whenComplete() {
         String result = CompletableFuture.supplyAsync(() -> {
             try {
@@ -594,7 +595,7 @@ public static void whenComplete() {
 
 * handle、handleAsync 运行完成时，对结果的处理。这里的完成时有两种情况，一种是正常执行，返回值。另外一种是遇到异常抛出造成程序的中断示例如下：
 
-```
+```text
 public static void handle() {
         //出现异常时
         String result = CompletableFuture.supplyAsync(() -> {
@@ -636,6 +637,4 @@ public static void handle1() {
     System.out.println(result);
 }
 ```
-
-
 

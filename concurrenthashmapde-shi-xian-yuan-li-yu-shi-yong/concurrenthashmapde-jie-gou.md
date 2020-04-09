@@ -4,9 +4,7 @@
 
 图6-1的类图
 
-![](/assets/import-6-1.png)
+![](../.gitbook/assets/import-6-1.png)
 
-
-
-图6-2 ConcurrentHashMap的结构图![](/assets/import-6-2.png)
+图6-2 ConcurrentHashMap的结构图![](../.gitbook/assets/import-6-2.png)
 

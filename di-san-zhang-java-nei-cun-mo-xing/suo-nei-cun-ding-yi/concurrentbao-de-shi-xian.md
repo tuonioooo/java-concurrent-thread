@@ -14,5 +14,5 @@ Java的CAS会使用现代处理器上提供的高效机器级别的原子指令�
 
 首先，声明共享变量为volatile。然后，使用CAS的原子条件更新来实现线程之间的同步。同时，配合以volatile的读/写和CAS所具有的volatile读和写的内存语义来实现线程之间的通信。AQS，非阻塞数据结构和原子变量类（java.util.concurrent.atomic包中的类），这些concurrent包中的基础类都是使用这种模式来实现的，而concurrent包中的高层类又是依赖于这些基础类来实现的。从整体来看，concurrent包的实现示意图如3-5-4-1所示。
 
-图3-5-4-1![](/assets/import-3-5-4-1.png)
+图3-5-4-1![](../../.gitbook/assets/import-3-5-4-1.png)
 

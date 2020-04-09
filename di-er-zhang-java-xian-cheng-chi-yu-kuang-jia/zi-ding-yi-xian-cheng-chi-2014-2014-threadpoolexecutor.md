@@ -4,7 +4,7 @@ ThreadPoolExecutor（_**线程池**_）工作原理：执行多个异步任务�
 
 自定义线程池，可以用 ThreadPoolExecutor 类创建，它有多个构造方法来创建线程池，用该类很容易实现自定义的线程池，这里先贴上示例程序：
 
-```
+```text
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -60,7 +60,7 @@ class MyThread implements Runnable{
 
 java.uitl.concurrent.ThreadPoolExecutor类是线程池中最核心的一个类，因此如果要透彻地了解Java中的线程池，必须先了解这个类。下面我们来看一下**ThreadPoolExecutor**类的具体实现源码。
 
-```
+```text
 public class ThreadPoolExecutor extends AbstractExecutorService {
     .....
     public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
@@ -92,19 +92,19 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 
 * **unit**：持续时间的单位。有7种取值，在TimeUnit类中有7种静态属性：
 
-> TimeUnit.DAYS;               //天
+> TimeUnit.DAYS; //天
 >
-> TimeUnit.HOURS;             //小时
+> TimeUnit.HOURS; //小时
 >
-> TimeUnit.MINUTES;           //分钟
+> TimeUnit.MINUTES; //分钟
 >
-> TimeUnit.SECONDS;           //秒
+> TimeUnit.SECONDS; //秒
 >
-> TimeUnit.MILLISECONDS;      //毫秒
+> TimeUnit.MILLISECONDS; //毫秒
 >
-> TimeUnit.MICROSECONDS;      //微妙
+> TimeUnit.MICROSECONDS; //微妙
 >
-> TimeUnit.NANOSECONDS;       //纳秒
+> TimeUnit.NANOSECONDS; //纳秒
 
 * **workQueue**：任务执行前保存任务的队列，仅保存由 execute 方法提交的 Runnable 任务。
 
@@ -121,7 +121,7 @@ ArrayBlockingQueue和PriorityBlockingQueue使用较少，一般使用LinkedBlock
 * **threadFactory**：线程工厂，主要用来创建线程；
 * **handler**：表示当拒绝处理任务时的策略，有以下四种取值：
 
-```
+```text
 ThreadPoolExecutor.AbortPolicy:丢弃任务并抛出RejectedExecutionException异常。 
 ThreadPoolExecutor.DiscardPolicy：也是丢弃任务，但是不抛出异常。 
 ThreadPoolExecutor.DiscardOldestPolicy：丢弃队列最前面的任务，然后重新尝试执行任务（重复此过程）
@@ -130,7 +130,7 @@ ThreadPoolExecutor.CallerRunsPolicy：由调用线程处理该任务
 
 从上面给出的ThreadPoolExecutor类的代码可以知道，ThreadPoolExecutor继承了AbstractExecutorService，我们来看一下AbstractExecutorService的实现：
 
-```
+```text
 public abstract class AbstractExecutorService implements ExecutorService {
 
 
@@ -164,7 +164,7 @@ AbstractExecutorService是一个抽象类，它实现了ExecutorService接口。
 
 我们接着看ExecutorService接口的实现：
 
-```
+```text
 public interface ExecutorService extends Executor {
     void shutdown();
     boolean isShutdown();
@@ -190,7 +190,7 @@ public interface ExecutorService extends Executor {
 
 而ExecutorService又是继承了Executor接口，我们看一下Executor接口的实现：
 
-```
+```text
 public interface Executor {
     void execute(Runnable command);
 }
@@ -208,7 +208,7 @@ Executor是一个顶层接口，在它里面只声明了一个方法execute\(Run
 
 在ThreadPoolExecutor类中有几个非常重要的方法：
 
-```
+```text
 execute()
 submit()
 shutdown()
@@ -228,11 +228,8 @@ shutdownNow()
 根据 ThreadPoolExecutor 源码前面大段的注释，我们可以看出，当试图通过 excute 方法讲一个 Runnable 任务添加到线程池中时，按照如下顺序来处理：
 
 1. 如果线程池中的线程数量少于 corePoolSize，即使线程池中有空闲线程，也会创建一个新的线程来执行新添加的任务；
-
 2. 如果线程池中的线程数量大于等于 corePoolSize，但缓冲队列 workQueue 未满，则将新添加的任务放到 workQueue 中，按照 FIFO 的原则依次等待执行（线程池中有线程空闲出来后依次将缓冲队列中的任务交付给空闲的线程执行）；
-
 3. 如果线程池中的线程数量大于等于 corePoolSize，且缓冲队列 workQueue 已满，但线程池中的线程数量小于 maximumPoolSize，则会创建新的线程来处理被添加的任务；
-
 4. 如果线程池中的线程数量等于了 maximumPoolSize，有 4 种才处理方式（该构造方法调用了含有 5 个参数的构造方法，并将最后一个构造方法为 RejectedExecutionHandler 类型，它在处理线程溢出时有 4 种方式，这里不再细说，要了解的，自己可以阅读下源码）。
 
 总结起来，也即是说，当有新的任务要处理时，先看线程池中的线程数量是否大于 corePoolSize，再看缓冲队列 workQueue 是否满，最后看线程池中的线程数量是否大于 maximumPoolSize。
@@ -246,27 +243,26 @@ shutdownNow()
 * 如果运行的线程少于corePoolSize，则Executor始终首选添加新的线程，而不进行排队。
 * 如果运行的线程等于或多于corePoolSize，则Executor始终首选将请求加入队列，而不添加新的线程。
 * 如果无法将请求加入队列，则创建新的线程，
+
   除非创建此线程超出maximumPoolSize，在这种情况下，任务将被拒绝（抛出RejectedExecutionException）。
 
-## 排队的三种策略 {#3cc4964d81f8879a8e244eb2fe18ca65}
+## 排队的三种策略 <a id="3cc4964d81f8879a8e244eb2fe18ca65"></a>
 
 * 直接提交。缓冲队列采用 SynchronousQueue，它将任务直接交给线程处理而不保持它们。如果不存在可用于立即运行任务的线程（即线程池中的线程都在工作），则试图把任务加入缓冲队列将会失败，因此会构造一个新的线程来处理新添加的任务，并将其加入到线程池中。直接提交通常要求无界 maximumPoolSizes（Integer.MAX\_VALUE） 以避免拒绝新提交的任务。newCachedThreadPool 采用的便是这种策略。
-
 * 无界队列。使用无界队列（典型的便是采用预定义容量的 LinkedBlockingQueue，理论上是该缓冲队列可以对无限多的任务排队）将导致在所有 corePoolSize 线程都工作的情况下将新任务加入到缓冲队列中。这样，创建的线程就不会超过 corePoolSize，也因此，maximumPoolSize 的值也就无效了。当每个任务完全独立于其他任务，即任务执行互不影响时，适合于使用无界队列。newFixedThreadPool采用的便是这种策略。
-
 * 有界队列。当使用有限的 maximumPoolSizes 时，有界队列（一般缓冲队列使用 ArrayBlockingQueue，并制定队列的最大长度）有助于防止资源耗尽，但是可能较难调整和控制，队列大小和最大池大小需要相互折衷，需要设定合理的参数。
 
 ## 终止
 
 工作线程回收需要满足三个条件：
 
-**1\) ** 参数allowCoreThreadTimeOut为true
+**1\)**  参数allowCoreThreadTimeOut为true
 
 > 注意：allowCoreThreadTimeOut 的设置需要在任务执行之前，一般在new一个线程池后设置；在allowCoreThreadTimeOut设置为true时，ThreadPoolExecutor的keepAliveTime参数必须大于0。
 
-**2\)**  该线程在keepAliveTime时间内获取不到任务，即空闲这么长时间
+**2\)** 该线程在keepAliveTime时间内获取不到任务，即空闲这么长时间
 
-**3\)  ** 当前线程池大小  &gt; 核心线程池大小corePoolSize。
+**3\)**  当前线程池大小 &gt; 核心线程池大小corePoolSize。
 
 程序不再引用的池没有剩余线程会自动shutdown。如果希望确保回收取消引用的池（即使用户忘记调用shutdown\(\)），则必须安排未使用的线程最终终止。
 

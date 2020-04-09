@@ -1,9 +1,8 @@
-# Java集合-List
+# List
 
 [原文链接](http://ifeve.com/java-collection-list/)
 
-`java.util.List`接口是`java.util.Collection`接口的一个子接口。它表示对象的一个有序列表，意味你可以特定的顺序访问元素，也可以通过索引访问。也可以向一个`List`中多次添加重复的元素。  
-
+`java.util.List`接口是`java.util.Collection`接口的一个子接口。它表示对象的一个有序列表，意味你可以特定的顺序访问元素，也可以通过索引访问。也可以向一个`List`中多次添加重复的元素。
 
 **Java List 视频教程**
 
@@ -22,6 +21,4 @@
 4. java.util.Stack
 
 在`java.util.concurrent`包中，同样也有`List`的实现，但是在本教程中，我将不考虑并发程序。
-
-
 

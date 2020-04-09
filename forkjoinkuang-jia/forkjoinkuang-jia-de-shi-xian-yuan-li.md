@@ -10,7 +10,7 @@ ForkJoinPool由ForkJoinTask数组和ForkJoinWorkerThread数组组成，ForkJoinT
 
 异步地执行这个任务，然后立即返回结果。代码如下。
 
-```
+```text
 public final ForkJoinTask<V> fork() {
     ((ForkJoinWorkerThread) Thread.currentThread())
     .pushTask(this);
@@ -22,7 +22,7 @@ pushTask方法把当前任务存放在ForkJoinTask数组队列里。然后再调
 
 signalWork\(\)方法唤醒或创建一个工作线程来执行任务。代码如下。
 
-```
+```text
 final void pushTask(ForkJoinTask<> t) {
     ForkJoinTask<>[] q; int s, m;
     if ((q = queue) != null) {　　　　// ignore if queue removed
@@ -43,7 +43,7 @@ Join方法的主要作用是阻塞当前线程并等待获取结果。让我们�
 
 方法的实现，代码如下。
 
-```
+```text
 public final V join() {
     if (doJoin() != NORMAL)
     return reportResult();
@@ -74,7 +74,7 @@ public final V join() {
 
 让我们再来分析一下doJoin\(\)方法的实现代码。
 
-```
+```text
 private int doJoin() {
     Thread t; ForkJoinWorkerThread w; int s; boolean completed;
     if ((t = Thread.currentThread()) instanceof ForkJoinWorkerThread) {

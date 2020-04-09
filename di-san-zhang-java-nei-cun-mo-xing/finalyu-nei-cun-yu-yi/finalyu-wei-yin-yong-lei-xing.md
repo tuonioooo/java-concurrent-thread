@@ -4,7 +4,7 @@
 
 下列示例代码：
 
-```
+```text
 public class FinalReferenceExample {
 
     final int[] intArray; // final是引用类型

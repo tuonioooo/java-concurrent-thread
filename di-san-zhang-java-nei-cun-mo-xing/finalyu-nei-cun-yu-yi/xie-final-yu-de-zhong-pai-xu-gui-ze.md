@@ -22,5 +22,5 @@
 
 图3-6-2-1
 
-![](/assets/import-3-6-2-1.png)
+![](../../.gitbook/assets/import-3-6-2-1.png)
 

@@ -1,16 +1,16 @@
-# Daemon线程（守护线程）
+# Daemon线程
 
 Daemon线程是一种支持型线程，因为它主要被用作程序中后台调度以及支持性工作。这  
 意味着，当一个Java虚拟机中不存在非Daemon线程的时候，Java虚拟机将会退出。可以通过调  
 用Thread.setDaemon\(true\)将线程设置为Daemon线程。
 
-**注意：**　Daemon属性需要在启动线程之前设置，不能在启动线程之后设置。  
+**注意：** Daemon属性需要在启动线程之前设置，不能在启动线程之后设置。  
 Daemon线程被用作完成支持性工作，但是在Java虚拟机退出时Daemon线程中的finally块  
 并不一定会执行，示例如代码清单1所示。
 
 清单1
 
-```
+```text
 public class Daemon {
 public static void main(String[] args) {
     Thread thread = new Thread(new DaemonRunner(), "DaemonRunner");
@@ -37,13 +37,13 @@ Daemon线程）在启动了线程DaemonRunner之后随着main方法执行完毕�
 
 > 将线程转换为守护线程可以通过调用Thread对象的setDaemon\(true\)方法来实现。在使用守护线程时需要注意一下几点：
 >
-> \(1\) thread.setDaemon\(true\)必须在thread.start\(\)之前设置，否则会跑出一个IllegalThreadStateException异常。你不能把正在运行的常规线程设置为守护线程。 
+> \(1\) thread.setDaemon\(true\)必须在thread.start\(\)之前设置，否则会跑出一个IllegalThreadStateException异常。你不能把正在运行的常规线程设置为守护线程。
 >
 > \(2\) 在Daemon线程中产生的新线程也是Daemon的。
 >
 > \(3\) 守护线程应该永远不去访问固有资源，如文件、数据库，因为它会在任何时候甚至在一个操作的中间发生中断。
 
-```
+```text
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -54,7 +54,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Daemons {
 
- 
+
 
     /**
 
@@ -66,7 +66,7 @@ public class Daemons {
 
     public static void main(String[] args) throws InterruptedException {
 
- 
+
 
         Thread d = new Thread(new Daemon());
 
@@ -82,11 +82,11 @@ public class Daemons {
 
 }
 
- 
 
- 
 
- 
+
+
+
 
 class DaemonSpawn implements Runnable {
 
@@ -102,7 +102,7 @@ class DaemonSpawn implements Runnable {
 
 }
 
- 
+
 
 
 
@@ -213,7 +213,7 @@ DaemonSpawn 9 started.
 
 以上结果说明了如果用户线程已经全部退出运行了，只剩下守护线程存在了，虚拟机也就退出了。下面的例子也说明了这个问题。
 
-```
+```text
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -278,6 +278,4 @@ start ADaemon...
 start ADaemon...
 
 This shoud be always run ?
-
-
 

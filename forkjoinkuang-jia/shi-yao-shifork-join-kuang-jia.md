@@ -12,5 +12,5 @@ Fork/Join框架是Java 7提供的一个用于并行执行任务的框架，是�
 
 最终汇总这10个子任务的结果。Fork/Join的运行流程如图6-6所示。
 
-![](/assets/import-6-6.png)
+![](../.gitbook/assets/import-6-6.png)
 

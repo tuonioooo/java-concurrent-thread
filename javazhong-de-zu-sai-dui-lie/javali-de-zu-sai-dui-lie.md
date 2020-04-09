@@ -36,7 +36,7 @@ ArrayBlockingQueue是一个用数组实现的有界阻塞队列。此队列按�
 
 访问者的公平性是使用可重入锁实现的，代码如下。
 
-```
+```text
 public ArrayBlockingQueue(int capacity, boolean fair) {
 if (capacity <= 0)
 throw new IllegalArgumentException();
@@ -91,7 +91,7 @@ DelayQueue队列的元素必须实现Delayed接口。我们可以参考Scheduled
 
 以使用，使用sequenceNumber来标识元素在队列中的先后顺序。代码如下。
 
-```
+```text
 private static final AtomicLong sequencer = new AtomicLong(0);
     ScheduledFutureTask(Runnable r, V result, long ns, long period) {
     ScheduledFutureTask(Runnable r, V result, long ns, long period) {
@@ -106,7 +106,7 @@ private static final AtomicLong sequencer = new AtomicLong(0);
 
 如下。
 
-```
+```text
 public long getDelay(TimeUnit unit) {
     return unit.convert(time - now(), TimeUnit.NANOSECONDS);
 }
@@ -122,7 +122,7 @@ public long getDelay(TimeUnit unit) {
 
 尾。实现代码如下。
 
-```
+```text
 public int compareTo(Delayed other) {
     if (other == this)　　// compare zero ONLY if same object
     return 0;
@@ -149,7 +149,7 @@ public int compareTo(Delayed other) {
 
 间，就阻塞当前线程。
 
-```
+```text
 long delay = first.getDelay(TimeUnit.NANOSECONDS);
 if (delay <= 0)
 return q.poll();
@@ -187,7 +187,7 @@ SynchronousQueue是一个不存储元素的阻塞队列。每一个put操作必�
 
 顺序访问队列。
 
-```
+```text
 public SynchronousQueue(boolean fair) {
     transferer = fair new TransferQueue() : new TransferStack();
 }
